@@ -2,8 +2,11 @@ package Blooming
 
 import (
 	mt "Demiourgos/SuperMath"
+	"encoding/json"
+	"fmt"
 	p "github.com/Crypt0plasm/Firefly-APD"
 	"strconv"
+	"time"
 )
 
 func MakeBaseString() []string {
@@ -102,4 +105,39 @@ func MakeTotalString(Size int64) []string {
 		}
 	}
 	return Output
+}
+
+func MakeNFTChain(Col string, Unit int64) (Output []BalanceNFT) {
+	var (
+		NFTBasePrefix = "https://api.elrond.com/nfts/"
+		NFTBaseSufix  = "/owners?size=1"
+		NftUnit       BalanceNFT
+		//Output        []BalanceNFT
+	)
+
+	ApiScanner := func(Api string) (Output []BalanceSFT) {
+		SS := OnPage(Api)
+		_ = json.Unmarshal([]byte(SS), &Output)
+		return
+	}
+
+	NFTIdentifierChain := MakeTotalString(Unit)
+
+	for i := int64(1); i < Unit+1; i++ {
+		NFTIdentifier := NFTIdentifierChain[i]
+		NftUnit.NFT = NFT{Col, NFTIdentifier}
+
+		ApiPingString := NFTBasePrefix + Col + "-" + NFTIdentifier + NFTBaseSufix
+		time.Sleep(time.Duration(1000) * time.Millisecond)
+		fmt.Println("API:", ApiPingString)
+		NftUnit.Address = ApiScanner(ApiPingString)[0].Address
+
+		//NftUnit.AB = IterationSFT
+		//NftUnit.NFT = IterationNFT
+		Output = append(Output, NftUnit)
+		fmt.Println(i, NftUnit)
+		time.Sleep(time.Duration(1000) * time.Millisecond)
+		//Output = append(Output, NftUnit)
+	}
+	return
 }

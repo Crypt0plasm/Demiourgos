@@ -3,7 +3,7 @@ package Blooming
 import (
 	mt "Demiourgos/SuperMath"
 	p "github.com/Crypt0plasm/Firefly-APD"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -52,7 +52,7 @@ func OnPage(Link string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	content, err := ioutil.ReadAll(res.Body)
+	content, err := io.ReadAll(res.Body)
 	_ = res.Body.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -99,6 +99,30 @@ func MinDecimal(No1, No2 *p.Decimal) *p.Decimal {
 	}
 
 	return Result
+}
+
+func AtomicUnitsDecimalToDecimalString(Input *p.Decimal) string {
+	DecimalDivided := mt.TruncateCustom(mt.DIVxc(Input, p.NFS("1000000000000000000")), 18)
+	return mt.DTS(DecimalDivided)
+}
+func AtomicUnitsStringToDecimalString(Input string) string {
+	Decimal := p.NFS(Input)
+	return AtomicUnitsDecimalToDecimalString(Decimal)
+}
+
+func ConvertSFTtoESDT(Input BalanceSFT) (Output BalanceESDT) {
+	Output.Address = Input.Address
+	Output.Balance = AtomicUnitsStringToDecimalString(Input.Balance)
+	return
+}
+
+func ConvertSFTtoESDTChain(Input []BalanceSFT) []BalanceESDT {
+	Output := make([]BalanceESDT, len(Input))
+
+	for i := 0; i < len(Input); i++ {
+		Output[i] = ConvertSFTtoESDT(Input[i])
+	}
+	return Output
 }
 
 //

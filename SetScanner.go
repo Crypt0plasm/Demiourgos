@@ -2,6 +2,7 @@ package main
 
 import (
 	bloom "Demiourgos/Blooming"
+	"Demiourgos/Vesta"
 	"fmt"
 )
 
@@ -60,7 +61,7 @@ func main() {
 	bloom.WriteListOneByOne("Output_All_Net_Reward.txt", RewardChain)
 
 	//KYC Comparison
-	Path := "d:\\_Crypto\\Demiourgos\\Subsidiaries\\Coding Division\\Blooming\\export_416055238_01-2023.csv"
+	Path := "d:\\_Crypto\\Demiourgos\\Subsidiaries\\Coding Division\\Blooming\\export_416055238_02-2023.csv"
 	KycERDs := bloom.KycScanner(Path)
 	SortedSetExceptionKYC := bloom.MakeSetKYC(SortedSetException, KycERDs)
 	bloom.WriteListOneByOne2("Output_Set_Net_KYC.txt", SortedSetExceptionKYC)
@@ -69,4 +70,17 @@ func main() {
 	bloom.WriteListOneByOne("Output_Set_Net_KYC_Draw.txt", DrawSET)
 	DrawSUM := bloom.AddBalanceSFTChain(DrawSET)
 	fmt.Println("Drawing will be executed for ", DrawSUM, " units")
+	fmt.Println("")
+
+	//Vesta Gold
+	fmt.Println("====Vesta GOLD====")
+	VestaGoldFull := Vesta.CreateVestaGoldChain()
+	VestaGoldException := Vesta.CreateVestaGoldAmounts(VestaGoldFull)
+
+	SortedVestaExceptionGold := bloom.SortBalanceSFTChain(VestaGoldException)
+	SortedVestaExceptionGoldSum := bloom.AddBalanceSFTChain(SortedVestaExceptionGold)
+	fmt.Println("Excluding SC, RAW (excluding SC, no single exceptions) SFTs sum is ", SortedVestaExceptionGoldSum, "SFTs on", len(SortedVestaExceptionGold), "Addresses")
+	fmt.Println("")
+	bloom.WriteListOneByOne("Output_VestaGOLD_Raw.txt", SortedVestaExceptionGold)
+
 }
