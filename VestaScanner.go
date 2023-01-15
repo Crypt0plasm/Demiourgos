@@ -4,9 +4,11 @@ import (
 	"Demiourgos/Blooming"
 	mt "Demiourgos/SuperMath"
 	vt "Demiourgos/Vesta"
+	"flag"
 	"fmt"
 	p "github.com/Crypt0plasm/Firefly-APD"
 	"os"
+	"strings"
 )
 
 func WriteListOneByOneC(Name string, List []vt.VestaSplit) {
@@ -139,33 +141,116 @@ func ScanLPOwners(LPToken vt.ESDT, ExportName string) (Output []Blooming.Balance
 	Sum := Blooming.AtomicUnitsDecimalToDecimalString(Blooming.AddBalanceSFTChain(SortedLPScan))
 
 	fmt.Println("LP-Token ", string(LPToken), " sum is ", Sum, " on ", len(SortedLPScan), " addresses.")
-	Blooming.WriteListOneByOneB(ExportName, SortedLPScanESDT)
+
+	fmt.Println("File ", ExportName, "won't be printed.")
+	//LP List won't be printed
+	//Blooming.WriteListOneByOneB(ExportName, SortedLPScanESDT)
 	return SortedLPScanESDT
 }
 
-func main() {
-	//Scan Liquidity Pools
+func ScanPoolsMakeVestaSplit(WeekNumber int) {
+	//Scan Liquidity Pools and Determine VESTA Split
 	LiquidityPools := ScanPools()
 	PoolVestaSplit := ComputePoolVestaSplit(p.NFS("800"), LiquidityPools)
 	for i := 0; i < len(PoolVestaSplit); i++ {
 		fmt.Println("Pool ", i, "has ", LiquidityPools[i].VEGLD, "vEGLD equivalent")
 		fmt.Println("Pool ", i, "gets ", PoolVestaSplit[i].Vesta, "Vesta")
 	}
-	WriteListOneByOneC(vt.MakeExportName(1, 0, "CutOfVESTA"), PoolVestaSplit)
+	VestaFileName := vt.MakeExportName(WeekNumber, 0, "CutOfVESTA")
+	WriteListOneByOneC(VestaFileName, PoolVestaSplit)
 
-	//Scan LP Owners
-	LP00 := ScanLPOwners(vt.SUPEREGLD, vt.MakeExportName(1, 0, "LP"))
-	LP01 := ScanLPOwners(vt.CRUSTEGLD, vt.MakeExportName(1, 1, "LP"))
-	LP02 := ScanLPOwners(vt.AEROEGLD, vt.MakeExportName(1, 2, "LP"))
+	//Copy Created File to another Folder
+	B, _ := vt.MyCopy(VestaFileName, "_VESTA-Snapshots\\"+VestaFileName)
+	fmt.Println(B, " bytes copied!")
+}
 
-	//Compute Individual Vesta Split
-	LP00VS := ComputeIndividualVestaSplit(PoolVestaSplit[0].Vesta, LP00)
-	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 0, "VESTA"), LP00VS)
+func ScanLPsMakeIndividualVestaSplit(WeekNumber int) {
+	//Scan LP Owners, needed to compute VESTA amount for each
+	//As More Pools are added, more LP types need to be scanned
+	LP00 := ScanLPOwners(vt.SUPEREGLD, vt.MakeExportName(0, 0, "LP"))
+	LP01 := ScanLPOwners(vt.CRUSTEGLD, vt.MakeExportName(0, 1, "LP"))
+	LP02 := ScanLPOwners(vt.AEROEGLD, vt.MakeExportName(0, 2, "LP"))
 
-	LP01VS := ComputeIndividualVestaSplit(PoolVestaSplit[1].Vesta, LP01)
-	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 1, "VESTA"), LP01VS)
+	//Read Each Pool Vesta Split from the already existing file
+	VestaValues := VestaSplitScanner(WeekNumber)
 
-	LP02VS := ComputeIndividualVestaSplit(PoolVestaSplit[2].Vesta, LP02)
-	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 2, "VESTA"), LP02VS)
+	//Compute Individual Vesta Split - Compute Individual Vesta Split for each LP.
+	LP00VS := ComputeIndividualVestaSplit(VestaValues[0], LP00)
+	ExportNamePool00 := vt.MakeExportName(WeekNumber, 0, "VESTA")
+	Blooming.WriteListOneByOneB(ExportNamePool00, LP00VS)
+	B00, _ := vt.MyCopy(ExportNamePool00, "_VESTA-Snapshots\\"+ExportNamePool00)
+	fmt.Println(B00, " bytes copied!")
+
+	LP01VS := ComputeIndividualVestaSplit(VestaValues[1], LP01)
+	ExportNamePool01 := vt.MakeExportName(WeekNumber, 1, "VESTA")
+	Blooming.WriteListOneByOneB(ExportNamePool01, LP01VS)
+	B01, _ := vt.MyCopy(ExportNamePool01, "_VESTA-Snapshots\\"+ExportNamePool01)
+	fmt.Println(B01, " bytes copied!")
+
+	LP02VS := ComputeIndividualVestaSplit(VestaValues[2], LP02)
+	ExportNamePool02 := vt.MakeExportName(WeekNumber, 2, "VESTA")
+	Blooming.WriteListOneByOneB(ExportNamePool02, LP02VS)
+	B02, _ := vt.MyCopy(ExportNamePool02, "_VESTA-Snapshots\\"+ExportNamePool02)
+	fmt.Println(B02, " bytes copied!")
+}
+
+func VestaSplitScanner(WeekNumber int) []*p.Decimal {
+	var (
+		Unit   *p.Decimal
+		Output []*p.Decimal
+	)
+
+	GetValueFromLine := func(Line string) *p.Decimal {
+		var (
+			ProcessedString string
+		)
+		//Remove the { and } character
+		ProcessedString = strings.ReplaceAll(Line, "{", "")
+		ProcessedString = strings.ReplaceAll(ProcessedString, "}", "")
+		Parts := strings.Split(ProcessedString, " ")
+		return p.NFS(Parts[2])
+	}
+
+	ImportName := vt.MakeImportName(WeekNumber, 0, 0, "CutOfVESTA")
+	Path := "_VESTA-Snapshots\\" + ImportName
+	ReadStringSlice := Blooming.ReadFile(Path)
+	for i := 0; i < len(ReadStringSlice); i++ {
+		Unit = GetValueFromLine(ReadStringSlice[i])
+		Output = append(Output, Unit)
+	}
+	return Output
+}
+
+func main() {
+	var (
+		ScanLiquidity = `--sl  WeekNumber;
+Scan the Inputed Pools, and outputs the VESTA Split for the Pools for the Week
+`
+		CIVS = `--vs  WeekNumber;
+Computes the Individual Vesta Splits for all Pools for the Week. The VestaPoolSplit
+must exist in its designated folder.
+`
+	)
+
+	const (
+		ScnLiquidity = "sl" // number
+		CmpVesta     = "vs" // number
+	)
+
+	FlagScnLiquidity := flag.Int(ScnLiquidity, 0, ScanLiquidity)
+	FlagCmpVesta := flag.Int(CmpVesta, 0, CIVS)
+
+	flag.Parse()
+
+	//
+	// First Option
+	if *FlagScnLiquidity != 0 {
+		ScanPoolsMakeVestaSplit(*FlagScnLiquidity)
+	}
+
+	// Second Option
+	if *FlagCmpVesta != 0 {
+		ScanLPsMakeIndividualVestaSplit(*FlagCmpVesta)
+	}
 
 }

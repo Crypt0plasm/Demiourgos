@@ -126,6 +126,28 @@ func CreateCodingDivisionChain() (DecaChain, int, *p.Decimal) {
 	return OutputChain, MaxLen, Sum
 }
 
+func RemoveDuplicateElrondAddresses(Input []ElrondAddress) []ElrondAddress {
+	//3.    Remove Duplicate Elrond Addresses.
+	//3.1   Make a hash map from ElrondAddress to int
+	Check := make(map[ElrondAddress]int)
+
+	//3.2   Make the empty Output Slice that will contain unique Elrond Addresses
+	Unique := make([]ElrondAddress, 0)
+
+	//3.3   Iterate through the Slice containing duplicates and map each element to 0. (or any other thing)
+	for _, val := range Input {
+		Check[val] = 1
+	}
+
+	//3.4   Now finally iterate through the map and append each key of the map to a
+	//      new slice of strings. Since any duplicate value too will be mapped to the
+	//      same number as the previous one, hence all the keys will be unique.
+	for letter, _ := range Check {
+		Unique = append(Unique, letter)
+	}
+	return Unique
+}
+
 // ======================================================================================================================
 //
 // [B]02         CreateCodingDivisionOwners
@@ -152,26 +174,7 @@ func CreateCodingDivisionOwners(InputChain DecaChain) []ElrondAddress {
 		ElrondSlice[i] = AllSlice[i].Address
 	}
 
-	//3.    Remove Duplicate Elrond Addresses.
-	//3.1   Make a hash map from ElrondAddress to int
-	Check := make(map[ElrondAddress]int)
-
-	//3.2   Make the empty Output Slice that will contain unique Elrond Addresses
-	Unique := make([]ElrondAddress, 0)
-
-	//3.3   Iterate through the Slice containing duplicates and map each element to 0. (or any other thing)
-	for _, val := range ElrondSlice {
-		Check[val] = 1
-	}
-
-	//3.4   Now finally iterate through the map and append each key of the map to a
-	//      new slice of strings. Since any duplicate value too will be mapped to the
-	//      same number as the previous one, hence all the keys will be unique.
-	for letter, _ := range Check {
-		Unique = append(Unique, letter)
-	}
-
-	return Unique
+	return RemoveDuplicateElrondAddresses(ElrondSlice)
 }
 
 // ======================================================================================================================
@@ -370,6 +373,32 @@ func SortBalanceSFTChain(Chain []BalanceSFT) []BalanceSFT {
 	for i := 0; i < len(Chain); i++ {
 		Biggest := GetMaxElement(Chain2Sort)
 		Unit := BalanceSFT{Address: Chain2Sort[Biggest].Address, Balance: Chain2Sort[Biggest].Balance}
+		SortedChain = append(SortedChain, Unit)
+
+		//Removing biggest element
+		//This syntax removes from a slice the element on position Biggest
+		Chain2Sort = append(Chain2Sort[:Biggest], Chain2Sort[Biggest+1:]...)
+	}
+	return SortedChain
+}
+func SortBalanceESDTChain(Chain []BalanceESDT) []BalanceESDT {
+	var (
+		SortedChain []BalanceESDT
+	)
+	GetMaxElement := func(Chain []BalanceESDT) int {
+		Max := 0
+		for i := 0; i < len(Chain); i++ {
+			if mt.DecimalGreaterThanOrEqual(p.NFS(Chain[i].Balance), p.NFS(Chain[Max].Balance)) == true {
+				Max = i
+			}
+		}
+		return Max
+	}
+	Chain2Sort := Chain
+
+	for i := 0; i < len(Chain); i++ {
+		Biggest := GetMaxElement(Chain2Sort)
+		Unit := BalanceESDT{Address: Chain2Sort[Biggest].Address, Balance: Chain2Sort[Biggest].Balance}
 		SortedChain = append(SortedChain, Unit)
 
 		//Removing biggest element
