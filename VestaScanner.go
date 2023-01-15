@@ -151,21 +151,21 @@ func main() {
 		fmt.Println("Pool ", i, "has ", LiquidityPools[i].VEGLD, "vEGLD equivalent")
 		fmt.Println("Pool ", i, "gets ", PoolVestaSplit[i].Vesta, "Vesta")
 	}
-	WriteListOneByOneC("V_VestaSplit.txt", PoolVestaSplit)
+	WriteListOneByOneC(vt.MakeExportName(1, 0, "CutOfVESTA"), PoolVestaSplit)
 
 	//Scan LP Owners
-	LP00 := ScanLPOwners(vt.SUPEREGLD, "V_Pool_00_LPs.txt")
-	LP01 := ScanLPOwners(vt.CRUSTEGLD, "V_Pool_01_LPs.txt")
-	LP02 := ScanLPOwners(vt.AEROEGLD, "V_Pool_02_LPs.txt")
+	LP00 := ScanLPOwners(vt.SUPEREGLD, vt.MakeExportName(1, 0, "LP"))
+	LP01 := ScanLPOwners(vt.CRUSTEGLD, vt.MakeExportName(1, 1, "LP"))
+	LP02 := ScanLPOwners(vt.AEROEGLD, vt.MakeExportName(1, 2, "LP"))
 
 	//Compute Individual Vesta Split
 	LP00VS := ComputeIndividualVestaSplit(PoolVestaSplit[0].Vesta, LP00)
-	Blooming.WriteListOneByOneB("V_LP00_VS.txt", LP00VS)
+	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 0, "VESTA"), LP00VS)
 
 	LP01VS := ComputeIndividualVestaSplit(PoolVestaSplit[1].Vesta, LP01)
-	Blooming.WriteListOneByOneB("V_LP01_VS.txt", LP01VS)
+	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 1, "VESTA"), LP01VS)
 
 	LP02VS := ComputeIndividualVestaSplit(PoolVestaSplit[2].Vesta, LP02)
-	Blooming.WriteListOneByOneB("V_LP02_VS.txt", LP02VS)
+	Blooming.WriteListOneByOneB(vt.MakeExportName(1, 2, "VESTA"), LP02VS)
 
 }

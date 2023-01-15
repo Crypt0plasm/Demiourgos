@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	p "github.com/Crypt0plasm/Firefly-APD"
+	"strconv"
+	"time"
 )
 
 type VestaSplit struct {
@@ -83,6 +85,90 @@ func CreateVestaGoldAmounts(Input []Blooming.BalanceSFT) []Blooming.BalanceSFT {
 }
 
 // Functions that distribute Vesta
+func MakeExportName(WeekNumber, PoolPosition int, Type string) string {
+	var (
+		WeekDesignation string
+		DayDesignation  string
+		PoolDesignation string
+		FinalOutputName string
+		DayNumberS      string
+	)
+	if WeekNumber < 10 {
+		WeekDesignation = "W0" + strconv.Itoa(WeekNumber)
+	} else {
+		WeekDesignation = "W" + strconv.Itoa(WeekNumber)
+	}
+
+	if PoolPosition < 10 {
+		PoolDesignation = "P0" + strconv.Itoa(PoolPosition)
+	} else {
+		PoolDesignation = "P" + strconv.Itoa(PoolPosition)
+	}
+
+	Day := time.Now().Weekday()
+	if int(Day) == 0 {
+		DayNumberS = strconv.Itoa(int(Day) + 7)
+	} else {
+		DayNumberS = strconv.Itoa(int(Day))
+	}
+
+	DayNameS := Day.String()
+	DayDesignation = DayNumberS + "-" + DayNameS
+
+	if Type == "CutOfVESTA" {
+		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + ".txt"
+	} else {
+		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
+	}
+
+	return FinalOutputName
+}
+
+func MakeImportName(WeekNumber, DayNumber, PoolPosition int, Type string) string {
+	var (
+		WeekDesignation string
+		DayDesignation  string
+		PoolDesignation string
+		FinalOutputName string
+	)
+	if WeekNumber < 10 {
+		WeekDesignation = "W0" + strconv.Itoa(WeekNumber)
+	} else {
+		WeekDesignation = "W" + strconv.Itoa(WeekNumber)
+	}
+
+	if PoolPosition < 10 {
+		PoolDesignation = "P0" + strconv.Itoa(PoolPosition)
+	} else {
+		PoolDesignation = "P" + strconv.Itoa(PoolPosition)
+	}
+
+	switch i := DayNumber; {
+	case i == 1:
+		DayDesignation = "1-Monday"
+	case i == 2:
+		DayDesignation = "2-Tuesday"
+	case i == 3:
+		DayDesignation = "3-Wednesday"
+	case i == 4:
+		DayDesignation = "4-Thursday"
+	case i == 5:
+		DayDesignation = "5-Friday"
+	case i == 6:
+		DayDesignation = "6-Saturday"
+	case i == 7:
+		DayDesignation = "7-Sunday"
+	}
+
+	if Type == "CutOfVESTA" {
+		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + ".txt"
+	} else {
+		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
+	}
+
+	return FinalOutputName
+}
+
 func ReadESDTAmount(Addy Blooming.ElrondAddress, Token ESDT) string {
 	var (
 		String1 = "https://api.multiversx.com/accounts/"
