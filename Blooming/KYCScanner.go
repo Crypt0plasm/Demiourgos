@@ -1,46 +1,28 @@
 package Blooming
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+	mvx "MvxApiScanner"
 	"strings"
 )
 
-func ReadFile(Path string) []string {
-	readFile, err := os.Open(Path)
+//Reads Kyc CSV File
 
-	if err != nil {
-		fmt.Println(err)
-	}
-	fileScanner := bufio.NewScanner(readFile)
-	fileScanner.Split(bufio.ScanLines)
-	var fileLines []string
-
-	for fileScanner.Scan() {
-		fileLines = append(fileLines, fileScanner.Text())
-	}
-
-	_ = readFile.Close()
-
-	return fileLines
-}
-
-func ProcessLine(Line string) ElrondAddress {
-	var Addy ElrondAddress
-	StringSlice := strings.Split(Line, ",")
-	if StringSlice[7] == "APPROVED" && len([]rune(StringSlice[5])) == 62 {
-		Addy = ElrondAddress(StringSlice[5])
-	}
-	return Addy
-}
-
-func KycScanner(Path string) []ElrondAddress {
+func KycScanner(Path string) []mvx.MvxAddress {
 	var (
-		Output []ElrondAddress
-		Addy   ElrondAddress
+		Output []mvx.MvxAddress
+		Addy   mvx.MvxAddress
 	)
-	StringSlice := ReadFile(Path)
+
+	ProcessLine := func(Line string) mvx.MvxAddress {
+		var Adddy mvx.MvxAddress
+		StringSlice := strings.Split(Line, ",")
+		if StringSlice[7] == "APPROVED" && len([]rune(StringSlice[5])) == 62 {
+			Adddy = mvx.MvxAddress(StringSlice[5])
+		}
+		return Adddy
+	}
+
+	StringSlice := mvx.ReadFile(Path)
 	for i := 1; i < len(StringSlice); i++ {
 		Addy = ProcessLine(StringSlice[i])
 		if len([]rune(Addy)) == 62 {
@@ -51,10 +33,10 @@ func KycScanner(Path string) []ElrondAddress {
 	return Output
 }
 
-func MakeSetKYC(Input []BalanceSFT, KYC []ElrondAddress) []TrueBalanceSFT {
+func MakeSetKYC(Input []mvx.BalanceSFT, KYC []mvx.MvxAddress) []mvx.TrueBalanceSFT {
 	var (
-		Unit     TrueBalanceSFT
-		Output   []TrueBalanceSFT
+		Unit     mvx.TrueBalanceSFT
+		Output   []mvx.TrueBalanceSFT
 		KycValue bool
 	)
 	for i := 0; i < len(Input); i++ {
@@ -74,10 +56,10 @@ func MakeSetKYC(Input []BalanceSFT, KYC []ElrondAddress) []TrueBalanceSFT {
 	return Output
 }
 
-func CleanKycSet(Input []TrueBalanceSFT) []BalanceSFT {
+func CleanKycSet(Input []mvx.TrueBalanceSFT) []mvx.BalanceSFT {
 	var (
-		Unit   BalanceSFT
-		Output []BalanceSFT
+		Unit   mvx.BalanceSFT
+		Output []mvx.BalanceSFT
 	)
 	for i := 0; i < len(Input); i++ {
 		if Input[i].KYC == true {

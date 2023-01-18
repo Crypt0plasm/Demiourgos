@@ -1,53 +1,45 @@
 package main
 
 import (
-    "Demiourgos/Blooming"
-    vt "Demiourgos/Vesta"
-    p "Firefly-APD"
-    mt "SuperMath"
-    "flag"
-    "fmt"
-    "os"
-    "strconv"
-    "strings"
+	vt "Demiourgos/Vesta"
+	p "Firefly-APD"
+	mvx "MvxApiScanner"
+	mt "SuperMath"
+	"flag"
+	"fmt"
+	"strconv"
+	"strings"
 )
 
-func WriteListOneByOneC(Name string, List []vt.VestaSplit) {
-	f, err := os.Create(Name)
-
-	if err != nil {
-		fmt.Println(err)
-		_ = f.Close()
-		return
-	}
-
-	for _, v := range List {
-		_, _ = fmt.Fprintln(f, v)
-	}
-	err = f.Close()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println("file written successfully")
-	return
-}
+var (
+	LiquidityPoolOrder = []mvx.ESDT{mvx.SUPEREGLD, mvx.CRUSTEGLD, mvx.AEROEGLD}
+)
 
 // PART 1
-// Function 1 ScanPool with IPM
-// Function 2 MakeMean from Multiple Pool Scans
-// Function 3 MakePoolVesta Split (from Pool Scan info, either single, or mean)
+// Function 				1 ScanPoolsAndWeighThem with IPM (internal Partner Multiplier aka Pool Weight)
+// Function 				2 ScanPoolsAndOutputThem, outputs scanned Pool.
 
 // PART 2
-// Function 4 ScanLPs
-// Function 5 Make Individual Vesta Split (Input: ScanLP Info, and PoolVesta Split info)
+// Function 				3 ScanPoolsMakeVestaSplit(WeekNumber)
+// Function 				4 ScanWeeklyPoolsMakeMedianVestaSplit(Week Number) Makes PoolVesta Split from weekly PoolScans
+// Function 				5 ComputePoolVestaSplit, computes the PoolVestaSplit
 
-// ScanPools Function 1
+// PART 3
+// Function 				6 ScanIndividualLPOwners; Scans all addresses owning a given LP Token
+// ScanAllLPs 				7 Scan all LPs (the number is defined in the variable above)
+// PoolVestaSplitScanner 		8 Reads the PoolVestaSplit from hdd.
+// ComputeIndividualVestaSplit 		9 Computes IndividualVestaSplit, using a given amount of Vesta, for a chain of ESDT Balances
+// MakeIndividualVestaSplitAllPools 	10Computes Vesta Split for all Pool, for each of the individuals.
+//					Each File is printed out externally.
+//					These files will have to be added for each pool resulting in Vesta amounts for each pool
+//					And these could be added together for a single Big Vesta Airdrop file.
+
+// ScanPoolsAndWeighThem Function 1
 // Scans the Liquidity Pools for Token amounts, and applies IPM (Intrinsic Partner Multiplier)
 // Pool Number is updated once per day.
-func ScanPools() (Output []vt.VestaPool) {
+func ScanPoolsAndWeighThem() (Output []mvx.VestaPool) {
 	//Scan Pool Number 1, Super Pool
-	SuperPool := vt.ScanLiquidity(vt.EGLD_Super_LP, vt.SuperIdentifier)
+	SuperPool := vt.ScanLiquidity(mvx.EGLDSuperLP, mvx.Super)
 	WeighedSuperPool := vt.WeightPool(SuperPool, p.NFS("10"))
 	//Super Pool always generates Vesta, regardless of VEGLD amount it holds.
 	if mt.DecimalGreaterThan(WeighedSuperPool.VEGLD, p.NFS("0")) == true {
@@ -55,7 +47,7 @@ func ScanPools() (Output []vt.VestaPool) {
 	}
 
 	//Scan Pool Number 2, Crust
-	CrustPool := vt.ScanLiquidity(vt.EGLD_Crust_LP, vt.CrustIdentifier)
+	CrustPool := vt.ScanLiquidity(mvx.EGLDCrustLP, mvx.Crust)
 	WeighedCrustPool := vt.WeightPool(CrustPool, p.NFS("1"))
 	//Super Pool always generates Vesta, regardless of VEGLD amount it holds.
 	if mt.DecimalGreaterThan(WeighedCrustPool.VEGLD, p.NFS("500")) == true {
@@ -63,18 +55,64 @@ func ScanPools() (Output []vt.VestaPool) {
 	}
 
 	//Scan Pool Number 3 Aero
-	AeroPool := vt.ScanLiquidity(vt.EGLD_Aero_LP, vt.AeroIdentifier)
+	AeroPool := vt.ScanLiquidity(mvx.EGLDAeroLP, mvx.Aero)
 	WeighedAeroPool := vt.WeightPool(AeroPool, p.NFS("1"))
 	//Super Pool always generates Vesta, regardless of VEGLD amount it holds.
 	if mt.DecimalGreaterThan(WeighedAeroPool.VEGLD, p.NFS("500")) == true {
 		Output = append(Output, WeighedAeroPool)
 	}
-
 	return
 }
 
-func ComputePoolVestaSplit(TotalVesta *p.Decimal, Input []vt.VestaPool) []vt.VestaSplit {
-	Output := make([]vt.VestaSplit, len(Input))
+// ScanPoolsAndOutputThem Function 2
+// OutPuts Pools
+func ScanPoolsAndOutputThem(WeekNumber, PoolNumber int, Export bool) []mvx.VestaPool {
+	DailyVestaPoolChain := ScanPoolsAndWeighThem()
+	OutputName := vt.MakeFileName(true, false, "PS", WeekNumber, PoolNumber, -1, -1)
+	if Export == true {
+		mvx.WriteChainVestaPool(OutputName, DailyVestaPoolChain)
+	}
+
+	//Move Export to Folder
+	B, _ := mvx.MyCopy(OutputName, "_VESTA-Snapshots\\"+OutputName)
+	fmt.Println(B, " bytes copied!")
+
+	return DailyVestaPoolChain
+}
+
+// ScanPoolsMakeVestaSplit 3
+// Makes a PoolVestaSplit based on instantaneous Liquidity-Pool Snapshot
+func ScanPoolsMakeVestaSplit(WeekNumber int) {
+	InstantaneousLiquidityPoolSnapshot := ScanPoolsAndOutputThem(WeekNumber, -1, false)
+
+	//Compute Pool Split using 800 VESTA for all Pools. It splits 800 daily VESTA to multiple Pools.
+	PoolVestaSplit := ComputePoolVestaSplit(p.NFS("800"), InstantaneousLiquidityPoolSnapshot)
+	//Display Information about LiquidityPool Scan and PoolVestaSplit
+	for i := 0; i < len(PoolVestaSplit); i++ {
+		fmt.Println("Pool ", i, "has ", InstantaneousLiquidityPoolSnapshot[i].VEGLD, "vEGLD equivalent")
+		fmt.Println("Pool ", i, "gets ", PoolVestaSplit[i].Vesta, "Vesta")
+	}
+
+	OutputName := vt.MakeFileName(true, false, "PVSi", WeekNumber, -1, -1, -1)
+	fmt.Println("OutputName IZ ", OutputName)
+	mvx.WriteChainVestaSplit(OutputName, PoolVestaSplit)
+
+	//Copy Created File to another Folder
+	B, _ := mvx.MyCopy(OutputName, "_VESTA-Snapshots\\"+OutputName)
+	fmt.Println(B, " bytes copied!")
+	return
+}
+
+// ScanWeeklyPoolsMakeMedianVestaSplit 4
+// Makes a PoolVestaSplit based on daily PoolsScan done over a week period, averaging the values for each Pool
+func ScanWeeklyPoolsMakeMedianVestaSplit(WeekNumber int) {
+	//After a few days of pool Scans, i can attempt to build the function
+}
+
+// ComputePoolVestaSplit 5
+// Computes PoolVestaSplit using a total VESTA Value spread over a slice of VestaPools
+func ComputePoolVestaSplit(TotalVesta *p.Decimal, Input []mvx.VestaPool) []mvx.VestaSplit {
+	Output := make([]mvx.VestaSplit, len(Input))
 	Sum := p.NFS("0")
 	var (
 		Remainder    *p.Decimal
@@ -109,8 +147,84 @@ func ComputePoolVestaSplit(TotalVesta *p.Decimal, Input []vt.VestaPool) []vt.Ves
 	return Output
 }
 
-func ComputeIndividualVestaSplit(TotalVesta *p.Decimal, Input []Blooming.BalanceESDT) []Blooming.BalanceESDT {
-	Output := make([]Blooming.BalanceESDT, len(Input))
+//Part 3
+
+// ScanIndividualLPOwners 6
+// Scans a single LPToken for all addresses that own it
+func ScanIndividualLPOwners(LPToken mvx.ESDT) (Output []mvx.BalanceESDT) {
+	LPScan := mvx.SnapshotIntegerChain(mvx.MakeAddressESDTSnapshotLink(LPToken))
+	LPScanESDT := mvx.ConvertSFTtoESDTChain(LPScan)
+	SortedLPScanESDT := mvx.SortBalanceDecimalChain(LPScanESDT)
+	Sum := mvx.AddBalanceDecimalChain(SortedLPScanESDT)
+	fmt.Println("LP-Token ", string(LPToken), " sum is ", Sum, " on ", len(SortedLPScanESDT), " addresses.")
+	//LP List won't be printed
+	return SortedLPScanESDT
+}
+
+// ScanAllLPs 7
+// Scans All LPs and makes a chain of chains
+func ScanAllLPs(PoolNumber int) [][]mvx.BalanceESDT {
+	var (
+		ScannedLP     []mvx.BalanceESDT
+		AllScannedLPs [][]mvx.BalanceESDT
+	)
+	for i := 0; i < PoolNumber; i++ {
+		ScannedLP = ScanIndividualLPOwners(LiquidityPoolOrder[i])
+		AllScannedLPs = append(AllScannedLPs, ScannedLP)
+	}
+	return AllScannedLPs
+}
+
+// PoolVestaSplitScanner 8
+// Reads The PoolVestaSplit File from hdd
+// Only two string types allowed
+//
+//	Type "i", reads instantaneous PoolVestSplitFile of the given Week.
+//	Type "m", reads the median    PoolVestSplitFile of the given Week.
+//
+// Outputs a slice of Decimals, that is used to compute individual Vesta Splits for each Pool, in their order
+func PoolVestaSplitScanner(WeekNumber int, Type string) []*p.Decimal {
+	var (
+		Unit            *p.Decimal
+		Output          []*p.Decimal
+		TypeDesignation string
+	)
+
+	//Custom function that specifically processes the Content of the PoolVestaSplit file
+	GetValueFromLine := func(Line string) *p.Decimal {
+		var (
+			ProcessedString string
+		)
+		//Remove the { and } character
+		ProcessedString = strings.ReplaceAll(Line, "{", "")
+		ProcessedString = strings.ReplaceAll(ProcessedString, "}", "")
+		Parts := strings.Split(ProcessedString, " ")
+		//The last split string, represents the VestaSplit of the given Pool
+		return p.NFS(Parts[2])
+	}
+
+	if Type == "i" {
+		TypeDesignation = "PVSi"
+	} else if Type == "m" {
+		TypeDesignation = "PVSm"
+	}
+
+	ImportName := vt.MakeFileName(false, false, TypeDesignation, WeekNumber, -1, -1, -1)
+	fmt.Println("INIZ ", ImportName)
+	Path := "_VESTA-Snapshots\\" + ImportName
+	ReadStringSlice := mvx.ReadFile(Path)
+	for i := 0; i < len(ReadStringSlice); i++ {
+		Unit = GetValueFromLine(ReadStringSlice[i])
+		Output = append(Output, Unit)
+	}
+	return Output
+}
+
+// ComputeIndividualVestaSplit 9
+// Computes IndividualVestaSplit, using a given amount of Vesta, for a chain of ESDT Balances
+// Resulted Chain of ESDT Balances represents amounts based on percents from the give Vesta Amount based of Input ESDT Balances.
+func ComputeIndividualVestaSplit(TotalVesta *p.Decimal, Input []mvx.BalanceESDT) []mvx.BalanceESDT {
+	Output := make([]mvx.BalanceESDT, len(Input))
 	Sum := p.NFS("0")
 	var (
 		Remainder          *p.Decimal
@@ -143,142 +257,132 @@ func ComputeIndividualVestaSplit(TotalVesta *p.Decimal, Input []Blooming.Balance
 		Output[i].Address = Input[i].Address
 
 	}
-
 	return Output
 }
 
-func ScanLPOwners(LPToken vt.ESDT, ExportName string) (Output []Blooming.BalanceESDT) {
-	LPScan := Blooming.CreateBalanceChain(vt.MakeESDTSnapshotLink(LPToken))
-	SortedLPScan := Blooming.SortBalanceSFTChain(LPScan)
-	SortedLPScanESDT := Blooming.ConvertSFTtoESDTChain(SortedLPScan)
-	Sum := Blooming.AtomicUnitsDecimalToDecimalString(Blooming.AddBalanceSFTChain(SortedLPScan))
-
-	fmt.Println("LP-Token ", string(LPToken), " sum is ", Sum, " on ", len(SortedLPScan), " addresses.")
-
-	fmt.Println("File ", ExportName, "won't be printed.")
-	//LP List won't be printed
-	//Blooming.WriteListOneByOneB(ExportName, SortedLPScanESDT)
-	return SortedLPScanESDT
-}
-
-func ScanPoolsMakeVestaSplit(WeekNumber int, Daily bool) {
-	//Scan Liquidity Pools and Determine VESTA Split
-	var VestaFileName string
-	LiquidityPools := ScanPools()
-	PoolVestaSplit := ComputePoolVestaSplit(p.NFS("800"), LiquidityPools)
-	for i := 0; i < len(PoolVestaSplit); i++ {
-		fmt.Println("Pool ", i, "has ", LiquidityPools[i].VEGLD, "vEGLD equivalent")
-		fmt.Println("Pool ", i, "gets ", PoolVestaSplit[i].Vesta, "Vesta")
+// MakeIndividualVestaSplitAllPools 10
+// Computes IndividualVestaSplit, for all Pools. Their number is defined at the beggining of the file.
+// in the variable LiquidityPoolOrder. This is also their scanned order.
+func MakeIndividualVestaSplitAllPools(WeekNumber int, AllScannedLPs [][]mvx.BalanceESDT, VestaValues []*p.Decimal) {
+	for i := 0; i < len(VestaValues); i++ {
+		LiquidityPoolVestaSplit := ComputeIndividualVestaSplit(VestaValues[i], AllScannedLPs[i])
+		ExportName := vt.MakeFileName(true, false, "IVS", WeekNumber, len(VestaValues), i, -1)
+		//Exporting POOL
+		mvx.WriteChainBalanceESDT(ExportName, LiquidityPoolVestaSplit)
+		//Move Export to Folder
+		B, _ := mvx.MyCopy(ExportName, "_VESTA-Snapshots\\"+ExportName)
+		fmt.Println(B, " bytes copied!")
 	}
 
-	if Daily == true {
-		VestaFileName = vt.MakeExportName(WeekNumber, 0, "CutOfVESTA", true)
-	} else {
-		VestaFileName = vt.MakeExportName(WeekNumber, 0, "CutOfVESTA", false)
-	}
-	WriteListOneByOneC(VestaFileName, PoolVestaSplit)
-
-	//Copy Created File to another Folder
-	B, _ := vt.MyCopy(VestaFileName, "_VESTA-Snapshots\\"+VestaFileName)
-	fmt.Println(B, " bytes copied!")
-}
-
-func ScanLPsMakeIndividualVestaSplit(WeekNumber int) {
-	//Scan LP Owners, needed to compute VESTA amount for each
-	//As More Pools are added, more LP types need to be scanned
-	LP00 := ScanLPOwners(vt.SUPEREGLD, vt.MakeExportName(0, 0, "LP", false))
-	LP01 := ScanLPOwners(vt.CRUSTEGLD, vt.MakeExportName(0, 1, "LP", false))
-	LP02 := ScanLPOwners(vt.AEROEGLD, vt.MakeExportName(0, 2, "LP", false))
-
-	//Read Each Pool Vesta Split from the already existing file
-	VestaValues := VestaSplitScanner(WeekNumber)
-
-	//Compute Individual Vesta Split - Compute Individual Vesta Split for each LP.
-	LP00VS := ComputeIndividualVestaSplit(VestaValues[0], LP00)
-	ExportNamePool00 := vt.MakeExportName(WeekNumber, 0, "VESTA", false)
-	Blooming.WriteListOneByOneB(ExportNamePool00, LP00VS)
-	B00, _ := vt.MyCopy(ExportNamePool00, "_VESTA-Snapshots\\"+ExportNamePool00)
-	fmt.Println(B00, " bytes copied!")
-
-	LP01VS := ComputeIndividualVestaSplit(VestaValues[1], LP01)
-	ExportNamePool01 := vt.MakeExportName(WeekNumber, 1, "VESTA", false)
-	Blooming.WriteListOneByOneB(ExportNamePool01, LP01VS)
-	B01, _ := vt.MyCopy(ExportNamePool01, "_VESTA-Snapshots\\"+ExportNamePool01)
-	fmt.Println(B01, " bytes copied!")
-
-	LP02VS := ComputeIndividualVestaSplit(VestaValues[2], LP02)
-	ExportNamePool02 := vt.MakeExportName(WeekNumber, 2, "VESTA", false)
-	Blooming.WriteListOneByOneB(ExportNamePool02, LP02VS)
-	B02, _ := vt.MyCopy(ExportNamePool02, "_VESTA-Snapshots\\"+ExportNamePool02)
-	fmt.Println(B02, " bytes copied!")
-}
-
-func VestaSplitScanner(WeekNumber int) []*p.Decimal {
-	var (
-		Unit   *p.Decimal
-		Output []*p.Decimal
-	)
-
-	GetValueFromLine := func(Line string) *p.Decimal {
-		var (
-			ProcessedString string
-		)
-		//Remove the { and } character
-		ProcessedString = strings.ReplaceAll(Line, "{", "")
-		ProcessedString = strings.ReplaceAll(ProcessedString, "}", "")
-		Parts := strings.Split(ProcessedString, " ")
-		return p.NFS(Parts[2])
-	}
-
-	ImportName := vt.MakeImportName(WeekNumber, 0, 0, "CutOfVESTA")
-	Path := "_VESTA-Snapshots\\" + ImportName
-	ReadStringSlice := Blooming.ReadFile(Path)
-	for i := 0; i < len(ReadStringSlice); i++ {
-		Unit = GetValueFromLine(ReadStringSlice[i])
-		Output = append(Output, Unit)
-	}
-	return Output
 }
 
 func main() {
 	var (
-		ScanLiquidity = `--sl  WeekNumber as string;
-WeekNumber followed by point character makes a daily snapshot file.
-Scan the Inputed Pools, and outputs the VESTA Split for the Pools for the Week
+		VarPoolScan = `--ps  <WeekNumber.PoolNumber> as string;
+OPTION NO 0: DAILY POOL SCAN
+Input Method: WeekNumber followed by point representing the number of pools snapshotted.
+Input Example: <12.3> means Week12, 3 Pools to be scanned. Until the PoolNumber can be retrieved automatically,
+it must be inserted manually. Code only scans Pools and Outputs the result in their respective files.
 `
-		CIVS = `--vs  WeekNumber;
-Computes the Individual Vesta Splits for all Pools for the Week. The VestaPoolSplit
-must exist in its designated folder.
+		VarPoolVestaSplit = `--vs  <WeekNumber(.)> as string;
+OPTION NO 1: SNAPSHOT instantaneous PoolVESTASplit, OR makes a mean of all Weekly Snapshots (Option 1) on Sunday
+Computes the Pool Vesta Split for the week
+Input Variant1: <3.>WeekNumber (with point) makes and Unique one time only Split, after Scanning the Pools in the moment.
+		Can be done regardless of week day
+Input Variant2: <2> WeekNumber (no point) reads all Pool-Scan-Outputs for the Week, computes mean, and outputs result
+		Should be done after all PoolScanSnapshots are done for the Week, that is Sunday.
+
+`
+		VarIndividualVestaSplit = `--ivs  <WeekNumber.PoolNumber.(i/m)>;
+OPTION NO 3: Once PoolVestaSplit Exists, that is used for the whole of next week to compute Individual Vesta Splits
+Computes the Individual Vesta Splits for all Pools eligible to mint VESTA for the ongoing Week.
+InputMethod: PoolNumbers.(i)
+Input Variant1: <2.3.i> (Week 2 file, with 3 VestaPools, and that the "i"nstantaneous snapshot should be used.
+Input Variant1: <5.4.m> (Week 5 file, with 4 VestaPools, and that the "m"edian snapshot should be used.
+A correct "PoolVestaSplit" must exist(either instantaneous or media), otherwise the IndividualVestaSplit cannot be calculated
+The Number is known before hand, from the scans of the past week.
+
 `
 	)
 
 	const (
-		ScnLiquidity = "sl" // number
-		CmpVesta     = "vs" // number
+		PoolScan             = "ps"  // string
+		PoolVestaSplit       = "pvs" // string
+		IndividualVestaSplit = "ivs" // number
 	)
 
-	FlagScnLiquidity := flag.String(ScnLiquidity, "0", ScanLiquidity)
-	FlagCmpVesta := flag.Int(CmpVesta, 0, CIVS)
+	FlagPoolScan := flag.String(PoolScan, "0", VarPoolScan)
+	FlagPoolVestaSplit := flag.String(PoolVestaSplit, "0", VarPoolVestaSplit)
+	FlagIndividualVestaSplit := flag.String(IndividualVestaSplit, "0", VarIndividualVestaSplit)
 
 	flag.Parse()
 
 	//
 	// First Option
-	if *FlagScnLiquidity != "0" {
-		// String "." signal to make a daily split
-		if strings.Contains(*FlagScnLiquidity, ".") == true {
-			SplitString := strings.Split(*FlagScnLiquidity, ".")
-			Number, _ := strconv.Atoi(SplitString[0])
-			ScanPoolsMakeVestaSplit(Number, true)
+	if *FlagPoolScan != "0" {
+		//String is split by the "." character
+		if strings.Contains(*FlagPoolScan, ".") == true {
+			SplitString := strings.Split(*FlagPoolScan, ".")
+			WeekNumber, _ := strconv.Atoi(SplitString[0])
+			PoolNumber, _ := strconv.Atoi(SplitString[1])
+			ScanPoolsAndOutputThem(WeekNumber, PoolNumber, true)
 		} else {
-			Number, _ := strconv.Atoi(*FlagScnLiquidity)
-			ScanPoolsMakeVestaSplit(Number, false)
+			fmt.Println("No Pool Number inputted, please restart program and try again")
 		}
 	}
 
 	// Second Option
-	if *FlagCmpVesta != 0 {
-		ScanLPsMakeIndividualVestaSplit(*FlagCmpVesta)
+	if *FlagPoolVestaSplit != "0" {
+		//String is split by the "." character
+		if strings.Contains(*FlagPoolVestaSplit, ".") == true {
+			//OneShot Scan and PoolVESTASplit Compute
+			SplitString := strings.Split(*FlagPoolVestaSplit, ".")
+			WeekNumber, _ := strconv.Atoi(SplitString[0])
+			ScanPoolsMakeVestaSplit(WeekNumber) // i option
+		} else {
+			//Scan All PoolScans for the week and computes mean.
+			WeekNumber, _ := strconv.Atoi(*FlagPoolVestaSplit)
+			ScanWeeklyPoolsMakeMedianVestaSplit(WeekNumber) // m option
+		}
+	}
+
+	//Third Option
+	if *FlagIndividualVestaSplit != "0" {
+		var (
+			VestaValues            []*p.Decimal
+			PoolNumber, WeekNumber int
+		)
+		//String is split by the "." character
+		if strings.Contains(*FlagIndividualVestaSplit, ".") == true {
+			SplitString := strings.Split(*FlagIndividualVestaSplit, ".")
+			if len(SplitString) == 3 {
+				WeekNumber, _ = strconv.Atoi(SplitString[0])
+				PoolNumber, _ = strconv.Atoi(SplitString[1])
+				VestaType := SplitString[2]
+				if VestaType == "i" {
+					//Read Individual VestaSplit
+					VestaValues = PoolVestaSplitScanner(WeekNumber, VestaType)
+				} else if VestaType == "m" {
+					//Read Median Vesta Split
+					VestaValues = PoolVestaSplitScanner(WeekNumber, VestaType)
+				} else {
+					fmt.Println("PoolVestaSplit Type designation not properly entered.")
+				}
+			} else {
+				fmt.Println("Incorrect format length, please restart program and try again")
+			}
+
+			//Read LPs of "PoolNumber" Pools from BlockchainScan
+			//Pool Number is inputted by the user, and must be exactly the same with the number of pools
+			//that are written in LiquidityPoolOrder, until these can be retrieved from the Master SC
+			//That governs all dex pools
+
+			AllScannedLPs := ScanAllLPs(PoolNumber)
+
+			MakeIndividualVestaSplitAllPools(WeekNumber, AllScannedLPs, VestaValues)
+		} else {
+			fmt.Println("No Points detected, please restart program and try again")
+		}
 	}
 
 }

@@ -3,9 +3,6 @@ package Blooming
 import (
 	p "Firefly-APD"
 	mt "SuperMath"
-	"io"
-	"log"
-	"net/http"
 )
 
 // ======================================================================================================================
@@ -43,25 +40,6 @@ func PercentSwing(Value1, Value2 *p.Decimal) *p.Decimal {
 
 // ======================================================================================================================
 //
-// [A]02         OnPage
-//
-//	Basic Snapshot Function
-//	Snapshots Link and returns string
-func OnPage(Link string) string {
-	res, err := http.Get(Link)
-	if err != nil {
-		log.Fatal(err)
-	}
-	content, err := io.ReadAll(res.Body)
-	_ = res.Body.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return string(content)
-}
-
-// ======================================================================================================================
-//
 // [B]           AtomicUnit String Converter Functions
 //
 // [B]01         ConvertAU18 Converts a string of raw numbers as atomic units, to its respective Decimal
@@ -92,21 +70,3 @@ func AtomicUnitsStringToDecimalString(Input string) string {
 	Decimal := p.NFS(Input)
 	return AtomicUnitsDecimalToDecimalString(Decimal)
 }
-
-func ConvertSFTtoESDT(Input BalanceSFT) (Output BalanceESDT) {
-	Output.Address = Input.Address
-	Output.Balance = AtomicUnitsStringToDecimalString(Input.Balance)
-	return
-}
-
-func ConvertSFTtoESDTChain(Input []BalanceSFT) []BalanceESDT {
-	Output := make([]BalanceESDT, len(Input))
-
-	for i := 0; i < len(Input); i++ {
-		Output[i] = ConvertSFTtoESDT(Input[i])
-	}
-	return Output
-}
-
-//
-//

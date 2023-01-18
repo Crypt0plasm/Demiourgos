@@ -3,77 +3,37 @@ package Vesta
 import (
 	"Demiourgos/Blooming"
 	p "Firefly-APD"
+	mvx "MvxApiScanner"
 	mt "SuperMath"
-	"encoding/json"
 	"fmt"
-	"io"
-	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
-type VestaSplit struct {
-	Pool  VestaPool
-	Vesta *p.Decimal
-}
-
-type VestaPool struct {
-	VEGLD *p.Decimal
-	Token *p.Decimal
-}
-
-type ESDT string
-
-var (
-	VestaGold = "https://api.multiversx.com/nfts/VESTAXDAO-e6c48c-01/accounts?size=10000"
-
-	//TokenIdentifiers
-	WEGLDIdentifier = ESDT("WEGLD-bd4d79")
-	VEGLDIdentifier = ESDT("VEGLD-2b9319")
-
-	SuperIdentifier = ESDT("SUPER-507aa6")
-	XLHIdentifier   = ESDT("XLH-8daa50")
-	CrustIdentifier = ESDT("CRU-a5f4aa")
-	AeroIdentifier  = ESDT("AERO-458bbf")
-
-	//LP Tokens
-	SUPEREGLD = ESDT("SUPEREGLD-a793b9")
-	CRUSTEGLD = ESDT("CRUWEGLD-76c269")
-	AEROEGLD  = ESDT("AEROWEGLD-81cc37")
-
-	//Liquidity Pools
-	EGLD_Super_LP = Blooming.ElrondAddress("erd1qqqqqqqqqqqqqpgqdx6z3sauy49c5k6c6lwhjqclrfwlxlud2jpsvwj5dp")
-	EGLD_Crust_LP = Blooming.ElrondAddress("erd1qqqqqqqqqqqqqpgqj6daemefdk5kjgy9rs4zsng03kezgxdm2jps3h5n07")
-	EGLD_Aero_LP  = Blooming.ElrondAddress("erd1qqqqqqqqqqqqqpgqzjctu8xrgn8jmfp503tajjvzz2zq60v92jpsslkh5a")
-)
-
-func MakeESDTSnapshotLink(Token ESDT) string {
-	String1 := "https://api.multiversx.com/tokens/"
-	String2 := "/accounts?size=10000"
-	return String1 + string(Token) + String2
-}
-
-func VestaGoldSnapshot() []Blooming.BalanceSFT {
-	var OutputChain []Blooming.BalanceSFT
-	SS := Blooming.OnPage(VestaGold)
-	_ = json.Unmarshal([]byte(SS), &OutputChain)
-	return OutputChain
-}
-
-func CreateVestaGoldChain() []Blooming.BalanceSFT {
+// CreateVestaGoldAmounts ========================================================================================
+//
+// [B]01         CreateVestaGoldAmounts
+//
+//	Create a Chain of all Addresses Containing All VestaGold SFTs and their Amounts and applies SC Exception
+func ScanVestaGoldChain() []mvx.BalanceSFT {
 	fmt.Println("Snapshotting VestaGold Addresses and Amounts")
-	VestaGoldChain := VestaGoldSnapshot()
-	S01 := Blooming.AddBalanceSFTChain(VestaGoldChain)
+	VestaGoldChain := mvx.SnapshotSFTChain(mvx.VestaGold)
+	S01 := mvx.AddBalanceIntegerChain(VestaGoldChain)
 	fmt.Println(len(VestaGoldChain), "addresses snapshotted with Vesta GOLD SFTs", S01)
 	fmt.Println("")
 	return VestaGoldChain
 }
 
-// Remove Exceptions
-func CreateVestaGoldAmounts(Input []Blooming.BalanceSFT) []Blooming.BalanceSFT {
+// CreateVestaGoldAmounts ========================================================================================
+//
+// [B]02         CreateVestaGoldAmounts
+//
+//	Create a Chain of all Addresses Containing All VestaGold SFTs and their Amounts and applies SC Exception
+func CreateVestaGoldAmounts(Input []mvx.BalanceSFT) []mvx.BalanceSFT {
 	var (
-		Result []Blooming.BalanceSFT
-		Unit   Blooming.BalanceSFT
+		Result []mvx.BalanceSFT
+		Unit   mvx.BalanceSFT
 	)
 
 	for i := 0; i < len(Input); i++ {
@@ -100,10 +60,12 @@ func CreateVestaGoldAmounts(Input []Blooming.BalanceSFT) []Blooming.BalanceSFT {
 //   - Relevant only for "PS" Type
 //
 // PoolPosition		- Pool Position the Snapshot was done for
-//   - Relevant for all 3 Types
+//   - Relevant for only for "IVS"
 //
 // DayNumber		- Day Number is only relevant for Import (when ExportImport Variable is false)
 //   - Otherwise 0 should be inputted as variable
+//
+// -1 indicates that the number won't be in use.
 func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNumber, PoolPosition, DayNumber int) string {
 	var (
 		Output string
@@ -111,7 +73,8 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 	Extension := ".txt"
 	BlackListPrefix := "BL_"
 	PoolScanPrefix := "PS_"
-	PoolVESTASplitPrefix := "PVS_"
+	PoolVESTASplitPrefix := "PVSm_"
+	PoolVESTASplitInstantaneousPrefix := "PVSi_"
 	IndividualVESTASplitPrefix := "IVS_"
 
 	TripleDigitDesignation := func(Number int, Designation string) (StringName string) {
@@ -170,8 +133,10 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 			switch n := Type; {
 			case n == "PS":
 				Output = PoolScanPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + Extension
-			case n == "PVS":
+			case n == "PVSm":
 				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
+			case n == "PVSi":
+				Output = PoolVESTASplitInstantaneousPrefix + WeekDesignation + Extension
 			case n == "IVS":
 				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
 			}
@@ -183,8 +148,10 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 			switch n := Type; {
 			case n == "PS":
 				Output = PoolScanPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + Extension
-			case n == "PVS":
+			case n == "PVSm":
 				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
+			case n == "PVSi":
+				Output = PoolVESTASplitInstantaneousPrefix + WeekDesignation + Extension
 			case n == "IVS":
 				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
 			}
@@ -193,159 +160,50 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 	return Output
 }
 
-func MakeExportName(WeekNumber, PoolPosition int, Type string, Daily bool) string {
+// Scans BalanceESDT SnapshotFiles from HDD and saves them in a program Slice to be used further
+func HDDSnapshotScanner(Blacklist bool, Type string, WeekNumber, PoolNumber, PoolPosition, DayNumber int) []mvx.BalanceESDT {
 	var (
-		WeekDesignation string
-		DayDesignation  string
-		PoolDesignation string
-		FinalOutputName string
-		DayNumberS      string
+		Unit   mvx.BalanceESDT
+		Output []mvx.BalanceESDT
 	)
-	if WeekNumber < 10 {
-		WeekDesignation = "W0" + strconv.Itoa(WeekNumber)
-	} else {
-		WeekDesignation = "W" + strconv.Itoa(WeekNumber)
+
+	ProcessScannedLine := func(Line string) mvx.BalanceESDT {
+		var (
+			ProcessedString string
+			Result          mvx.BalanceESDT
+		)
+		//Remove the { and } character
+		ProcessedString = strings.ReplaceAll(Line, "{", "")
+		ProcessedString = strings.ReplaceAll(ProcessedString, "}", "")
+		Parts := strings.Split(ProcessedString, " ")
+		Result.Address = mvx.MvxAddress(Parts[0])
+		Result.Balance = Parts[1]
+		return Result
 	}
 
-	if PoolPosition < 10 {
-		PoolDesignation = "P0" + strconv.Itoa(PoolPosition)
-	} else {
-		PoolDesignation = "P" + strconv.Itoa(PoolPosition)
+	ImportName := MakeFileName(false, Blacklist, Type, WeekNumber, PoolNumber, PoolPosition, DayNumber)
+	//Path := "d:\\.GO_workspace\\src\\Demiourgos\\_VESTA-Snapshots\\" + ImportName
+	Path := "_VESTA-Snapshots\\" + ImportName
+	ReadStringSlice := mvx.ReadFile(Path)
+	for i := 0; i < len(ReadStringSlice); i++ {
+		Unit = ProcessScannedLine(ReadStringSlice[i])
+		Output = append(Output, Unit)
 	}
-
-	Day := time.Now().Weekday()
-	if int(Day) == 0 {
-		DayNumberS = strconv.Itoa(int(Day) + 7)
-	} else {
-		DayNumberS = strconv.Itoa(int(Day))
-	}
-
-	DayNameS := Day.String()
-	DayDesignation = DayNumberS + "-" + DayNameS
-
-	// Daily bool is only made for "CutOfVESTA", for other Types is set to false and it doesnt matter
-	if Daily == true {
-		if Type == "BLACKLIST" || Type == "WHITELIST" {
-			FinalOutputName = WeekDesignation + "_" + Type + ".txt"
-		} else if Type == "CutOfVESTA" {
-			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + ".txt"
-		} else {
-			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
-		}
-	} else {
-		if Type == "CutOfVESTA" || Type == "BLACKLIST" || Type == "WHITELIST" {
-			FinalOutputName = WeekDesignation + "_" + Type + ".txt"
-		} else {
-			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
-		}
-	}
-
-	return FinalOutputName
+	return Output
 }
 
-func MakeImportName(WeekNumber, DayNumber, PoolPosition int, Type string) string {
-	var (
-		WeekDesignation string
-		DayDesignation  string
-		PoolDesignation string
-		FinalOutputName string
-	)
-	if WeekNumber < 10 {
-		WeekDesignation = "W0" + strconv.Itoa(WeekNumber)
-	} else {
-		WeekDesignation = "W" + strconv.Itoa(WeekNumber)
-	}
+// Vesta Pools Liquidity Scans
+// wEGLD to be replaced with vEGLD Pools are live
 
-	if PoolPosition < 10 {
-		PoolDesignation = "P0" + strconv.Itoa(PoolPosition)
-	} else {
-		PoolDesignation = "P" + strconv.Itoa(PoolPosition)
-	}
-
-	switch i := DayNumber; {
-	case i == 1:
-		DayDesignation = "1-Monday"
-	case i == 2:
-		DayDesignation = "2-Tuesday"
-	case i == 3:
-		DayDesignation = "3-Wednesday"
-	case i == 4:
-		DayDesignation = "4-Thursday"
-	case i == 5:
-		DayDesignation = "5-Friday"
-	case i == 6:
-		DayDesignation = "6-Saturday"
-	case i == 7:
-		DayDesignation = "7-Sunday"
-	}
-
-	if Type == "CutOfVESTA" || Type == "BLACKLIST" || Type == "WHITELIST" {
-		FinalOutputName = WeekDesignation + "_" + Type + ".txt"
-	} else {
-		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
-	}
-
-	return FinalOutputName
-}
-
-func ReadESDTAmount(Addy Blooming.ElrondAddress, Token ESDT) string {
-	var (
-		String1 = "https://api.multiversx.com/accounts/"
-		String2 = "/tokens/"
-
-		ScannedJSON ESDTSuperStructure
-		Balance     string
-	)
-	ScanURL := String1 + string(Addy) + String2 + string(Token)
-
-	Snapshot := Blooming.OnPage(ScanURL)
-	_ = json.Unmarshal([]byte(Snapshot), &ScannedJSON)
-	if Snapshot == "[]" {
-		Balance = "0"
-	} else {
-		Balance = ScannedJSON.Balance
-	}
-
-	Result := Blooming.AtomicUnitsStringToDecimalString(Balance)
-
+func ScanLiquidity(PoolSC mvx.MvxAddress, Token mvx.ESDT) mvx.VestaPool {
+	var Result mvx.VestaPool
+	Result.VEGLD = mvx.GetAddressESDTAmount(PoolSC, mvx.WrappedEGLD)
+	Result.Token = mvx.GetAddressESDTAmount(PoolSC, Token)
 	return Result
 }
 
-func ScanLiquidity(PoolSC Blooming.ElrondAddress, Token ESDT) VestaPool {
-	var Result VestaPool
-	Result.VEGLD = p.NFS(ReadESDTAmount(PoolSC, WEGLDIdentifier))
-	Result.Token = p.NFS(ReadESDTAmount(PoolSC, Token))
-	return Result
-}
-
-func WeightPool(Pool VestaPool, Weight *p.Decimal) (Output VestaPool) {
+func WeightPool(Pool mvx.VestaPool, Weight *p.Decimal) (Output mvx.VestaPool) {
 	Output.VEGLD = mt.MULxc(Pool.VEGLD, Weight)
 	Output.Token = Pool.Token
 	return
-}
-
-// Copy Function
-func MyCopy(src, dst string) (int64, error) {
-	sourceFileStat, err := os.Stat(src)
-	if err != nil {
-		return 0, err
-	}
-
-	if !sourceFileStat.Mode().IsRegular() {
-		return 0, fmt.Errorf("%s is not a regular file", src)
-	}
-
-	source, err := os.Open(src)
-	if err != nil {
-		return 0, err
-	}
-	defer source.Close()
-
-	destination, err := os.Create(dst)
-	if err != nil {
-		return 0, err
-	}
-	defer destination.Close()
-	nBytes, err := io.Copy(destination, source)
-	return nBytes, err
 }
