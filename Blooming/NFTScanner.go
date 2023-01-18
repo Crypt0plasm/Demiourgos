@@ -1,10 +1,10 @@
 package Blooming
 
 import (
-	mt "Demiourgos/SuperMath"
+	p "Firefly-APD"
+	mt "SuperMath"
 	"encoding/json"
 	"fmt"
-	p "github.com/Crypt0plasm/Firefly-APD"
 	"strconv"
 	"time"
 )

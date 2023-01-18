@@ -2,11 +2,14 @@ package Blooming
 
 import (
 	"fmt"
+	//mvx "github.com/Crypt0plasm/MvxApiScanner"
 	"log"
 	"os"
 )
 
 var (
+	//SnakeEye = mvx.MakeSFTSnapshotLink(mvx.CD01SnakeEye)
+
 	CD01SnakeEye = "https://api.multiversx.com/nfts/DHCD-bc9963-01/accounts?size=10000"
 	CD02Rudis    = "https://api.multiversx.com/nfts/DHCD-bc9963-02/accounts?size=10000"
 	CD03Gwen     = "https://api.multiversx.com/nfts/DHCD-bc9963-03/accounts?size=10000"

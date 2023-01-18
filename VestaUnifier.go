@@ -2,13 +2,14 @@ package main
 
 import (
 	"Demiourgos/Blooming"
-	mt "Demiourgos/SuperMath"
 	vt "Demiourgos/Vesta"
-	p "github.com/Crypt0plasm/Firefly-APD"
+	p "Firefly-APD"
+	mt "SuperMath"
 	"strconv"
 	"strings"
 )
 
+// function necessary in the SnapshotScanner function
 func ProcessScannedLine(Line string) Blooming.BalanceESDT {
 	var (
 		ProcessedString string
@@ -23,6 +24,7 @@ func ProcessScannedLine(Line string) Blooming.BalanceESDT {
 	return Output
 }
 
+// Scans BalanceESDT SnapshotFiles from HDD and saves them in a program Slice to be used further
 func SnapshotScanner(WeekNumber, DayNumber, PoolPosition int, Type string) []Blooming.BalanceESDT {
 	var (
 		Unit   Blooming.BalanceESDT
@@ -40,6 +42,7 @@ func SnapshotScanner(WeekNumber, DayNumber, PoolPosition int, Type string) []Blo
 	return Output
 }
 
+// Adds two BalanceESDT Files, removing duplicate addresses and summing their balances.
 func SnapshotAdder(S1, S2 []Blooming.BalanceESDT) []Blooming.BalanceESDT {
 	var (
 		ValueS1, ValueS2, TotalValue string
@@ -85,6 +88,8 @@ func SnapshotAdder(S1, S2 []Blooming.BalanceESDT) []Blooming.BalanceESDT {
 	return Output
 }
 
+// Separates a weekly BalanaceESDT List into 2, using a blacklist.
+// Blacklist addreses are saved in the second output with their balances intact.
 func SeparateBlacklist(Week int, Input, Blacklist []Blooming.BalanceESDT) ([]Blooming.BalanceESDT, []Blooming.BalanceESDT) {
 	//Function that removes given index from a Slice
 	RemovePosition := func(s []Blooming.BalanceESDT, index int) []Blooming.BalanceESDT {
@@ -109,6 +114,11 @@ func SeparateBlacklist(Week int, Input, Blacklist []Blooming.BalanceESDT) ([]Blo
 	Blooming.WriteListOneByOneB(V, Vesta)
 	Blooming.WriteListOneByOneB(B, Black)
 	return Vesta, Black
+}
+
+func MakeMeanCutOfVESTA(Week int) []vt.VestaSplit {
+	var Output []vt.VestaSplit
+	return Output
 }
 
 func main() {

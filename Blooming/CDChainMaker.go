@@ -1,10 +1,10 @@
 package Blooming
 
 import (
-	mt "Demiourgos/SuperMath"
+	p "Firefly-APD"
+	mt "SuperMath"
 	"encoding/json"
 	"fmt"
-	p "github.com/Crypt0plasm/Firefly-APD"
 	"strconv"
 )
 
@@ -220,15 +220,15 @@ func CreateCodingDivisionSetChain(Owners []ElrondAddress, Snapshot DecaChain) []
 		Oreta = p.NFS(GetAddressAmount(Owners[i], Snapshot.Oreta))
 		Binar = p.NFS(GetAddressAmount(Owners[i], Snapshot.Binar))
 
-		Minimum = MinDecimal(SnakeEye, Rudis)
-		Minimum = MinDecimal(Minimum, Gwen)
-		Minimum = MinDecimal(Minimum, Clutter)
-		Minimum = MinDecimal(Minimum, Bangai)
-		Minimum = MinDecimal(Minimum, Binos)
-		Minimum = MinDecimal(Minimum, Rubia)
-		Minimum = MinDecimal(Minimum, Ocultus)
-		Minimum = MinDecimal(Minimum, Oreta)
-		Minimum = MinDecimal(Minimum, Binar)
+		Minimum = mt.MinDecimal(SnakeEye, Rudis)
+		Minimum = mt.MinDecimal(Minimum, Gwen)
+		Minimum = mt.MinDecimal(Minimum, Clutter)
+		Minimum = mt.MinDecimal(Minimum, Bangai)
+		Minimum = mt.MinDecimal(Minimum, Binos)
+		Minimum = mt.MinDecimal(Minimum, Rubia)
+		Minimum = mt.MinDecimal(Minimum, Ocultus)
+		Minimum = mt.MinDecimal(Minimum, Oreta)
+		Minimum = mt.MinDecimal(Minimum, Binar)
 
 		//If Minimum is greater than zero AND Address is non Exception
 		if mt.DecimalGreaterThan(Minimum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i]) == false {

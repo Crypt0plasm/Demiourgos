@@ -1,8 +1,8 @@
 package Blooming
 
 import (
-	mt "Demiourgos/SuperMath"
-	p "github.com/Crypt0plasm/Firefly-APD"
+	p "Firefly-APD"
+	mt "SuperMath"
 	"io"
 	"log"
 	"net/http"
@@ -81,23 +81,6 @@ func ConvertAU18(Number string) *p.Decimal {
 func ConvertAU06(Number string) *p.Decimal {
 	Value := p.NFS(Number)
 	Result := mt.DIVxc(Value, mt.POWxc(p.NFI(10), p.NFI(6)))
-	return Result
-}
-
-// ======================================================================================================================
-//
-// [C]01         MinDecimal              Gets the minimum between two decimals
-func MinDecimal(No1, No2 *p.Decimal) *p.Decimal {
-	var Result *p.Decimal
-
-	if mt.DecimalEqual(No1, No2) == true {
-		Result = No1
-	} else if mt.DecimalLessThan(No1, No2) == true {
-		Result = No1
-	} else {
-		Result = No2
-	}
-
 	return Result
 }
 

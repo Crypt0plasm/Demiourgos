@@ -2,10 +2,10 @@ package Vesta
 
 import (
 	"Demiourgos/Blooming"
-	mt "Demiourgos/SuperMath"
+	p "Firefly-APD"
+	mt "SuperMath"
 	"encoding/json"
 	"fmt"
-	p "github.com/Crypt0plasm/Firefly-APD"
 	"io"
 	"os"
 	"strconv"
@@ -86,8 +86,114 @@ func CreateVestaGoldAmounts(Input []Blooming.BalanceSFT) []Blooming.BalanceSFT {
 	return Result
 }
 
-// Functions that distribute Vesta
-func MakeExportName(WeekNumber, PoolPosition int, Type string) string {
+// VESTA Distribution Functions
+
+// MakeFileName Function
+// ExportImport bool 	- true = Export
+// BlackList bool	- true = BlackList (weekly)
+// Type			- "PS" = PoolScan	(daily)
+//   - "PVS"= PoolVESTASplit (weekly)
+//   - "IVS"= IndividualVESTASplit (daily)
+//
+// WeekNumber		- Number of Week the Snapshot was taken
+// PoolNumber		- Number of Pools the Snapshot was executed on
+//   - Relevant only for "PS" Type
+//
+// PoolPosition		- Pool Position the Snapshot was done for
+//   - Relevant for all 3 Types
+//
+// DayNumber		- Day Number is only relevant for Import (when ExportImport Variable is false)
+//   - Otherwise 0 should be inputted as variable
+func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNumber, PoolPosition, DayNumber int) string {
+	var (
+		Output string
+	)
+	Extension := ".txt"
+	BlackListPrefix := "BL_"
+	PoolScanPrefix := "PS_"
+	PoolVESTASplitPrefix := "PVS_"
+	IndividualVESTASplitPrefix := "IVS_"
+
+	TripleDigitDesignation := func(Number int, Designation string) (StringName string) {
+		if Number < 10 {
+			StringName = Designation + "00" + strconv.Itoa(Number)
+		} else if Number >= 10 && Number < 100 {
+			StringName = Designation + "0" + strconv.Itoa(Number)
+		} else {
+			StringName = Designation + strconv.Itoa(Number)
+		}
+		return
+	}
+
+	WeekDesignation := TripleDigitDesignation(WeekNumber, "W")
+	PoolNumberDesignation := TripleDigitDesignation(PoolNumber, "PN")
+	PoolPositionDesignation := TripleDigitDesignation(PoolPosition, "POOL")
+
+	DayDesignation := func() (StringName string) {
+		var DayNumberToString string
+		Day := time.Now().Weekday()
+		if int(Day) == 0 {
+			DayNumberToString = strconv.Itoa(int(Day) + 7)
+		} else {
+			DayNumberToString = strconv.Itoa(int(Day))
+		}
+
+		DayToString := Day.String()
+		StringName = DayNumberToString + "-" + DayToString
+		return
+	}
+
+	ReverseDayString := func(Number int) (StringName string) {
+		switch i := Number; {
+		case i == 1:
+			StringName = "1-Monday"
+		case i == 2:
+			StringName = "2-Tuesday"
+		case i == 3:
+			StringName = "3-Wednesday"
+		case i == 4:
+			StringName = "4-Thursday"
+		case i == 5:
+			StringName = "5-Friday"
+		case i == 6:
+			StringName = "6-Saturday"
+		case i == 7:
+			StringName = "7-Sunday"
+		}
+		return
+	}
+
+	if ExportImport == true { //Export
+		if BlackList == true { //Blacklist
+			Output = BlackListPrefix + WeekDesignation + Extension
+		} else {
+			switch n := Type; {
+			case n == "PS":
+				Output = PoolScanPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + Extension
+			case n == "PVS":
+				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
+			case n == "IVS":
+				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
+			}
+		}
+	} else { //Import
+		if BlackList == true { //Blacklist
+			Output = BlackListPrefix + WeekDesignation + Extension
+		} else {
+			switch n := Type; {
+			case n == "PS":
+				Output = PoolScanPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + Extension
+			case n == "PVS":
+				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
+			case n == "IVS":
+				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
+			}
+		}
+	}
+	return Output
+}
+
+func MakeExportName(WeekNumber, PoolPosition int, Type string, Daily bool) string {
 	var (
 		WeekDesignation string
 		DayDesignation  string
@@ -117,10 +223,21 @@ func MakeExportName(WeekNumber, PoolPosition int, Type string) string {
 	DayNameS := Day.String()
 	DayDesignation = DayNumberS + "-" + DayNameS
 
-	if Type == "CutOfVESTA" || Type == "BLACKLIST" || Type == "WHITELIST" {
-		FinalOutputName = WeekDesignation + "_" + Type + ".txt"
+	// Daily bool is only made for "CutOfVESTA", for other Types is set to false and it doesnt matter
+	if Daily == true {
+		if Type == "BLACKLIST" || Type == "WHITELIST" {
+			FinalOutputName = WeekDesignation + "_" + Type + ".txt"
+		} else if Type == "CutOfVESTA" {
+			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + ".txt"
+		} else {
+			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
+		}
 	} else {
-		FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
+		if Type == "CutOfVESTA" || Type == "BLACKLIST" || Type == "WHITELIST" {
+			FinalOutputName = WeekDesignation + "_" + Type + ".txt"
+		} else {
+			FinalOutputName = WeekDesignation + "_" + DayDesignation + "_" + Type + "_" + PoolDesignation + ".txt"
+		}
 	}
 
 	return FinalOutputName
