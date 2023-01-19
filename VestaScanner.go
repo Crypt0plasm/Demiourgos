@@ -222,8 +222,8 @@ func PoolVestaSplitScanner(WeekNumber int, Type string) []*p.Decimal {
 
 // ComputeIndividualVestaSplit 9
 // Computes IndividualVestaSplit, using a given amount of Vesta, for a chain of ESDT Balances
-// Resulted Chain of ESDT Balances represents amounts based on percents from the give Vesta Amount based of Input ESDT Balances.
-func ComputeIndividualVestaSplit(TotalVesta *p.Decimal, Input []mvx.BalanceESDT) []mvx.BalanceESDT {
+// Resulted Chain of ESDT Balances represents amounts based on percents from the total Balance Amount based of Input ESDT Balances.
+func ComputeIndividualVestaSplitx(TotalVesta *p.Decimal, Input []mvx.BalanceESDT) []mvx.BalanceESDT {
 	Output := make([]mvx.BalanceESDT, len(Input))
 	Sum := p.NFS("0")
 	var (
@@ -265,7 +265,7 @@ func ComputeIndividualVestaSplit(TotalVesta *p.Decimal, Input []mvx.BalanceESDT)
 // in the variable LiquidityPoolOrder. This is also their scanned order.
 func MakeIndividualVestaSplitAllPools(WeekNumber int, AllScannedLPs [][]mvx.BalanceESDT, VestaValues []*p.Decimal) {
 	for i := 0; i < len(VestaValues); i++ {
-		LiquidityPoolVestaSplit := ComputeIndividualVestaSplit(VestaValues[i], AllScannedLPs[i])
+		LiquidityPoolVestaSplit := mvx.ExactPercentualDecimalRewardSplitter(VestaValues[i], AllScannedLPs[i])
 		ExportName := vt.MakeFileName(true, false, "IVS", WeekNumber, len(VestaValues), i, -1)
 		//Exporting POOL
 		mvx.WriteChainBalanceESDT(ExportName, LiquidityPoolVestaSplit)
@@ -285,7 +285,7 @@ Input Example: <12.3> means Week12, 3 Pools to be scanned. Until the PoolNumber 
 it must be inserted manually. Code only scans Pools and Outputs the result in their respective files.
 `
 		VarPoolVestaSplit = `--vs  <WeekNumber(.)> as string;
-OPTION NO 1: SNAPSHOT instantaneous PoolVESTASplit, OR makes a mean of all Weekly Snapshots (Option 1) on Sunday
+OPTION NO 1: SNAPSHOT instantaneous PoolVESTASplit, OR makes a mean of all Weekly Snapshots (Option 1) on SUNDAY
 Computes the Pool Vesta Split for the week
 Input Variant1: <3.>WeekNumber (with point) makes and Unique one time only Split, after Scanning the Pools in the moment.
 		Can be done regardless of week day

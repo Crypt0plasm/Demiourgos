@@ -15,6 +15,8 @@ var (
 	ExA8 = mvx.Krogan               //market Krogan
 	ExA9 = mvx.VestaMinter          //Vesta Miner
 
+	//This is the Amount Exception
+	//Paul holds 50 Company SFTs that aren't Include in the computation, that are excepted from computation
 	ExAm1 = AddressINTExceptions{mvx.Hefe, 50}
 
 	//Smart Contract Exceptions

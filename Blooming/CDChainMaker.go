@@ -272,7 +272,7 @@ func CreateCodingDivisionAmountChain(Owners []mvx.MvxAddress, Snapshot DecaChain
 //
 //	Create a Chain of all Mvx Addresses Containing ALL Coding Division SFT
 //	Uses as Input a Chain of Raw Amounts (computed above)
-//	While Excluding the Chain of Set AmountExceptions.
+//	While Excluding the Chain of AmountExceptions.
 func CreateCodingDivisionAmountExceptionChain(Input []mvx.BalanceSFT, UseException bool) []mvx.BalanceSFT {
 	var (
 		Unit           mvx.BalanceSFT
