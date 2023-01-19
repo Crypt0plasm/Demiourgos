@@ -43,10 +43,6 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 
     //Make Snakes Chain
     Snakes = ReadOmniscientSnakeSnapshot()
-    //for i := 0; i < len(Snakes); i++ {
-    //	fmt.Println(Snakes[i])
-    //}
-    //SortedSnakes := mvx.SortBalanceIntegerChain(Snakes)
     mvx.WriteChainBalanceSFT("SSSSSSS.txt", Snakes)
     SnakesSum := mvx.AddBalanceIntegerChain(Snakes)
     fmt.Println("A total of ", SnakesSum, "have been read from Omniscient file, on", len(Snakes), " addresses.")
@@ -60,10 +56,9 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
     AllException := bloom.CreateCodingDivisionAmountExceptionChain(All, true)
     AllExceptionESDT := mvx.ConvertIntegerSFTtoESDTChain(AllException)
     AllExceptionESDTSorted := mvx.SortBalanceDecimalChain(AllExceptionESDT)
-
     AllExceptionESDTSortedSum := mvx.AddBalanceDecimalChain(AllExceptionESDTSorted)
 
-    mvx.WriteChainBalanceESDT("CCCCCCC.txt", AllExceptionESDTSorted)
+    //mvx.WriteChainBalanceESDT("CCCCCCC.txt", AllExceptionESDTSorted)
 
     SnakesDistribution := sm.MULxc(Amount, p.NFS("0.15"))
     CodingDivisionDistribution := sm.MULxc(Amount, p.NFS("0.5"))
