@@ -36,17 +36,15 @@ func ReadOmniscientSnakeSnapshot() []mvx.BalanceSFT {
     return Output
 }
 
-func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
-    var (
-	Snakes []mvx.BalanceSFT
-    )
-
+func MakeSnakeChain() ([]mvx.BalanceSFT, *p.Decimal) {
     //Make Snakes Chain
-    Snakes = ReadOmniscientSnakeSnapshot()
-    mvx.WriteChainBalanceSFT("SSSSSSS.txt", Snakes)
+    Snakes := ReadOmniscientSnakeSnapshot()
     SnakesSum := mvx.AddBalanceIntegerChain(Snakes)
     fmt.Println("A total of ", SnakesSum, "have been read from Omniscient file, on", len(Snakes), " addresses.")
+    return Snakes, SnakesSum
+}
 
+func MakeCodingDivisionChain() ([]mvx.BalanceESDT, *p.Decimal) {
     //Make Coding Division Chain
     //Uses Amount Exception (Paul holds 50 Company SFTs that aren't Include in the computation)
     MultiChain, _, _ := bloom.CreateCodingDivisionChain()
@@ -57,20 +55,28 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
     AllExceptionESDT := mvx.ConvertIntegerSFTtoESDTChain(AllException)
     AllExceptionESDTSorted := mvx.SortBalanceDecimalChain(AllExceptionESDT)
     AllExceptionESDTSortedSum := mvx.AddBalanceDecimalChain(AllExceptionESDTSorted)
+    return AllExceptionESDTSorted, AllExceptionESDTSortedSum
+}
 
-    //mvx.WriteChainBalanceESDT("CCCCCCC.txt", AllExceptionESDTSorted)
+func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
+
+    //Make Snakes Chain
+    Snakes,SnakesSum := MakeSnakeChain()
+
+    //Make Coding Division Chain
+    CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
 
     SnakesDistribution := sm.MULxc(Amount, p.NFS("0.15"))
     CodingDivisionDistribution := sm.MULxc(Amount, p.NFS("0.5"))
-
+    
     fmt.Println("A total of ", SnakesSum, "have been read from Omniscient file, on", len(Snakes), " addresses.")
     fmt.Println("They will receive a total of ", SnakesDistribution, " Tokens")
-    fmt.Println("A total of ", AllExceptionESDTSortedSum, "have been snapshotted, on", len(AllExceptionESDTSorted), " addresses.")
+    fmt.Println("A total of ", CodingDivisionSum, "have been snapshotted, on", len(CodingDivision), " addresses.")
     fmt.Println("They will receive a total of ", CodingDivisionDistribution, " Tokens")
     fmt.Println("")
 
     SnakeRewardsChain := mvx.ExactPercentualIntegerRewardSplitter(SnakesDistribution, Snakes)
-    CodingDivisionRewardsChain := mvx.ExactPercentualDecimalRewardSplitter(CodingDivisionDistribution, AllExceptionESDTSorted)
+    CodingDivisionRewardsChain := mvx.ExactPercentualDecimalRewardSplitter(CodingDivisionDistribution, CodingDivision)
     TotalRewards := mvx.DecimalChainAdder(SnakeRewardsChain, CodingDivisionRewardsChain)
     TotalRewardsSorted := mvx.SortBalanceDecimalChain(TotalRewards)
 
