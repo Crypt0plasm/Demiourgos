@@ -33,10 +33,10 @@ func KycScanner(Path string) []mvx.MvxAddress {
 	return Output
 }
 
-func MakeSetKYC(Input []mvx.BalanceSFT, KYC []mvx.MvxAddress) []mvx.TrueBalanceSFT {
+func MakeSetKYC(Input []mvx.BalanceESDT, KYC []mvx.MvxAddress) []mvx.TrueBalanceESDT {
 	var (
-		Unit     mvx.TrueBalanceSFT
-		Output   []mvx.TrueBalanceSFT
+		Unit     mvx.TrueBalanceESDT
+		Output   []mvx.TrueBalanceESDT
 		KycValue bool
 	)
 	for i := 0; i < len(Input); i++ {
@@ -56,10 +56,10 @@ func MakeSetKYC(Input []mvx.BalanceSFT, KYC []mvx.MvxAddress) []mvx.TrueBalanceS
 	return Output
 }
 
-func CleanKycSet(Input []mvx.TrueBalanceSFT) []mvx.BalanceSFT {
+func CleanKycSet(Input []mvx.TrueBalanceESDT) []mvx.BalanceESDT {
 	var (
-		Unit   mvx.BalanceSFT
-		Output []mvx.BalanceSFT
+		Unit   mvx.BalanceESDT
+		Output []mvx.BalanceESDT
 	)
 	for i := 0; i < len(Input); i++ {
 		if Input[i].KYC == true {
