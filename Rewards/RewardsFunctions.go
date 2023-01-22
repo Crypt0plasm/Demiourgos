@@ -107,6 +107,22 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 	return TotalRewards
 }
 
+func ComputeSnakeRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
+	Snakes, SnakesSum := MakeSnakeChain()
+	SnakesRewards := mvx.ExactPercentualIntegerRewardSplitter(p.NFS(TotalAmount), Snakes)
+	EVDName := RewardExport(SnakesRewards, "taSr", TotalAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeTotalisationEvidence(DistributionType2, DistributionMode2, Payee2, SnakesSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplicationSFT(EVDName, Snakes, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return SnakesRewards
+}
+
 func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
 	Snakes, SnakesSum := MakeSnakeChain()
 	SnakesRewards := mvx.RewardsComputerIntegerChainMultiplication(Snakes, MultiplicationAmount)
@@ -121,6 +137,22 @@ func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.Bala
 	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
 	fmt.Println(B, " bytes copied for the reward file!")
 	return SnakesRewards
+}
+
+func ComputeCodingDivisionRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
+	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
+	CodingDivisionRewards := mvx.ExactPercentualDecimalRewardSplitter(p.NFS(TotalAmount), CodingDivision)
+	EVDName := RewardExport(CodingDivisionRewards, "taCDr", TotalAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeTotalisationEvidence(DistributionType2, DistributionMode3, Payee3, CodingDivisionSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, CodingDivision, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return CodingDivisionRewards
 }
 
 func ComputeCodingDivisionRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {

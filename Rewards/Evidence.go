@@ -50,6 +50,11 @@ func MakeSingleSplit(Unit string, Amount *p.Decimal) string {
 	return L1
 }
 
+func MakeSingleTotalisationSplit(Unit string, Amount *p.Decimal) string {
+	L1 := sm.DTS(Amount) + " / " + Unit
+	return L1
+}
+
 func MakeTripleCDSplit(Unit string, Amount *p.Decimal) string {
 	UnitDistribution := sm.MULxc(Amount, p.NFS("0.5"))
 	SnakesDistribution := sm.MULxc(Amount, p.NFS("0.15"))
@@ -71,6 +76,18 @@ func MakeMultiplicationEvidence(Type, Mode, PayeeeX string, Payeee1Q, Distribute
 	Output.Token = Token
 	Output.Amount = DistributedAmount
 	Output.Split = MakeSingleSplit(PayeeeX, DistributedAmount)
+	return Output
+}
+
+func MakeTotalisationEvidence(Type, Mode, PayeeeX string, Payeee1Q, DistributedAmount *p.Decimal, Token mvx.ESDT) DistributionEvidence {
+	var Output DistributionEvidence
+
+	Output.Type = Type
+	Output.Mode = Mode
+	Output.Payees = MakeSinglePayeesString(PayeeeX, Payeee1Q)
+	Output.Token = Token
+	Output.Amount = DistributedAmount
+	Output.Split = MakeSingleTotalisationSplit(PayeeeX, DistributedAmount)
 	return Output
 }
 
