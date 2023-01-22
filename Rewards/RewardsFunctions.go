@@ -108,16 +108,34 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 }
 
 func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
-	Snakes, _ := MakeSnakeChain()
+	Snakes, SnakesSum := MakeSnakeChain()
 	SnakesRewards := mvx.RewardsComputerIntegerChainMultiplication(Snakes, MultiplicationAmount)
-	RewardExport(SnakesRewards, "sSr", MultiplicationAmount)
+	EVDName := RewardExport(SnakesRewards, "sSr", MultiplicationAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeMultiplicationEvidence(DistributionType2, DistributionMode2, Payee2, SnakesSum, p.NFS(MultiplicationAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplicationSFT(EVDName, Snakes, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
 	return SnakesRewards
 }
 
 func ComputeCodingDivisionRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
-	CodingDivision, _ := MakeCodingDivisionChain()
+	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
 	CodingDivisionRewards := mvx.RewardsComputerDecimalChainMultiplication(CodingDivision, MultiplicationAmount)
-	RewardExport(CodingDivisionRewards, "sCDr", MultiplicationAmount)
+	EVDName := RewardExport(CodingDivisionRewards, "sCDr", MultiplicationAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeMultiplicationEvidence(DistributionType2, DistributionMode3, Payee3, CodingDivisionSum, p.NFS(MultiplicationAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, CodingDivision, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
 	return CodingDivisionRewards
 }
 
