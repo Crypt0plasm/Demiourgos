@@ -61,7 +61,72 @@ func MakeCodingDivisionChain() ([]mvx.BalanceESDT, *p.Decimal) {
 	return AllExceptionSorted, AllExceptionSortedSum
 }
 
-// Compute Rewards
+//Raw Functions
+
+func RawCodingDivisionRewardsChain(Amount *p.Decimal) []mvx.BalanceESDT {
+	A1 := sm.MULxc(Amount, p.NFS("0.50"))
+	A2 := sm.MULxc(Amount, p.NFS("0.15"))
+	A3 := sm.SUBxc(Amount, sm.ADDxc(A1, A2))
+	R1 := mvx.BalanceESDT{Address: mvx.CodingDivisionDAO, Balance: sm.DTS(A1)}
+	R2 := mvx.BalanceESDT{Address: mvx.SnakeDAO, Balance: sm.DTS(A2)}
+	R3 := mvx.BalanceESDT{Address: mvx.DHV1, Balance: sm.DTS(A3)}
+	Result := []mvx.BalanceESDT{R1, R2, R3}
+	return Result
+}
+
+func RawVestaRewardsChain(Amount *p.Decimal) []mvx.BalanceESDT {
+	A1 := sm.MULxc(Amount, p.NFS("0.45"))
+	A2 := sm.MULxc(Amount, p.NFS("0.05"))
+	A3 := sm.MULxc(Amount, p.NFS("0.15"))
+	A4 := sm.SUBxc(Amount, sm.SUMxc(A1, A2, A3))
+	R1 := mvx.BalanceESDT{Address: mvx.VestaDAO, Balance: sm.DTS(A1)}
+	R2 := mvx.BalanceESDT{Address: mvx.DHV3, Balance: sm.DTS(A2)}
+	R3 := mvx.BalanceESDT{Address: mvx.SnakeDAO, Balance: sm.DTS(A3)}
+	R4 := mvx.BalanceESDT{Address: mvx.DHV1, Balance: sm.DTS(A4)}
+	Result := []mvx.BalanceESDT{R1, R2, R3, R4}
+	return Result
+}
+
+//Raw Distribution Functions
+
+func DistributeCodingDivisionRewards(Amount *p.Decimal) {
+	RewardsChain := RawCodingDivisionRewardsChain(Amount)
+
+	//Export Files
+	EVDName := RewardExport(RewardsChain, "rCDs", sm.DTS(Amount))
+
+	//Evidence
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode4, Payee4, p.NFS("0"), Amount, mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, RewardsChain, Evidence)
+
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+
+}
+
+func DistributeVestaRewards(Amount *p.Decimal) {
+	RewardsChain := RawVestaRewardsChain(Amount)
+
+	//Export Files
+	EVDName := RewardExport(RewardsChain, "rVSs", sm.DTS(Amount))
+
+	//Evidence
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode5, Payee5, p.NFS("0"), Amount, mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, RewardsChain, Evidence)
+
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+
+}
+
+// CD Mixed Function
+
 func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 
 	//Make Snakes Chain
@@ -107,21 +172,7 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 	return TotalRewards
 }
 
-func ComputeSnakeRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
-	Snakes, SnakesSum := MakeSnakeChain()
-	SnakesRewards := mvx.ExactPercentualIntegerRewardSplitter(p.NFS(TotalAmount), Snakes)
-	EVDName := RewardExport(SnakesRewards, "taSr", TotalAmount)
-
-	//Make Evidence and Export it
-	Evidence := MakeTotalisationEvidence(DistributionType2, DistributionMode2, Payee2, SnakesSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
-	EvidenceString := DistributionEvidenceMLS(Evidence)
-	fmt.Println(EvidenceString)
-	ExportEvidenceMultiplicationSFT(EVDName, Snakes, Evidence)
-	//Copy Exported Evidence to RewardFolder
-	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
-	fmt.Println(B, " bytes copied for the reward file!")
-	return SnakesRewards
-}
+// Multiplication Rewards
 
 func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
 	Snakes, SnakesSum := MakeSnakeChain()
@@ -137,22 +188,6 @@ func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.Bala
 	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
 	fmt.Println(B, " bytes copied for the reward file!")
 	return SnakesRewards
-}
-
-func ComputeCodingDivisionRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
-	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
-	CodingDivisionRewards := mvx.ExactPercentualDecimalRewardSplitter(p.NFS(TotalAmount), CodingDivision)
-	EVDName := RewardExport(CodingDivisionRewards, "taCDr", TotalAmount)
-
-	//Make Evidence and Export it
-	Evidence := MakeTotalisationEvidence(DistributionType2, DistributionMode3, Payee3, CodingDivisionSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
-	EvidenceString := DistributionEvidenceMLS(Evidence)
-	fmt.Println(EvidenceString)
-	ExportEvidenceMultiplication(EVDName, CodingDivision, Evidence)
-	//Copy Exported Evidence to RewardFolder
-	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
-	fmt.Println(B, " bytes copied for the reward file!")
-	return CodingDivisionRewards
 }
 
 func ComputeCodingDivisionRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
@@ -171,7 +206,111 @@ func ComputeCodingDivisionRewardsByMultiplication(MultiplicationAmount string) [
 	return CodingDivisionRewards
 }
 
+//Totalisation Rewards
+
+func ComputeSnakeRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
+	Snakes, SnakesSum := MakeSnakeChain()
+	SnakesRewards := mvx.ExactPercentualIntegerRewardSplitter(p.NFS(TotalAmount), Snakes)
+	EVDName := RewardExport(SnakesRewards, "taSr", TotalAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode2, Payee2, SnakesSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplicationSFT(EVDName, Snakes, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return SnakesRewards
+}
+
+func ComputeCodingDivisionRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
+	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
+	CodingDivisionRewards := mvx.ExactPercentualDecimalRewardSplitter(p.NFS(TotalAmount), CodingDivision)
+	EVDName := RewardExport(CodingDivisionRewards, "taCDr", TotalAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode3, Payee3, CodingDivisionSum, p.NFS(TotalAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, CodingDivision, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return CodingDivisionRewards
+}
+
+func ComputeVestaRewardsByTotalisation(TotalAmount string, AllChains bool) []mvx.BalanceESDT {
+	var (
+		GoldRewards, SilverRewards, BronzeRewards, VestaSFTNumber, BVTS *p.Decimal
+		BronzeChainRewards, BVT2                                        []mvx.BalanceESDT
+		BronzeVestaTrim                                                 []mvx.BalanceSFT
+		VestaRewards                                                    []mvx.BalanceESDT
+	)
+
+	if AllChains == true {
+		GoldRewards = sm.TruncateCustom(sm.MULxc(p.NFS(TotalAmount), p.NFS("0.333333333333333333")), 18)
+		SilverRewards = GoldRewards
+		BronzeRewards = sm.SUBxc(p.NFS(TotalAmount), sm.ADDxc(GoldRewards, SilverRewards))
+
+		BronzeVesta, _ := bloom.CreateVestaChain(mvx.VestaBronze)
+		BronzeVestaTrim = bloom.CreateVestaAmountChains(BronzeVesta)
+		BVT2 = mvx.SortBalanceIntegerChain(BronzeVestaTrim)
+		BVTS = mvx.AddBalanceDecimalChain(BVT2)
+
+		BronzeChainRewards = mvx.ExactPercentualDecimalRewardSplitter(BronzeRewards, BVT2)
+	} else {
+		GoldRewards = sm.TruncateCustom(sm.MULxc(p.NFS(TotalAmount), p.NFS("0.5")), 18)
+		SilverRewards = GoldRewards
+		BronzeRewards = p.NFS("0")
+	}
+
+	GoldenVesta, _ := bloom.CreateVestaChain(mvx.VestaGold)
+	GoldenVestaTrim := bloom.CreateVestaAmountChains(GoldenVesta)
+	GVT2 := mvx.SortBalanceIntegerChain(GoldenVestaTrim)
+	GVTS := mvx.AddBalanceDecimalChain(GVT2)
+
+	SilverVesta, _ := bloom.CreateVestaChain(mvx.VestaSilver)
+	SilverVestaTrim := bloom.CreateVestaAmountChains(SilverVesta)
+	SVT2 := mvx.SortBalanceIntegerChain(SilverVestaTrim)
+	SVTS := mvx.AddBalanceDecimalChain(SVT2)
+
+	GoldenChainRewards := mvx.ExactPercentualDecimalRewardSplitter(GoldRewards, GVT2)
+	SilverChainRewards := mvx.ExactPercentualDecimalRewardSplitter(SilverRewards, SVT2)
+
+	if AllChains == true {
+		Sum := mvx.DecimalChainAdder(VestaRewards, BronzeChainRewards)
+		VestaRewards = mvx.DecimalChainAdder(Sum, BronzeChainRewards)
+		VestaSFTNumber = sm.SUMxc(GVTS, SVTS, BVTS)
+	} else {
+		VestaRewards = mvx.DecimalChainAdder(GoldenChainRewards, SilverChainRewards)
+		VestaSFTNumber = sm.SUMxc(GVTS, SVTS)
+	}
+
+	VestaRewardsSorted := mvx.SortBalanceDecimalChain(VestaRewards)
+
+	EVDName := RewardExport(VestaRewardsSorted, "taVSr", TotalAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode3, Payee6, VestaSFTNumber, p.NFS(TotalAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+
+	if AllChains == true {
+		ExportEvidenceTripleVesta(EVDName, GVT2, SVT2, BVT2, Evidence)
+	} else {
+		ExportEvidenceDoubleVesta(EVDName, GVT2, SVT2, Evidence)
+	}
+
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return VestaRewards
+}
+
+// CSV Functions Rewards Export
 // If Type is true extension is csv, else is txt
+
 func OutputRewardsName(RewardName, Amount string) (R1, R2 string) {
 	currentTime := time.Now()
 	T := currentTime.Format("2006;(01-January);(02-Day)_(T-15h;04m;05s)")

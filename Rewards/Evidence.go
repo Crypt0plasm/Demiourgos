@@ -21,16 +21,22 @@ var (
 	// Type
 	DistributionType1 = "Total"
 	DistributionType2 = "Multiplication"
+	DistributionType3 = "Totalisation"
 
 	// Mode
-	DistributionMode1 = Payee3 + "Rewards"
+	DistributionMode1 = Payee3 + " Rewards"
 	DistributionMode2 = "Snakes Only"
 	DistributionMode3 = Payee3 + " Only"
+	DistributionMode4 = Payee3 + " Raw Split"
+	DistributionMode5 = Payee6 + " Raw Split"
 
 	// Payees
 	Payee1 = "Demiourgos.Holdings™"
 	Payee2 = "Snakes"
 	Payee3 = "Coding.Division™"
+	Payee4 = "CD.DAO + Sn.DAO + DH™"
+	Payee5 = "VS.DAO + VS.Vault + Sn.DAO + DH™"
+	Payee6 = "VestaX.Finance™"
 )
 
 func MakeSinglePayeesString(PayeeeX string, Amount *p.Decimal) string {
@@ -112,6 +118,89 @@ func DistributionEvidenceMLS(Input DistributionEvidence) string {
 	L6 := "Distribution Split  : " + Input.Split
 	LT := L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
 	return LT
+}
+
+func ExportEvidenceDoubleVesta(ExportName string, InputChain1, InputChain2 []mvx.BalanceESDT, Evidence DistributionEvidence) {
+	f, err := os.Create(ExportName)
+
+	if err != nil {
+		fmt.Println(err)
+		_ = f.Close()
+		return
+	}
+	//PrintDistribution Info
+	S00 := "===========Summary=================================================="
+	S0 := DistributionEvidenceMLS(Evidence)
+	_, _ = fmt.Fprintln(f, S00)
+	_, _ = fmt.Fprintln(f, S0)
+
+	//Print VestaGold Chain
+	S1 := "===========GoldenVESTA-Snapshots====================================="
+	_, _ = fmt.Fprintln(f, S1)
+	for _, v := range InputChain1 {
+		_, _ = fmt.Fprintln(f, v)
+	}
+
+	//Print VestaSilver Chain
+	S2 := "===========SilverVESTA-Snapshots====================================="
+	_, _ = fmt.Fprintln(f, S2)
+	for _, v := range InputChain2 {
+		_, _ = fmt.Fprintln(f, v)
+	}
+
+	err = f.Close()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("Evidence file written successfully")
+
+}
+
+func ExportEvidenceTripleVesta(ExportName string, InputChain1, InputChain2, InputChain3 []mvx.BalanceESDT, Evidence DistributionEvidence) {
+	f, err := os.Create(ExportName)
+
+	if err != nil {
+		fmt.Println(err)
+		_ = f.Close()
+		return
+	}
+	//PrintDistribution Info
+	S00 := "===========Summary=================================================="
+	S0 := DistributionEvidenceMLS(Evidence)
+	_, _ = fmt.Fprintln(f, S00)
+	_, _ = fmt.Fprintln(f, S0)
+
+	//Print VestaGold Chain
+	S1 := "===========GoldenVESTA-Snapshots====================================="
+	_, _ = fmt.Fprintln(f, S1)
+	for _, v := range InputChain1 {
+		_, _ = fmt.Fprintln(f, v)
+	}
+
+	//Print VestaSilver Chain
+	S2 := "===========SilverVESTA-Snapshots====================================="
+	_, _ = fmt.Fprintln(f, S2)
+	for _, v := range InputChain2 {
+		_, _ = fmt.Fprintln(f, v)
+	}
+
+	//Print BronzeSilver Chain
+	S3 := "===========SilverVESTA-Snapshots====================================="
+	_, _ = fmt.Fprintln(f, S3)
+	for _, v := range InputChain3 {
+		_, _ = fmt.Fprintln(f, v)
+	}
+
+	err = f.Close()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("Evidence file written successfully")
+
 }
 
 func ExportEvidenceMultiplication(ExportName string, InputChain []mvx.BalanceESDT, Evidence DistributionEvidence) {

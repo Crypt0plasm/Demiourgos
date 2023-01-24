@@ -23,6 +23,39 @@ import (
 // =====================================================================================================================
 // =====================================================================================================================
 
+func CreateVestaChain(Input mvx.SFT) ([]mvx.BalanceSFT, *p.Decimal) {
+	var VestaType string
+	if Input == mvx.VestaGold {
+		VestaType = "Golden"
+	} else if Input == mvx.VestaSilver {
+		VestaType = "Silver"
+	} else {
+		VestaType = "Bronze"
+	}
+	fmt.Println("Snapshotting ", VestaType, " Vesta Addresses and Amounts")
+	VestaChain := mvx.SnapshotSFTChain(Input)
+	Sum := mvx.AddBalanceIntegerChain(VestaChain)
+	fmt.Println(len(VestaChain), "addresses snapshotted with Vesta SFTs", Sum)
+	fmt.Println("")
+	return VestaChain, Sum
+}
+
+func CreateVestaAmountChains(InputChain []mvx.BalanceSFT) []mvx.BalanceSFT {
+	var (
+		AllChain []mvx.BalanceSFT
+		Unit     mvx.BalanceSFT
+	)
+	for i := 0; i < len(InputChain); i++ {
+		if ComputeExceptionAddress(InputChain[i].Address, VestaExceptions) == false {
+			Unit.Address = InputChain[i].Address
+			Unit.Balance = InputChain[i].Balance
+
+			AllChain = append(AllChain, Unit)
+		}
+	}
+	return AllChain
+}
+
 // CreateCodingDivisionChain ===========================================================================================
 //
 // [B]01         CreateCodingDivisionChain
@@ -179,7 +212,7 @@ func CreateCodingDivisionSetChain(Owners []mvx.MvxAddress, Snapshot DecaChain) [
 		Minimum = mt.MinDecimal(Minimum, Binar)
 
 		//If Minimum is greater than zero AND Address is non Exception
-		if mt.DecimalGreaterThan(Minimum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i]) == false {
+		if mt.DecimalGreaterThan(Minimum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i], CDExceptions) == false {
 			Unit.Address = Owners[i]
 			Unit.Balance = mt.DTS(Minimum)
 
@@ -256,7 +289,7 @@ func CreateCodingDivisionAmountChain(Owners []mvx.MvxAddress, Snapshot DecaChain
 		Sum = mt.SUMxc(SnakeEye, Rudis, Gwen, Clutter, Bangai, Binos, Rubia, Ocultus, Oreta, Binar)
 
 		//If Sum is greater than zero AND Address is non Exception
-		if mt.DecimalGreaterThan(Sum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i]) == false {
+		if mt.DecimalGreaterThan(Sum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i], CDExceptions) == false {
 			Unit.Address = Owners[i]
 			Unit.Balance = mt.DTS(Sum)
 
