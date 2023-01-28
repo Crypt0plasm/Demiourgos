@@ -37,7 +37,9 @@ Computes CodingDivision Raw Reward Distribution.
 		VestaRaw = `--vsr  <Token Amount> as string;
 Computes Vesta Raw Reward Distribution.
 `
-
+		LiquidStakingRaw = `--lsr  <Token Amount> as string;
+Computes LiquidStaking Raw Reward Distribution.
+`
 		//Custom ALL Send Calls
 		CDRewards = `--cd  <Token Amount> as string;
 Computes rewards for Coding Division Distribution, using a total amount for distribution
@@ -60,6 +62,7 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 		//Raw Distribution
 		CDR = "cdr" //string	*	Distributing Raw Coding Division Profits
 		VSR = "vsr" //string	*	Distributing Raw Vesta Profits
+		LSR = "lsr" //string	*	Distributing Raw Vesta Profits
 
 		//Computation Percentual Rewards
 		CD = "cd" //string
@@ -74,6 +77,7 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 
 	FlagCodingDivisionRaw := flag.String(CDR, "0", CodingDivisionRaw)
 	FlagVestaRaw := flag.String(VSR, "0", VestaRaw)
+	FlagLiquidStakingRaw := flag.String(LSR, "0", LiquidStakingRaw)
 
 	FlagCDRewards := flag.String(CD, "0", CDRewards) //Deprecated
 
@@ -114,7 +118,12 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 		rw.DistributeVestaRewards(p.NFS(*FlagVestaRaw))
 	}
 
-	//Eights Option
+	//Eighth Option
+	if *FlagLiquidStakingRaw != "0" {
+		rw.DistributeLiquidStakeRewards(p.NFS(*FlagLiquidStakingRaw))
+	}
+
+	//Ninth Option
 	if *FlagCDRewards != "0" {
 		rw.ComputeCodingDivisionRewards(p.NFS(*FlagCDRewards))
 	}

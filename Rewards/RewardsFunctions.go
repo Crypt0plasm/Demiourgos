@@ -6,43 +6,19 @@ import (
 	mvx "MvxApiScanner"
 	sm "SuperMath"
 	"fmt"
-	"strings"
 	"time"
 )
 
 var (
 	RewardPath = "_REWRD-Snapshots\\"
-	OMNsctPath = "_SNAKE-Snapshots\\DEMIOU-6d1b5c-top-holders-omniscient-tools.csv"
+	//OMNsctPath = "_SNAKE-Snapshots\\DEMIOU-6d1b5c-top-holders-omniscient-tools.csv"
+	SnakePath = "_SNAKE-Snapshots\\"
+	SnakeName = "DEMIOU-6d1b5c-top-holders-omniscient-tools.csv"
 )
-
-func ReadOmniscientSnakeSnapshot() []mvx.BalanceSFT {
-	var (
-		MainUnit mvx.BalanceSFT
-		Output   []mvx.BalanceSFT
-	)
-
-	ProcessLine := func(Line string) mvx.BalanceSFT {
-		var (
-			Unit mvx.BalanceSFT
-		)
-		LineString := strings.ReplaceAll(Line, "\"", "")
-		SeparatedLineStringSlice := strings.Split(LineString, ",")
-		Unit.Address = mvx.MvxAddress(SeparatedLineStringSlice[0])
-		Unit.Balance = SeparatedLineStringSlice[1]
-		return Unit
-	}
-
-	StringSlice := mvx.ReadFile(OMNsctPath)
-	for i := 0; i < len(StringSlice); i++ {
-		MainUnit = ProcessLine(StringSlice[i])
-		Output = append(Output, MainUnit)
-	}
-	return Output
-}
 
 func MakeSnakeChain() ([]mvx.BalanceSFT, *p.Decimal) {
 	//Make Snakes Chain
-	Snakes := ReadOmniscientSnakeSnapshot()
+	Snakes := mvx.ReadOmniscientSS(SnakePath, SnakeName)
 	SnakesSum := mvx.AddBalanceIntegerChain(Snakes)
 	fmt.Println("A total of ", SnakesSum, "have been read from Omniscient file, on", len(Snakes), " addresses.")
 	return Snakes, SnakesSum
@@ -59,6 +35,30 @@ func MakeCodingDivisionChain() ([]mvx.BalanceESDT, *p.Decimal) {
 	AllExceptionSorted := mvx.SortBalanceIntegerChain(AllException)
 	AllExceptionSortedSum := mvx.AddBalanceDecimalChain(AllExceptionSorted)
 	return AllExceptionSorted, AllExceptionSortedSum
+}
+
+func MakeGoldenVestaChain() ([]mvx.BalanceESDT, *p.Decimal) {
+	GoldenVesta, _ := bloom.CreateVestaChain(mvx.VestaGold)
+	GoldenVestaTrim := bloom.CreateVestaAmountChains(GoldenVesta)
+	GoldenVestaTrimSorted := mvx.SortBalanceIntegerChain(GoldenVestaTrim)
+	GoldenVestaTrimSortedSum := mvx.AddBalanceDecimalChain(GoldenVestaTrimSorted)
+	return GoldenVestaTrimSorted, GoldenVestaTrimSortedSum
+}
+
+func MakeSilverVestaChain() ([]mvx.BalanceESDT, *p.Decimal) {
+	SilverVesta, _ := bloom.CreateVestaChain(mvx.VestaSilver)
+	SilverVestaTrim := bloom.CreateVestaAmountChains(SilverVesta)
+	SilverVestaTrimSorted := mvx.SortBalanceIntegerChain(SilverVestaTrim)
+	SilverVestaTrimSortedSum := mvx.AddBalanceDecimalChain(SilverVestaTrimSorted)
+	return SilverVestaTrimSorted, SilverVestaTrimSortedSum
+}
+
+func MakeBronzeVestaChain() ([]mvx.BalanceESDT, *p.Decimal) {
+	BronzeVesta, _ := bloom.CreateVestaChain(mvx.VestaBronze)
+	BronzeVestaTrim := bloom.CreateVestaAmountChains(BronzeVesta)
+	BronzeVestaTrimSorted := mvx.SortBalanceIntegerChain(BronzeVestaTrim)
+	BronzeVestaTrimSortedSum := mvx.AddBalanceDecimalChain(BronzeVestaTrimSorted)
+	return BronzeVestaTrimSorted, BronzeVestaTrimSortedSum
 }
 
 //Raw Functions
@@ -84,6 +84,21 @@ func RawVestaRewardsChain(Amount *p.Decimal) []mvx.BalanceESDT {
 	R3 := mvx.BalanceESDT{Address: mvx.SnakeDAO, Balance: sm.DTS(A3)}
 	R4 := mvx.BalanceESDT{Address: mvx.DHV1, Balance: sm.DTS(A4)}
 	Result := []mvx.BalanceESDT{R1, R2, R3, R4}
+	return Result
+}
+
+func RawLiquidStakingRewardsChain(Amount *p.Decimal) []mvx.BalanceESDT {
+	A1 := sm.MULxc(Amount, p.NFS("0.20"))
+	A2 := sm.MULxc(Amount, p.NFS("0.28"))
+	A3 := sm.MULxc(Amount, p.NFS("0.12"))
+	A4 := sm.MULxc(Amount, p.NFS("0.36"))
+	A5 := sm.SUBxc(Amount, sm.SUMxc(A1, A2, A3, A4))
+	R1 := mvx.BalanceESDT{Address: mvx.Synchronic, Balance: sm.DTS(A1)}
+	R2 := mvx.BalanceESDT{Address: mvx.DHV1, Balance: sm.DTS(A2)}
+	R3 := mvx.BalanceESDT{Address: mvx.SnakeDAO, Balance: sm.DTS(A3)}
+	R4 := mvx.BalanceESDT{Address: mvx.VestaDAO, Balance: sm.DTS(A4)}
+	R5 := mvx.BalanceESDT{Address: mvx.DHV3, Balance: sm.DTS(A5)}
+	Result := []mvx.BalanceESDT{R1, R2, R3, R4, R5}
 	return Result
 }
 
@@ -115,6 +130,24 @@ func DistributeVestaRewards(Amount *p.Decimal) {
 
 	//Evidence
 	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode5, Payee5, p.NFS("0"), Amount, mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, RewardsChain, Evidence)
+
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+
+}
+
+func DistributeLiquidStakeRewards(Amount *p.Decimal) {
+	RewardsChain := RawLiquidStakingRewardsChain(Amount)
+
+	//Export Files
+	EVDName := RewardExport(RewardsChain, "rLSs", sm.DTS(Amount))
+
+	//Evidence
+	Evidence := MakeTotalisationEvidence(DistributionType3, DistributionMode6, Payee7, p.NFS("0"), Amount, mvx.WrappedEGLD)
 	EvidenceString := DistributionEvidenceMLS(Evidence)
 	fmt.Println(EvidenceString)
 	ExportEvidenceMultiplication(EVDName, RewardsChain, Evidence)

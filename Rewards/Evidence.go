@@ -29,6 +29,7 @@ var (
 	DistributionMode3 = Payee3 + " Only"
 	DistributionMode4 = Payee3 + " Raw Split"
 	DistributionMode5 = Payee6 + " Raw Split"
+	DistributionMode6 = Payee7 + " Raw Split"
 
 	// Payees
 	Payee1 = "Demiourgos.Holdings™"
@@ -37,6 +38,7 @@ var (
 	Payee4 = "CD.DAO + Sn.DAO + DH™"
 	Payee5 = "VS.DAO + VS.Vault + Sn.DAO + DH™"
 	Payee6 = "VestaX.Finance™"
+	Payee7 = "vEGLD Liquid.Staking™"
 )
 
 func MakeSinglePayeesString(PayeeeX string, Amount *p.Decimal) string {

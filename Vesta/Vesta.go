@@ -7,8 +7,13 @@ import (
 	mt "SuperMath"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
+)
+
+var (
+	LiquidityPoolOrder            = []mvx.ESDT{mvx.SUPEREGLD, mvx.CRUSTEGLD, mvx.AEROEGLD}
+	WeeklyLiquidityPoolVestaShare = p.NFS("800")
+	VestaSnapshotDirectory        = "_VESTA-Snapshots\\"
 )
 
 // CreateVestaGoldAmounts ========================================================================================
@@ -37,7 +42,7 @@ func CreateVestaGoldAmounts(Input []mvx.BalanceSFT) []mvx.BalanceSFT {
 	)
 
 	for i := 0; i < len(Input); i++ {
-		if Blooming.ComputeExceptionAddress(Input[i].Address) == false {
+		if Blooming.ComputeExceptionAddress(Input[i].Address, Blooming.VestaExceptions) == false {
 			Unit.Address = Input[i].Address
 			Unit.Balance = Input[i].Balance
 			Result = append(Result, Unit)
@@ -66,7 +71,7 @@ func CreateVestaGoldAmounts(Input []mvx.BalanceSFT) []mvx.BalanceSFT {
 //   - Otherwise 0 should be inputted as variable
 //
 // -1 indicates that the number won't be in use.
-func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNumber, PoolPosition, DayNumber int) string {
+func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolPosition, DayNumber int) string {
 	var (
 		Output string
 	)
@@ -77,20 +82,9 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 	PoolVESTASplitInstantaneousPrefix := "PVSi_"
 	IndividualVESTASplitPrefix := "IVS_"
 
-	TripleDigitDesignation := func(Number int, Designation string) (StringName string) {
-		if Number < 10 {
-			StringName = Designation + "00" + strconv.Itoa(Number)
-		} else if Number >= 10 && Number < 100 {
-			StringName = Designation + "0" + strconv.Itoa(Number)
-		} else {
-			StringName = Designation + strconv.Itoa(Number)
-		}
-		return
-	}
-
-	WeekDesignation := TripleDigitDesignation(WeekNumber, "W")
-	PoolNumberDesignation := TripleDigitDesignation(PoolNumber, "PN")
-	PoolPositionDesignation := TripleDigitDesignation(PoolPosition, "POOL")
+	WeekDesignation := mvx.TripleDigitDesignation(WeekNumber, "W")
+	//PoolNumberDesignation := mvx.TripleDigitDesignation(PoolNumber, "PN")
+	PoolPositionDesignation := mvx.TripleDigitDesignation(PoolPosition, "POOL")
 
 	DayDesignation := func() (StringName string) {
 		var DayNumberToString string
@@ -132,13 +126,13 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 		} else {
 			switch n := Type; {
 			case n == "PS":
-				Output = PoolScanPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + Extension
+				Output = PoolScanPrefix + WeekDesignation + "_" + DayDesignation() + Extension
 			case n == "PVSm":
 				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
 			case n == "PVSi":
 				Output = PoolVESTASplitInstantaneousPrefix + WeekDesignation + Extension
 			case n == "IVS":
-				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + DayDesignation() + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
+				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + PoolPositionDesignation + "_" + DayDesignation() + Extension
 			}
 		}
 	} else { //Import
@@ -147,47 +141,15 @@ func MakeFileName(ExportImport, BlackList bool, Type string, WeekNumber, PoolNum
 		} else {
 			switch n := Type; {
 			case n == "PS":
-				Output = PoolScanPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + Extension
+				Output = PoolScanPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + Extension
 			case n == "PVSm":
 				Output = PoolVESTASplitPrefix + WeekDesignation + Extension
 			case n == "PVSi":
 				Output = PoolVESTASplitInstantaneousPrefix + WeekDesignation + Extension
 			case n == "IVS":
-				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + ReverseDayString(DayNumber) + "_" + PoolNumberDesignation + "_" + PoolPositionDesignation + Extension
+				Output = IndividualVESTASplitPrefix + WeekDesignation + "_" + PoolPositionDesignation + "_" + ReverseDayString(DayNumber) + Extension
 			}
 		}
-	}
-	return Output
-}
-
-// Scans BalanceESDT SnapshotFiles from HDD and saves them in a program Slice to be used further
-func HDDSnapshotScanner(Blacklist bool, Type string, WeekNumber, PoolNumber, PoolPosition, DayNumber int) []mvx.BalanceESDT {
-	var (
-		Unit   mvx.BalanceESDT
-		Output []mvx.BalanceESDT
-	)
-
-	ProcessScannedLine := func(Line string) mvx.BalanceESDT {
-		var (
-			ProcessedString string
-			Result          mvx.BalanceESDT
-		)
-		//Remove the { and } character
-		ProcessedString = strings.ReplaceAll(Line, "{", "")
-		ProcessedString = strings.ReplaceAll(ProcessedString, "}", "")
-		Parts := strings.Split(ProcessedString, " ")
-		Result.Address = mvx.MvxAddress(Parts[0])
-		Result.Balance = Parts[1]
-		return Result
-	}
-
-	ImportName := MakeFileName(false, Blacklist, Type, WeekNumber, PoolNumber, PoolPosition, DayNumber)
-	//Path := "d:\\.GO_workspace\\src\\Demiourgos\\_VESTA-Snapshots\\" + ImportName
-	Path := "_VESTA-Snapshots\\" + ImportName
-	ReadStringSlice := mvx.ReadFile(Path)
-	for i := 0; i < len(ReadStringSlice); i++ {
-		Unit = ProcessScannedLine(ReadStringSlice[i])
-		Output = append(Output, Unit)
 	}
 	return Output
 }

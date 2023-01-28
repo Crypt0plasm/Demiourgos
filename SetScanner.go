@@ -2,7 +2,7 @@ package main
 
 import (
 	bloom "Demiourgos/Blooming"
-	"Demiourgos/Vesta"
+	"Demiourgos/Rewards"
 	mvx "MvxApiScanner"
 	"fmt"
 )
@@ -68,15 +68,14 @@ func main() {
 	fmt.Println("Drawing will be executed for ", DrawSUM, " units")
 	fmt.Println("")
 
-	//Vesta Gold
-	fmt.Println("====Vesta GOLD====")
-	VestaGoldFull := Vesta.ScanVestaGoldChain()
-	VestaGoldException := Vesta.CreateVestaGoldAmounts(VestaGoldFull)
-
-	SortedVestaExceptionGold := mvx.SortBalanceIntegerChain(VestaGoldException)
-	SortedVestaExceptionGoldSum := mvx.AddBalanceDecimalChain(SortedVestaExceptionGold)
-	fmt.Println("Excluding SC, RAW (excluding SC, no single exceptions) SFTs sum is ", SortedVestaExceptionGoldSum, "SFTs on", len(SortedVestaExceptionGold), "Addresses")
-	fmt.Println("")
-	mvx.WriteChainBalanceESDT("Output_VestaGOLD_Raw.txt", SortedVestaExceptionGold)
+	//Investor Computation
+	Snakes, _ := Rewards.MakeSnakeChain()
+	CD, _ := Rewards.MakeCodingDivisionChain()
+	GoldenVesta, _ := Rewards.MakeGoldenVestaChain()
+	SilverVesta, _ := Rewards.MakeSilverVestaChain()
+	S1 := mvx.DecimalChainAdder(mvx.ConvertIntegerSFTtoESDTChain(Snakes), CD)
+	S2 := mvx.DecimalChainAdder(S1, GoldenVesta)
+	S3 := mvx.DecimalChainAdder(S2, SilverVesta)
+	fmt.Println("There are ", len(S3), " unique Demiourgos NFTs/SFTs holders, excluding SC")
 
 }

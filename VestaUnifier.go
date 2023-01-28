@@ -1,61 +1,76 @@
 package main
 
 import (
-	vt "Demiourgos/Vesta"
-	mvx "MvxApiScanner"
-	"strconv"
+    vt "Demiourgos/Vesta"
+    mvx "MvxApiScanner"
+    "fmt"
+    "strconv"
 )
 
 // SeparateBlacklist
 // Separates a weekly BalanceESDT List into 2, using a blacklist.
 // Blacklist addresses are saved in the second output with their balances intact.
 func SeparateBlacklist(Week int, Input, Blacklist []mvx.BalanceESDT) ([]mvx.BalanceESDT, []mvx.BalanceESDT) {
-	//Function that removes given index from a Slice
-	RemovePosition := func(s []mvx.BalanceESDT, index int) []mvx.BalanceESDT {
-		return append(s[:index], s[index+1:]...)
-	}
+    //Function that removes given index from a Slice
+    RemovePosition := func(s []mvx.BalanceESDT, index int) []mvx.BalanceESDT {
+	return append(s[:index], s[index+1:]...)
+    }
 
-	VestaAirdrop := Input
-	BlacklistOutput := make([]mvx.BalanceESDT, len(Blacklist))
-	for i := 0; i < len(Blacklist); i++ {
-		for j := 0; j < len(Input); j++ {
-			if Input[j].Address == Blacklist[i].Address {
-				BlacklistOutput[i] = Input[j]
-				VestaAirdrop = RemovePosition(VestaAirdrop, j)
-			}
-		}
+    VestaAirdrop := Input
+    BlacklistOutput := make([]mvx.BalanceESDT, len(Blacklist))
+    for i := 0; i < len(Blacklist); i++ {
+	for j := 0; j < len(Input); j++ {
+	    if Input[j].Address == Blacklist[i].Address {
+		BlacklistOutput[i] = Input[j]
+		VestaAirdrop = RemovePosition(VestaAirdrop, j)
+	    }
 	}
-	Vesta := mvx.SortBalanceDecimalChain(VestaAirdrop)
-	Black := mvx.SortBalanceDecimalChain(BlacklistOutput)
-	WeekString := strconv.Itoa(Week)
-	V := WeekString + "_VESTA-Airdrop"
-	B := WeekString + "_BLACK-Cumulus"
-	mvx.WriteChainBalanceESDT(V, Vesta)
-	mvx.WriteChainBalanceESDT(B, Black)
-	return Vesta, Black
+    }
+    Vesta := mvx.SortBalanceDecimalChain(VestaAirdrop)
+    Black := mvx.SortBalanceDecimalChain(BlacklistOutput)
+    WeekString := strconv.Itoa(Week)
+    V := WeekString + "_VESTA-Airdrop"
+    B := WeekString + "_BLACK-Cumulus"
+    mvx.WriteChainBalanceESDT(V, Vesta)
+    mvx.WriteChainBalanceESDT(B, Black)
+    return Vesta, Black
+}
+
+func UnifyPoolWeeklyValues(WeekNumber, PoolPosition int) []mvx.BalanceESDT {
+    N1 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 1)
+    N2 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 2)
+    N3 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 3)
+    N4 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 4)
+    N5 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 5)
+    N6 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 6)
+    N7 := vt.MakeFileName(false, false, "IVS", WeekNumber, PoolPosition, 7)
+
+    C1 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N1)
+    fmt.Println(C1)
+    C2 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N2)
+    C3 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N3)
+    C4 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N4)
+    C5 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N5)
+    C6 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N6)
+    C7 := mvx.ReadBalanceChain(vt.VestaSnapshotDirectory, N7)
+
+    Sum := mvx.MultipleDecimalChainAdder(C1, C2, C3, C4, C5, C6, C7)
+    return Sum
 }
 
 func main() {
-	//ReadSnapshots
-	SS1 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 1)
-	SS2 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 2)
-	SS3 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 3)
-	SS4 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 4)
-	SS5 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 5)
-	SS6 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 6)
-	SS7 := vt.HDDSnapshotScanner(false, "IVS", 1, 3, 0, 7)
+    //ReadSnapshots
+    U0 := UnifyPoolWeeklyValues(1, 0)
+    U1 := UnifyPoolWeeklyValues(1, 1)
+    U2 := UnifyPoolWeeklyValues(1, 2)
+    EndList := mvx.MultipleDecimalChainAdder(U0, U1, U2)
+    SumSorted := mvx.SortBalanceDecimalChain(EndList)
+    fmt.Println("Lungimea is", len(SumSorted))
+    mvx.WriteChainBalanceESDT("Testu-pulii.txt", SumSorted)
 
-	//Add Snapshots and sorts them
-	SUM1 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SS1, SS2))
-	SUM2 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SUM1, SS3))
-	SUM3 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SUM2, SS4))
-	SUM4 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SUM3, SS5))
-	SUM5 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SUM4, SS6))
-	SUM6 := mvx.SortBalanceDecimalChain(mvx.DecimalChainAdder(SUM5, SS7))
+    //Read BlackList
+    //BLK := vt.HDDSnapshotScanner(true, "", 1, -1, -1, -1)
 
-	//Read BlackList
-	BLK := vt.HDDSnapshotScanner(true, "", 1, -1, -1, -1)
-
-	//Separate Blacklist Values from Snapshot Values and outputs Vesta Airdrop Values.
-	SeparateBlacklist(1, SUM6, BLK)
+    //Separate Blacklist Values from Snapshot Values and outputs Vesta Airdrop Values.
+    //SeparateBlacklist(1, SUM6, BLK)
 }
