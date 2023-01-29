@@ -5,31 +5,55 @@ import (
 	"strings"
 )
 
+var (
+	KYCDirectory = "_KYCss-Snapshots\\"
+)
+
 //Reads Kyc CSV File
 
 func KycScanner(Path string) []mvx.MvxAddress {
 	var (
 		Output []mvx.MvxAddress
-		Addy   mvx.MvxAddress
+		PAddy  mvx.MvxAddress
 	)
 
 	ProcessLine := func(Line string) mvx.MvxAddress {
-		var Adddy mvx.MvxAddress
-		StringSlice := strings.Split(Line, ",")
-		if StringSlice[7] == "APPROVED" && len([]rune(StringSlice[5])) == 62 {
-			Adddy = mvx.MvxAddress(StringSlice[5])
+		var Addy mvx.MvxAddress
+		CheckFirstThree := func(Addy string) bool {
+			var Result bool
+			Rune := []rune(Addy)
+			RuneThree := Rune[:3]
+			RuneThreeString := string(RuneThree)
+			if RuneThreeString == "erd" {
+				Result = true
+			}
+			return Result
 		}
-		return Adddy
+
+		StripLength := func(Addy string) mvx.MvxAddress {
+			var Result mvx.MvxAddress
+			Rune := []rune(Addy)
+			RuneSixtyTwo := Rune[:62]
+			RuneSixtyTwoString := string(RuneSixtyTwo)
+			Result = mvx.MvxAddress(RuneSixtyTwoString)
+			return Result
+		}
+
+		StringSlice := strings.Split(Line, ",")
+		if StringSlice[7] == "APPROVED" && CheckFirstThree(StringSlice[5]) == true {
+			Addy = StripLength(StringSlice[5])
+		}
+
+		return Addy
 	}
 
 	StringSlice := mvx.ReadFile(Path)
 	for i := 1; i < len(StringSlice); i++ {
-		Addy = ProcessLine(StringSlice[i])
-		if len([]rune(Addy)) == 62 {
-			Output = append(Output, Addy)
+		PAddy = ProcessLine(StringSlice[i])
+		if string(PAddy) != "" {
+			Output = append(Output, PAddy)
 		}
 	}
-
 	return Output
 }
 
