@@ -20,7 +20,7 @@ var (
 
 	//This is the Amount Exception
 	//Paul holds 50 Company SFTs that aren't Include in the computation, that are excepted from computation
-	ExAm1 = AddressINTExceptions{mvx.Hefe, 31}
+	ExAm1 = AddressINTExceptions{mvx.Hefe, 16}
 
 	//Smart Contract Exceptions
 	VestaExceptions = []mvx.MvxAddress{ExA1, ExA2, ExA3, ExA4, ExA6, ExA7, ExA8, ExA9, ExA11, ExA12}

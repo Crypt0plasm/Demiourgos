@@ -62,7 +62,7 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 		//Raw Distribution
 		CDR = "cdr" //string	*	Distributing Raw Coding Division Profits
 		VSR = "vsr" //string	*	Distributing Raw Vesta Profits
-		LSR = "lsr" //string	*	Distributing Raw Vesta Profits
+		LSR = "lsr" //string	*	Distributing Liquid Staking Profits
 
 		//Computation Percentual Rewards
 		CD = "cd" //string
