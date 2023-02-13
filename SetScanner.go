@@ -90,6 +90,13 @@ func InvestorScanner() int {
 	return len(Total)
 }
 
+func SFTScanner(SFTDesignation string) []mvx.BalanceESDT {
+	ScanSFT := mvx.SFT(SFTDesignation)
+	SFTChain := mvx.SnapshotSFTChain(ScanSFT)
+	SortedAll := mvx.SortBalanceIntegerChain(SFTChain)
+	return SortedAll
+}
+
 func main() {
 	var (
 		SetScannerPrint = `--ssp  <> as bool;
@@ -106,6 +113,9 @@ and outputs the Draw list.
 		InvestorComputer = `--ivs  <> bool;
 Computes the number of Unique ERD Addresses holding Demiourgos Assets
 `
+		SFTScannerVar = `--sft  <> bool;
+Scans an SFT Chain and outputs it in a txt file.
+`
 	)
 
 	const (
@@ -113,12 +123,14 @@ Computes the number of Unique ERD Addresses holding Demiourgos Assets
 		ConstSetScannerPrintOutput = "sso"      // bool
 		ConstKycBloomComputer      = "kycbloom" // string
 		ConstInvestorComputer      = "ivs"      // bool
+		ConstSFTScanner            = "sft"
 	)
 
 	FlagSetScannerPrint := flag.Bool(ConstSetScannerPrint, false, SetScannerPrint)
 	FlagSetScannerPrintOutput := flag.Bool(ConstSetScannerPrintOutput, false, SetScannerPrintOutput)
 	FlagKycBloomComputer := flag.String(ConstKycBloomComputer, "", KycBloomComputer)
 	FlagInvestorComputer := flag.Bool(ConstInvestorComputer, false, InvestorComputer)
+	FlagConstSFTScanner := flag.String(ConstSFTScanner, "", SFTScannerVar)
 
 	flag.Parse()
 
@@ -146,4 +158,12 @@ Computes the number of Unique ERD Addresses holding Demiourgos Assets
 	if *FlagInvestorComputer != false {
 		InvestorScanner()
 	}
+
+	//Option 5
+	if *FlagConstSFTScanner != "" {
+		SFTChain := SFTScanner(*FlagConstSFTScanner)
+		Name := *FlagConstSFTScanner + ".txt"
+		mvx.WriteChainBalanceESDT(Name, SFTChain)
+	}
+
 }
