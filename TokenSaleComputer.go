@@ -183,7 +183,7 @@ func TokenComputer(SnakePathVar, SnakeNameVar string, Addy mvx.MvxAddress) {
 	fmt.Println("Address has ", UserSnake, "Snakes")
 	fmt.Println("            ", UserCodingDivision, "Coding Division SFTs")
 	fmt.Println("            ", UserGoldenVesta, "Golden Vesta SFTs")
-	fmt.Println("            ", UserSilverVesta, "Golden Vesta SFTs")
+	fmt.Println("            ", UserSilverVesta, "Silver Vesta SFTs")
 	fmt.Println("============================================================")
 	fmt.Println("The Following NFTs/SFTs amounts are taken into computation")
 	fmt.Println("ROUND 1: ", SnakesTenSum, "Snakes NFTs")
