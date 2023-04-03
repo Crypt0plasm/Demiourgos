@@ -96,7 +96,7 @@ var (
 	Protection    = []string{"Dacian-Skin", "Bear-Skin", "Shield", "Armor"}
 	Weapons       = []string{"Cosor", "Falx", "Sicae", "Pavaza", "Dacian-Draco", "Howler"}
 	BSName        = "Bloodshed"
-	BSDescription = "A collection of 8861 NFTs depicting 272 Dacian Warriors representing the Bloodshed.gg, a Gaming Guild within Age of Zalmoxis, the 1st blockchain-based, Triple-A, Unreal-Engine 5 based, MMORPG."
+	BSDescription = "A collection of 8861 NFTs depicting 272 unique Dacian Warriors representing the Bloodshed.gg, a Gaming Guild within Age of Zalmoxis, the 1st blockchain-based, Triple-A, Unreal-Engine 5 based, MMORPG."
 )
 
 var (

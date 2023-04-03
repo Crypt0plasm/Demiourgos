@@ -2,6 +2,7 @@ package Blooming
 
 import (
 	mvx "MvxApiScanner"
+	"fmt"
 	"strings"
 )
 
@@ -49,6 +50,7 @@ func KycScanner(Path string) []mvx.MvxAddress {
 
 	StringSlice := mvx.ReadFile(Path)
 	for i := 1; i < len(StringSlice); i++ {
+		fmt.Println("Line is", i)
 		PAddy = ProcessLine(StringSlice[i])
 		if string(PAddy) != "" {
 			Output = append(Output, PAddy)

@@ -23,11 +23,11 @@ Used to send Snake DAO Amounts to users.
 `
 		CodingDivisionTotalRewards = `--cdt  <Token Amount> as string;
 Computes CodingDivision Rewards by splitting a total amount to all CD SFTs
-Used to send Snake DAO Amounts to users.
+Used to send CodingDivision DAO Amounts to users.
 `
 		VestaTotalRewards = `--vst  <Token Amount> as string;
-Computes CodingDivision Rewards by splitting a total amount to all CD SFTs
-Used to send Snake DAO Amounts to users.
+Computes Vesta Rewards by splitting a total amount to all CD SFTs
+Used to send Vesta DAO Amounts to users.
 `
 
 		//RAW Distribution calls
