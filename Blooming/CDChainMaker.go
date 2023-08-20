@@ -23,6 +23,31 @@ import (
 // =====================================================================================================================
 // =====================================================================================================================
 
+func CreateSnakeChain(Input mvx.SFT) ([]mvx.BalanceSFT, *p.Decimal) {
+	fmt.Println("Snapshotting Snake SFT Addresses and Amounts")
+	SnakeChain := mvx.SnapshotSFTChain(Input)
+	Sum := mvx.AddBalanceIntegerChain(SnakeChain)
+	fmt.Println(len(SnakeChain), "addresses snapshotted with Snake SFTs", Sum)
+	fmt.Println("")
+	return SnakeChain, Sum
+}
+
+func CreateSnakeAmountChain(InputChain []mvx.BalanceSFT) []mvx.BalanceSFT {
+	var (
+		AllChain []mvx.BalanceSFT
+		Unit     mvx.BalanceSFT
+	)
+	for i := 0; i < len(InputChain); i++ {
+		if ComputeExceptionAddress(InputChain[i].Address, SnakeExceptions) == false {
+			Unit.Address = InputChain[i].Address
+			Unit.Balance = InputChain[i].Balance
+
+			AllChain = append(AllChain, Unit)
+		}
+	}
+	return AllChain
+}
+
 func CreateVestaChain(Input mvx.SFT) ([]mvx.BalanceSFT, *p.Decimal) {
 	var VestaType string
 	if Input == mvx.VestaGold {

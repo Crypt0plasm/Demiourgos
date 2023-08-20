@@ -4,6 +4,7 @@ import (
 	rw "Demiourgos/Rewards"
 	p "Firefly-APD"
 	"flag"
+	"strings"
 )
 
 func main() {
@@ -14,6 +15,10 @@ Computes Snake Rewards by multiplying Snake Amounts with the inputted Token amou
 `
 		CodingDivisionMultiplierRewards = `--cdm  <Token Amount> as string;
 Computes CodingDivision Rewards by multiplying CD SFT Amounts with the inputted Token amount.
+`
+
+		CustomSFTMultiplierRewards = `--sftm  <SFT-Designation_Token-Amount> as string (separated by _);
+Computes Custom SFT Rewards by multiplying Custom SFT Amounts with the inputted Token amount.
 `
 
 		//Totalisation percentual Splits calls
@@ -51,8 +56,9 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 
 	const (
 		//Multiplier Rewards
-		SNM = "snm" //string
-		CDM = "cdm" //string
+		SNM  = "snm"  //string
+		CDM  = "cdm"  //string
+		SFTM = "sftm" //string
 
 		//Single Amount Percentual Rewards
 		SNT = "snt" //string	*	sending Snake Rewards from Snake DAO
@@ -70,6 +76,7 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 
 	FlagSnakeMultiplierRewards := flag.String(SNM, "0", SnakeMultiplierRewards)
 	FlagCodingDivisionMultiplierRewards := flag.String(CDM, "0", CodingDivisionMultiplierRewards)
+	FlagCustomSFTMultiplierRewards := flag.String(SFTM, "0", CustomSFTMultiplierRewards)
 
 	FlagSnakeTotalRewards := flag.String(SNT, "0", SnakeTotalRewards)
 	FlagCodingDivisionTotalRewards := flag.String(CDT, "0", CodingDivisionTotalRewards)
@@ -91,6 +98,13 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 	//Second Option
 	if *FlagCodingDivisionMultiplierRewards != "0" {
 		rw.ComputeCodingDivisionRewardsByMultiplication(*FlagCodingDivisionMultiplierRewards)
+	}
+
+	//Second Second Option
+	if *FlagCustomSFTMultiplierRewards != "0" {
+		BlockHeights := strings.Split(*FlagCustomSFTMultiplierRewards, "_")
+		//fmt.Println("Primut text este", BlockHeights)
+		rw.ComputeCustomSFTRewardsByMultiplication(BlockHeights[0], BlockHeights[1])
 	}
 
 	//Third Option

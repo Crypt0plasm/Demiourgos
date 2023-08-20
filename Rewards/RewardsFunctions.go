@@ -16,12 +16,13 @@ var (
 	SnakeName = "DEMIOU-6d1b5c-top-holders-omniscient-tools.csv"
 )
 
-func MakeSnakeChain() ([]mvx.BalanceSFT, *p.Decimal) {
+func MakeSnakeChain() ([]mvx.BalanceESDT, *p.Decimal) {
 	//Make Snakes Chain
-	Snakes := mvx.ReadOmniscientSS(SnakePath, SnakeName)
-	SnakesSum := mvx.AddBalanceIntegerChain(Snakes)
-	fmt.Println("A total of ", SnakesSum, "have been read from Omniscient file, on", len(Snakes), " addresses.")
-	return Snakes, SnakesSum
+	Snakes, _ := bloom.CreateSnakeChain(mvx.SnakeSFT)
+	SnakeTrim := bloom.CreateSnakeAmountChain(Snakes)
+	SnakeTrimSorted := mvx.SortBalanceIntegerChain(SnakeTrim)
+	SnakeTrimSortedSum := mvx.AddBalanceDecimalChain(SnakeTrimSorted)
+	return SnakeTrimSorted, SnakeTrimSortedSum
 }
 
 func MakeCodingDivisionChain() ([]mvx.BalanceESDT, *p.Decimal) {
@@ -168,22 +169,54 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 	//Make Coding Division Chain
 	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
 
-	DemiourgosDistribution := sm.MULxc(Amount, p.NFS("0.35"))
-	SnakesDistribution := sm.MULxc(Amount, p.NFS("0.15"))
+	SnakeNumber := p.NFS("760")
+	ASSE := p.NFS("74") //Ancient Snake Share Equivalent
+
+	TotalAllShares := p.NFS("1000000")
+	TotalExternalShares := p.NFS("0")
+	CompanyShares := sm.SUBxc(TotalAllShares, TotalExternalShares)
+	SnakeShare := sm.DIVxc(CompanyShares, p.NFS("2000"))
+
+	ExistingSnakeShares := sm.MULxc(SnakeShare, SnakeNumber)
+
+	AncientShare := sm.MULxc(ASSE, SnakeShare)
+
+	FoundersShare := sm.SUBxc(CompanyShares, sm.SUMxc(AncientShare, ExistingSnakeShares))
+	FoundersShareEach := sm.DIVxc(FoundersShare, p.NFS("2"))
+
+	fmt.Println("Total Existing Shares are ", TotalAllShares, " shares.")
+	fmt.Println("External Entities have", TotalExternalShares, " shares.")
+	fmt.Println("Demiourgos holds ", CompanyShares, " shares")
+	fmt.Println("One Snake is ", SnakeShare, "shares.")
+	fmt.Println(SnakeNumber, " Snakes have ", ExistingSnakeShares, " shares.")
+	fmt.Println("CEO and HoV have ", FoundersShareEach, "shares each.")
+	fmt.Println("CTO has ", AncientShare, " shares.")
+
 	CodingDivisionDistribution := sm.MULxc(Amount, p.NFS("0.5"))
+	SnakesDistribution := sm.MULxc(sm.DIVxc(SnakeNumber, p.NFS("1000")), sm.DIVxc(CodingDivisionDistribution, p.NFS("2")))
+	PDistribution := sm.MULxc(sm.DIVxc(FoundersShareEach, CompanyShares), CodingDivisionDistribution)
+	ADistribution := sm.MULxc(sm.DIVxc(AncientShare, CompanyShares), CodingDivisionDistribution)
 
-	fmt.Println("")
-	fmt.Println("A TOTAL of ", Amount, " Tokens will be distributed as follows:")
-	fmt.Println("	1)A total of ", SnakesSum, "Snakes NFTs have been read from Omniscient file, on", len(Snakes), " addresses.")
-	fmt.Println("	  They will receive a total of ", SnakesDistribution, " Tokens")
-	fmt.Println("	2)A total of ", CodingDivisionSum, "CodingDivision SFTs have been snapshotted, on", len(CodingDivision), " addresses.")
-	fmt.Println("	  They will receive a total of ", CodingDivisionDistribution, " Tokens")
-	fmt.Println("	3)Demiourgos.Holdings™ retains ", DemiourgosDistribution, " Tokens")
+	CDSplit := []*p.Decimal{CodingDivisionDistribution, SnakesDistribution, PDistribution, ADistribution}
+	fmt.Println("=====*****======")
+	fmt.Println("Coding.Division gets ", CodingDivisionDistribution, " Tokens.")
+	fmt.Println("Snakes get ", SnakesDistribution, " Tokens.")
+	fmt.Println("CEO and HoV get ", PDistribution, " Tokens each as Shareholders.")
+	fmt.Println("CTO gets ", ADistribution, " Tokens as Shareholder.")
+	fmt.Println("=====*****======")
 	fmt.Println("")
 
-	SnakeRewardsChain := mvx.ExactPercentualIntegerRewardSplitter(SnakesDistribution, Snakes)
+	SnakeRewardsChain := mvx.ExactPercentualDecimalRewardSplitter(SnakesDistribution, Snakes)
 	CodingDivisionRewardsChain := mvx.ExactPercentualDecimalRewardSplitter(CodingDivisionDistribution, CodingDivision)
-	TotalRewards := mvx.DecimalChainAdder(SnakeRewardsChain, CodingDivisionRewardsChain)
+
+	SharesChain := []mvx.BalanceESDT{
+		{mvx.Hefe, sm.DTS(PDistribution)},
+		{mvx.Florian, sm.DTS(PDistribution)},
+		{mvx.AH, sm.DTS(ADistribution)},
+	}
+
+	TotalRewards1 := mvx.DecimalChainAdder(SnakeRewardsChain, CodingDivisionRewardsChain)
+	TotalRewards := mvx.DecimalChainAdder(TotalRewards1, SharesChain)
 	TotalRewardsSorted := mvx.SortBalanceDecimalChain(TotalRewards)
 
 	for i := 0; i < len(TotalRewardsSorted); i++ {
@@ -194,7 +227,7 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 	EVDName := RewardExport(TotalRewardsSorted, "tCDr", sm.DTS(Amount))
 
 	//Make Evidence and Export it
-	Evidence := MakeTotalCDEvidence(DistributionType1, DistributionMode1, Payee3, Payee2, CodingDivisionSum, SnakesSum, Amount, mvx.WrappedEGLD)
+	Evidence := MakeTotalCDEvidence(DistributionType1, DistributionMode1, Payee3, Payee2, CodingDivisionSum, SnakesSum, Amount, mvx.WrappedEGLD, CDSplit)
 	EvidenceString := DistributionEvidenceMLS(Evidence)
 	fmt.Println(EvidenceString)
 	ExportEvidenceCD(EVDName, Snakes, CodingDivision, Evidence)
@@ -209,7 +242,7 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 
 func ComputeSnakeRewardsByMultiplication(MultiplicationAmount string) []mvx.BalanceESDT {
 	Snakes, SnakesSum := MakeSnakeChain()
-	SnakesRewards := mvx.RewardsComputerIntegerChainMultiplication(Snakes, MultiplicationAmount)
+	SnakesRewards := mvx.RewardsComputerDecimalChainMultiplication(Snakes, MultiplicationAmount)
 	EVDName := RewardExport(SnakesRewards, "sSr", MultiplicationAmount)
 
 	//Make Evidence and Export it
@@ -239,11 +272,31 @@ func ComputeCodingDivisionRewardsByMultiplication(MultiplicationAmount string) [
 	return CodingDivisionRewards
 }
 
+func ComputeCustomSFTRewardsByMultiplication(SFTDesignation string, MultiplicationAmount string) []mvx.BalanceESDT {
+	ScanSFT := mvx.SFT(SFTDesignation)
+	SFTChain := mvx.SnapshotSFTChain(ScanSFT)
+	CustomSFTChain := mvx.SortBalanceIntegerChain(SFTChain)
+	CustomSFTSum := mvx.AddBalanceIntegerChain(SFTChain)
+
+	CustomSFTChainRewards := mvx.RewardsComputerDecimalChainMultiplication(CustomSFTChain, MultiplicationAmount)
+	EVDName := RewardExport(CustomSFTChainRewards, "cSFTr", MultiplicationAmount)
+
+	//Make Evidence and Export it
+	Evidence := MakeMultiplicationEvidence(DistributionType2, DistributionMode3, Payee3, CustomSFTSum, p.NFS(MultiplicationAmount), mvx.WrappedEGLD)
+	EvidenceString := DistributionEvidenceMLS(Evidence)
+	fmt.Println(EvidenceString)
+	ExportEvidenceMultiplication(EVDName, CustomSFTChain, Evidence)
+	//Copy Exported Evidence to RewardFolder
+	B, _ := mvx.MyCopy(EVDName, RewardPath+EVDName)
+	fmt.Println(B, " bytes copied for the reward file!")
+	return CustomSFTChainRewards
+}
+
 //Totalisation Rewards
 
 func ComputeSnakeRewardsByTotalisation(TotalAmount string) []mvx.BalanceESDT {
 	Snakes, SnakesSum := MakeSnakeChain()
-	SnakesRewards := mvx.ExactPercentualIntegerRewardSplitter(p.NFS(TotalAmount), Snakes)
+	SnakesRewards := mvx.ExactPercentualDecimalRewardSplitter(p.NFS(TotalAmount), Snakes)
 	EVDName := RewardExport(SnakesRewards, "taSr", TotalAmount)
 
 	//Make Evidence and Export it

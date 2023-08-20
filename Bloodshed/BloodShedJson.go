@@ -370,17 +370,17 @@ var (
 	Rare63 = []TTV{R2, D7, P3, B3, RR3, MP2, SP1, MH2, OH5}
 
 	//Dac 8
-	Rare64 = []TTV{R2, D8, P1, B0, RR1, MP2, SP1, MH1, OH1}
-	Rare65 = []TTV{R2, D8, P1, B0, RR2, MP2, SP1, MH1, OH1}
-	Rare66 = []TTV{R2, D8, P1, B0, RR3, MP2, SP1, MH1, OH1}
+	Rare64 = []TTV{R2, D8, P1, B1, RR1, MP2, SP1, MH1, OH1}
+	Rare65 = []TTV{R2, D8, P1, B1, RR2, MP2, SP1, MH1, OH1}
+	Rare66 = []TTV{R2, D8, P1, B1, RR3, MP2, SP1, MH1, OH1}
 
-	Rare67 = []TTV{R2, D8, P2, B1, RR1, MP2, SP1, MH1, OH1}
-	Rare68 = []TTV{R2, D8, P2, B1, RR2, MP2, SP1, MH1, OH1}
-	Rare69 = []TTV{R2, D8, P2, B1, RR3, MP2, SP1, MH1, OH1}
+	Rare67 = []TTV{R2, D8, P2, B2, RR1, MP2, SP1, MH1, OH1}
+	Rare68 = []TTV{R2, D8, P2, B2, RR2, MP2, SP1, MH1, OH1}
+	Rare69 = []TTV{R2, D8, P2, B2, RR3, MP2, SP1, MH1, OH1}
 
-	Rare70 = []TTV{R2, D8, P3, B2, RR1, MP2, SP1, MH1, OH1}
-	Rare71 = []TTV{R2, D8, P3, B2, RR2, MP2, SP1, MH1, OH1}
-	Rare72 = []TTV{R2, D8, P3, B2, RR3, MP2, SP1, MH1, OH1}
+	Rare70 = []TTV{R2, D8, P3, B3, RR1, MP2, SP1, MH1, OH1}
+	Rare71 = []TTV{R2, D8, P3, B3, RR2, MP2, SP1, MH1, OH1}
+	Rare72 = []TTV{R2, D8, P3, B3, RR3, MP2, SP1, MH1, OH1}
 
 	//Epic
 	//Dac 1

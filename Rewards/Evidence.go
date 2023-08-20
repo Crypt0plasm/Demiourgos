@@ -75,6 +75,16 @@ func MakeTripleCDSplit(Unit string, Amount *p.Decimal) string {
 	return LT
 }
 
+func MakeQuadCDSplit(Unit string, Amount *p.Decimal, Split []*p.Decimal) string {
+	L1 := Unit + " = " + sm.DTS(Split[0])
+	L2 := "                    : " + Payee2 + " = " + sm.DTS(Split[1])
+	L3 := "                    : " + "CEO" + " = " + sm.DTS(Split[2])
+	L4 := "                    : " + "HoV" + " = " + sm.DTS(Split[2])
+	L5 := "                    : " + "CTO" + " = " + sm.DTS(Split[3])
+	LT := L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5
+	return LT
+}
+
 func MakeMultiplicationEvidence(Type, Mode, PayeeeX string, Payeee1Q, DistributedAmount *p.Decimal, Token mvx.ESDT) DistributionEvidence {
 	var Output DistributionEvidence
 
@@ -99,7 +109,7 @@ func MakeTotalisationEvidence(Type, Mode, PayeeeX string, Payeee1Q, DistributedA
 	return Output
 }
 
-func MakeTotalCDEvidence(Type, Mode, PayeeeX, PayeeeY string, Payeee1Q, Payeee2Q, DistributedAmount *p.Decimal, Token mvx.ESDT) DistributionEvidence {
+func MakeTotalCDEvidence(Type, Mode, PayeeeX, PayeeeY string, Payeee1Q, Payeee2Q, DistributedAmount *p.Decimal, Token mvx.ESDT, CDSplit []*p.Decimal) DistributionEvidence {
 	var Output DistributionEvidence
 
 	Output.Type = Type
@@ -107,7 +117,7 @@ func MakeTotalCDEvidence(Type, Mode, PayeeeX, PayeeeY string, Payeee1Q, Payeee2Q
 	Output.Payees = MakeDoublePayeesString(PayeeeX, PayeeeY, Payeee1Q, Payeee2Q)
 	Output.Token = Token
 	Output.Amount = DistributedAmount
-	Output.Split = MakeTripleCDSplit(Payee3, DistributedAmount)
+	Output.Split = MakeQuadCDSplit(Payee3, DistributedAmount, CDSplit)
 	return Output
 }
 
@@ -236,13 +246,12 @@ func ExportEvidenceMultiplication(ExportName string, InputChain []mvx.BalanceESD
 
 }
 
-func ExportEvidenceMultiplicationSFT(ExportName string, InputChain []mvx.BalanceSFT, Evidence DistributionEvidence) {
-	InputChainESDT := mvx.ConvertIntegerSFTtoESDTChain(InputChain)
-	ExportEvidenceMultiplication(ExportName, InputChainESDT, Evidence)
+func ExportEvidenceMultiplicationSFT(ExportName string, InputChain []mvx.BalanceESDT, Evidence DistributionEvidence) {
+	ExportEvidenceMultiplication(ExportName, InputChain, Evidence)
 	return
 }
 
-func ExportEvidenceCD(ExportName string, SnakeChain []mvx.BalanceSFT, CDChain []mvx.BalanceESDT, Evidence DistributionEvidence) {
+func ExportEvidenceCD(ExportName string, SnakeChain []mvx.BalanceESDT, CDChain []mvx.BalanceESDT, Evidence DistributionEvidence) {
 	f, err := os.Create(ExportName)
 
 	if err != nil {
