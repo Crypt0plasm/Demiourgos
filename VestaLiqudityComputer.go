@@ -49,6 +49,9 @@ Computes Vesta Split using Hardcoded Asset Values. Enter the following DATA:
 File must be in the same folder with the executable
 Example without the quotes: 
 "--hvst 14.4199:4.3525""
+
+Hardcoded Assets Order is:
+Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilverLiq;UBronzeLiq
 `
 	)
 
