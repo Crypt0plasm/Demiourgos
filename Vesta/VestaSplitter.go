@@ -5,6 +5,9 @@ import (
 	mvx "MvxApiScanner"
 	sm "SuperMath"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 )
 
 type VestaHoldings struct {
@@ -72,6 +75,10 @@ var (
 	TheKid        = mvx.MvxAddress("erd1zl890854dweghll9faf67ft26965v8u20d6z63cntr9a5ykhcekqmyzcsf")
 	RaulTM        = mvx.MvxAddress("erd1640c9n2cck2326jy0tg87nawhgxdxvzqg9psezg2yjzkxvg6gkcqzfdp6j")
 	MakeAStep     = mvx.MvxAddress("erd1heus28d80kkengfz4ltn2m9xhvd4th8pajrsg9hkeeu202cjpfwq03m38w")
+
+	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
+		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
+		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep"}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
@@ -405,18 +412,18 @@ func SumChain(InputChain []*p.Decimal) *p.Decimal {
 func ComputeMintPercent(PersonalAmount *p.Decimal, InputChain []*p.Decimal) *p.Decimal {
 	ChainSum := SumChain(InputChain)
 	TotalVST := sm.ADDxc(ChainSum, PersonalAmount)
-	fmt.Println("Total VST is: ", TotalVST)
+	fmt.Println("CMP: Total VST is: ", TotalVST)
 	TotalPersonalAmount := sm.ADDxc(PersonalAmount, InputChain[0])
-	fmt.Println("TotalPersonal Amount is ", TotalPersonalAmount)
+	fmt.Println("CMP: Total Ancient Amount is: ", TotalPersonalAmount)
 	OutgoingAmount := sm.SUBxc(ChainSum, InputChain[0])
-	fmt.Println("Outgoing Amount is: ", OutgoingAmount)
+	fmt.Println("CMP: Total Outgoing Amount to be sent is: ", OutgoingAmount)
 
 	OutgoingAmountPercent := sm.TruncateCustom(sm.DIVxc(OutgoingAmount, TotalVST), 18)
-	fmt.Println("OutgoingPercent := ", OutgoingAmountPercent)
+	fmt.Println("CMP: Decimalic Outgoing Percent := ", OutgoingAmountPercent)
 	OutgoingAmountRoundUP := sm.TruncateCustom(sm.MULxc(OutgoingAmountPercent, p.NFS("100")), 0)
 	FinalOutgoingAmount := sm.ADDxc(OutgoingAmountRoundUP, p.NFS("1"))
-	fmt.Println("OutgoingPercent final = ", FinalOutgoingAmount)
-	fmt.Println("================================================")
+	fmt.Println("CMP: Integer Outgoing Percent for MINT =", FinalOutgoingAmount)
+	fmt.Println("=====================================")
 	return OutgoingAmountRoundUP
 }
 
@@ -430,4 +437,69 @@ func ExportOutgoingVestas(MainChain []VestaHoldings, Rewards []*p.Decimal) []mvx
 	}
 	mvx.ConvertToBulkCSV("ExportVesta.csv", OutputChain[1:])
 	return OutputChain[1:]
+}
+
+func ExportGroupData(OutputName string, NameList []string, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) {
+	f, err := os.Create(OutputName)
+	if err != nil {
+		fmt.Println(err)
+		_ = f.Close()
+		return
+	}
+
+	LineToPrint := func(Info0 string, Info1 VestaHoldings, Info2 VestaLPHoldings) string {
+		ERD := string(Info1.Address)
+		GoldSFT := strconv.Itoa(int(Info1.Gold))
+		SilverSFT := strconv.Itoa(int(Info1.Silver))
+		BronzeSFT := strconv.Itoa(int(Info1.Bronze))
+		GoldLiq := sm.DTS(Info2.VestaLiq.Gold)
+		SilverLiq := sm.DTS(Info2.VestaLiq.Silver)
+		BronzeLiq := sm.DTS(Info2.VestaLiq.Bronze)
+		UGoldLiq := sm.DTS(Info2.VestaLiq.UGold)
+		USilverLiq := sm.DTS(Info2.VestaLiq.USilver)
+		UBronzeLiq := sm.DTS(Info2.VestaLiq.UBronze)
+
+		L := Info0 + ";" + ERD + ";" + GoldSFT + ";" + SilverSFT + ";" + BronzeSFT + ";" + GoldLiq + ";" + SilverLiq + ";" + BronzeLiq + ";" + UGoldLiq + ";" + USilverLiq + ";" + UBronzeLiq
+		return L
+	}
+
+	for i := 0; i < len(VestaSFTsChain); i++ {
+		_, err1 := fmt.Fprintln(f, LineToPrint(NameList[i], VestaSFTsChain[i], LPChain[i]))
+		if err1 != nil {
+			return
+		}
+	}
+}
+
+//(VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings)
+
+func ImportGroupData(OutputName string) ([]VestaHoldings, []VestaLPHoldings) {
+
+	StringSlice := mvx.ReadFile(OutputName)
+	var (
+		Chain1 = make([]VestaHoldings, len(StringSlice))
+		Chain2 = make([]VestaLPHoldings, len(StringSlice))
+	)
+
+	StrToInt := func(Input string) int64 {
+		Output, _ := strconv.Atoi(Input)
+		return int64(Output)
+	}
+
+	for i := 0; i < len(StringSlice); i++ {
+		SeparatedStrings := strings.Split(StringSlice[i], ";")
+		Chain1[i].Address = mvx.MvxAddress(SeparatedStrings[1])
+		Chain1[i].Gold = StrToInt(SeparatedStrings[2])
+		Chain1[i].Silver = StrToInt(SeparatedStrings[3])
+		Chain1[i].Bronze = StrToInt(SeparatedStrings[4])
+		Chain2[i].Address = mvx.MvxAddress(SeparatedStrings[1])
+		Chain2[i].VestaLiq.Gold = p.NFS(SeparatedStrings[5])
+		Chain2[i].VestaLiq.Silver = p.NFS(SeparatedStrings[6])
+		Chain2[i].VestaLiq.Bronze = p.NFS(SeparatedStrings[7])
+		Chain2[i].VestaLiq.UGold = p.NFS(SeparatedStrings[8])
+		Chain2[i].VestaLiq.USilver = p.NFS(SeparatedStrings[9])
+		Chain2[i].VestaLiq.UBronze = p.NFS(SeparatedStrings[10])
+	}
+
+	return Chain1, Chain2
 }
