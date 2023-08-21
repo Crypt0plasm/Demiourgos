@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	RawVesta := p.NFS("12.7116")
-	InputUM := p.NFS("4.3475")
+	RawVesta := p.NFS("402.0138")
+	InputUM := p.NFS("4.3525")
 
 	AH, VestaAmountsWithAll := vst.MultipleAbsoluteSplitWithVesta(RawVesta, InputUM, vst.UserChain, vst.LiquidityUserChain)
 	//fmt.Println("Total Vesta Amounts are: ", VestaAmountsWithAll)

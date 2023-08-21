@@ -52,7 +52,7 @@ var (
 	AncientDEB = p.NFS("2.5")
 	Neutral    = p.NFS("1")
 	VestaTM    = p.NFS("5")
-	VestaUM    = p.NFS("4.3475")
+
 	Zero       = p.NFS("0")
 	Empty      = "empty"
 
@@ -72,8 +72,6 @@ var (
 	TheKid        = mvx.MvxAddress("erd1zl890854dweghll9faf67ft26965v8u20d6z63cntr9a5ykhcekqmyzcsf")
 	RaulTM        = mvx.MvxAddress("erd1640c9n2cck2326jy0tg87nawhgxdxvzqg9psezg2yjzkxvg6gkcqzfdp6j")
 	MakeAStep     = mvx.MvxAddress("erd1heus28d80kkengfz4ltn2m9xhvd4th8pajrsg9hkeeu202cjpfwq03m38w")
-
-	VestaVault = FarmMx{AncientDEB, Neutral, VestaTM, Neutral, VestaUM, Neutral, Neutral, Neutral}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
