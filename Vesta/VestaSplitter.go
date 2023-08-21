@@ -53,8 +53,8 @@ var (
 	Neutral    = p.NFS("1")
 	VestaTM    = p.NFS("5")
 
-	Zero       = p.NFS("0")
-	Empty      = "empty"
+	Zero  = p.NFS("0")
+	Empty = "empty"
 
 	AncientHodler = mvx.AH
 	TrDaniel      = mvx.MvxAddress("erd1hg9q84tyzxretw2a8nce6q3lwgfzku587ndwr5k7202xt5pw4vyqp76vxe")
@@ -284,7 +284,7 @@ func ComputeTotalVLP(Input []VestaLPHoldings) *p.Decimal {
 // Computes the VLP Split given the Liquidity Pooled by all participants.
 // Used to compute the RawVesta Amount each individual user would earn
 // This is further used when computing individual user yield based on individual liquidity
-func ComputeVLPSplit(Input []VestaLPHoldings) []*p.Decimal {
+func ComputeVLPSplit(Input []VestaLPHoldings) (*p.Decimal, []*p.Decimal) {
 	var (
 		VLPSplitChain = make([]*p.Decimal, len(Input))
 		UnitVLPSplit  = new(p.Decimal)
@@ -300,7 +300,7 @@ func ComputeVLPSplit(Input []VestaLPHoldings) []*p.Decimal {
 		}
 		VLPSplitChain[i] = UnitVLPSplit
 	}
-	return VLPSplitChain
+	return GroupVLP, VLPSplitChain
 
 }
 
@@ -353,8 +353,8 @@ func CreateRawVestaSplit(RawAmount *p.Decimal, VLPSplit []*p.Decimal) []*p.Decim
 
 // The Final Function that computes individual Vesta yields considering all participants guests.
 // Then adds the individual computed Vesta Yields Together
-func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) (*p.Decimal, []*p.Decimal) {
-	VLPSplit := ComputeVLPSplit(LPChain)
+func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) (TotalVLP *p.Decimal, VLPSplit []*p.Decimal, AncientAmount *p.Decimal, TotalVestaRewardChain []*p.Decimal) {
+	TotalVLP, VLPSplit = ComputeVLPSplit(LPChain) //VLP Split
 	RawVestaSplit := CreateRawVestaSplit(RawVestaAmount, VLPSplit)
 
 	MakeZeroSlice := func(length int, Item *p.Decimal) []*p.Decimal {
@@ -370,7 +370,6 @@ func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFT
 		VestaRewardForPosition = make([]*p.Decimal, len(VestaSFTsChain))
 		PersonalAmountsChain   = make([]*p.Decimal, len(VestaSFTsChain))
 		PA                     = new(p.Decimal)
-		AH                     = new(p.Decimal)
 	)
 
 	for i := 0; i < len(VestaSFTsChain); i++ {
@@ -380,7 +379,7 @@ func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFT
 		//fmt.Println("**************")
 		SummedChain = VestaChainAdder(SummedChain, VestaRewardForPosition)
 		if i == 0 {
-			AH = PA
+			AncientAmount = PA
 			PersonalAmountsChain[i] = p.NFS("0")
 		} else {
 			PersonalAmountsChain[i] = PA
@@ -389,8 +388,8 @@ func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFT
 	//Personal Amount Chain is the chain with personal Vesta Amounts owner of sent liquidity is earning
 	//with his liquidity and with his SFTs. This amount is his in entirety, and he only splits the extra
 	//Vesta Token amounts generated with his boosters.
-	OutputChain := VestaChainAdder(SummedChain, PersonalAmountsChain)
-	return AH, OutputChain
+	TotalVestaRewardChain = VestaChainAdder(SummedChain, PersonalAmountsChain)
+	return TotalVLP, VLPSplit, AncientAmount, TotalVestaRewardChain
 }
 
 func SumChain(InputChain []*p.Decimal) *p.Decimal {
