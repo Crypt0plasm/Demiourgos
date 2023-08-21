@@ -44,11 +44,7 @@ Example without the quotes:
 "--hvst 14.4199:4.3525""
 `
 		ExportHardcodedAssets = `--eha  <> as bool;
-Computes Vesta Split using Hardcoded Asset Values. Enter the following DATA:
-(Raw Vesta Amount)/(vEGLD-VST Universal Multiplier UM)
-File must be in the same folder with the executable
-Example without the quotes: 
-"--hvst 14.4199:4.3525""
+Exports Hardcoded Values into HardcodedAssets.txt; simply run the flag.
 
 Hardcoded Assets Order is:
 Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilverLiq;UBronzeLiq
