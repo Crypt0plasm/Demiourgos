@@ -80,11 +80,10 @@ func KycSetComputer(KYC string) (SortedSetExceptionKYC []mvx.TrueBalanceESDT, Dr
 func InvestorScanner() int {
 	//Investor Computation
 	Snakes, _ := Rewards.MakeSnakeChain()
-	SnakesESDT := mvx.ConvertIntegerSFTtoESDTChain(Snakes)
 	CD, _ := Rewards.MakeCodingDivisionChain()
 	GoldenVesta, _ := Rewards.MakeGoldenVestaChain()
 	SilverVesta, _ := Rewards.MakeSilverVestaChain()
-	Total := mvx.MultipleDecimalChainAdder(SnakesESDT, CD, GoldenVesta, SilverVesta)
+	Total := mvx.MultipleDecimalChainAdder(Snakes, CD, GoldenVesta, SilverVesta)
 
 	fmt.Println("There are ", len(Total), " unique Demiourgos NFTs/SFTs holders, excluding SC")
 	return len(Total)
