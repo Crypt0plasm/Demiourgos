@@ -52,9 +52,15 @@ type FarmMx struct {
 }
 
 var (
-	AncientDEB = p.NFS("2.5")
-	Neutral    = p.NFS("1")
-	VestaTM    = p.NFS("5")
+	Neutral = p.NFS("1")
+
+	AncientDEB   = p.NFS("2.5")
+	BloodshedDEB = p.NFS("1.6")
+
+	VestaTMFive = p.NFS("5")
+	VestaTMSix  = p.NFS("6")
+
+	Platinum = p.NFS("1.4")
 
 	Zero  = p.NFS("0")
 	Empty = "empty"
@@ -75,15 +81,19 @@ var (
 	TheKid        = mvx.MvxAddress("erd1zl890854dweghll9faf67ft26965v8u20d6z63cntr9a5ykhcekqmyzcsf")
 	RaulTM        = mvx.MvxAddress("erd1640c9n2cck2326jy0tg87nawhgxdxvzqg9psezg2yjzkxvg6gkcqzfdp6j")
 	MakeAStep     = mvx.MvxAddress("erd1heus28d80kkengfz4ltn2m9xhvd4th8pajrsg9hkeeu202cjpfwq03m38w")
+	Paul          = mvx.MvxAddress("erd1vj40fxw0yah34mmdxly7l28w097ju6hf8pczpcdxs05n2vyx8hcspyxm2c")
+	Florian       = mvx.MvxAddress("erd1005uhtflxhql2cqyvw2y064k3fdjtjpcku0g3z25lr9znx8sd26sjulgt0")
+	Coding        = mvx.MvxAddress("erd1qe8kudxwzen5hgxcmws9jrrtg6au97j974gtgrml6amnzlmmcetsv02gps")
+	Bloodshed     = mvx.MvxAddress("erd16f3qfmpdhcgdv2ygwj43n2x08vnmfckvq8z976cs85ued5tx003scj60vd")
 
 	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
 		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
-		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep"}
+		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep", "Paul", "Florian", "Coding", "Bloodshed"}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
 		User001, User002, User003, User004, User005, User006, User007, User008, User009, User010,
-		User011, User012, User013, User014, User015}
+		User011, User012, User013, User014, User015, User016, User017, User018, User019}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 590}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 32}
@@ -102,15 +112,25 @@ var (
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 1, 5, 20}
 
+	//User016 = VestaHoldings{Paul, 177, 168, 172}
+	//User017 = VestaHoldings{Florian, 0, 49, 682}
+	//User018 = VestaHoldings{Coding, 0, 400, 0}
+	//User019 = VestaHoldings{Bloodshed, 0, 0, 0}
+
+	User016 = VestaHoldings{Paul, 0, 0, 0}
+	User017 = VestaHoldings{Florian, 0, 0, 0}
+	User018 = VestaHoldings{Coding, 0, 0, 0}
+	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
+
 	//Liquidity From Users
 	LiquidityUserChain = []VestaLPHoldings{VLQUser000,
 		VLQUser001, VLQUser002, VLQUser003, VLQUser004, VLQUser005, VLQUser006, VLQUser007, VLQUser008, VLQUser009, VLQUser010,
-		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015}
+		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015, VLQUser016, VLQUser017, VLQUser018, VLQUser019}
 	LQDEmpty = VestaLPs{Zero, Zero, Zero, Zero, Zero, Zero}
-	DSGEmpty = VestaLPDesignation{Empty, Empty, Empty, Empty, Empty, Empty}
 
 	VLQUser000 = VestaLPHoldings{AncientHodler, LQDUser000}
-	LQDUser000 = VestaLPs{p.NFS("24625.015212261015287848"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
+	LQDUser000 = VestaLPs{p.NFS("24987.628097349280102102"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
+	//LQDUser000 = VestaLPs{p.NFS("0"), Zero, Zero, p.NFS("0"), Zero, Zero}
 	//
 	VLQUser001 = VestaLPHoldings{TrDaniel, LQDUser001}
 	LQDUser001 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -156,6 +176,19 @@ var (
 	//
 	VLQUser015 = VestaLPHoldings{MakeAStep, LQDUser015}
 	LQDUser015 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser016 = VestaLPHoldings{Paul, LQDUser016}
+	LQDUser016 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser017 = VestaLPHoldings{Florian, LQDUser017}
+	LQDUser017 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser018 = VestaLPHoldings{Coding, LQDUser018}
+	LQDUser018 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser019 = VestaLPHoldings{Bloodshed, LQDUser019}
+	LQDUser019 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	//LQDUser019 = VestaLPs{p.NFS("193219.526790820208733109"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 )
 
 // Individual Multiplier Computation
@@ -207,8 +240,13 @@ func ComputeVestaSplit(Position int64, Input []VestaHoldings) (GuestIM *p.Decima
 }
 
 // Outputs Farm Multiplier Structure
-func OutputVVMx(InputIM, InputUM *p.Decimal) (Output FarmMx) {
-	Output = FarmMx{AncientDEB, Neutral, VestaTM, Neutral, InputUM, InputIM, Neutral, Neutral}
+func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
+	if Variant == "vesta" {
+		Output = FarmMx{AncientDEB, Neutral, VestaTMSix, Neutral, InputUM, InputIM, Neutral, Neutral}
+	} else if Variant == "koson" {
+		Output = FarmMx{BloodshedDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
+	}
+
 	return Output
 }
 
@@ -233,14 +271,14 @@ func MakeVestaSplit(Amount *p.Decimal, VS []*p.Decimal) []*p.Decimal {
 
 // Given an InputUM, a Guest position, and a RawVesta Amount to be split, computes a Chain of Vesta Token Values
 // According to the List of SFT Holders.
-func AbsolutSplitWithVesta(RWAmount, InputUM *p.Decimal, Position int64, Input []VestaHoldings) (Remaining *p.Decimal, VestaAmountChain []*p.Decimal) {
+func AbsolutSplitWithVesta(Variant string, RWAmount, InputUM *p.Decimal, Position int64, Input []VestaHoldings) (Remaining *p.Decimal, VestaAmountChain []*p.Decimal) {
 	TotalIM := ComputeFinalTotalIM(Input)
 
 	GIM, VS := ComputeVestaSplit(Position, Input)
 
-	ALLVestaFarmMultipliers := OutputVVMx(TotalIM, InputUM)
+	ALLVestaFarmMultipliers := OutputVVMx(Variant, TotalIM, InputUM)
 	//fmt.Println("M1: ", ALLVestaFarmMultipliers)
-	MyVestaFarmMultipliers := OutputVVMx(GIM, InputUM)
+	MyVestaFarmMultipliers := OutputVVMx(Variant, GIM, InputUM)
 	//fmt.Println("M2: ", MyVestaFarmMultipliers)
 
 	PersonalAmount := sm.TruncateCustom(sm.MULxc(RWAmount, GetAllMx(MyVestaFarmMultipliers)), 18)
@@ -360,7 +398,7 @@ func CreateRawVestaSplit(RawAmount *p.Decimal, VLPSplit []*p.Decimal) []*p.Decim
 
 // The Final Function that computes individual Vesta yields considering all participants guests.
 // Then adds the individual computed Vesta Yields Together
-func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) (TotalVLP *p.Decimal, VLPSplit []*p.Decimal, AncientAmount *p.Decimal, TotalVestaRewardChain []*p.Decimal) {
+func MultipleAbsoluteSplitWithVesta(Variant string, RawVestaAmount, InputUM *p.Decimal, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) (TotalVLP *p.Decimal, VLPSplit []*p.Decimal, AncientAmount *p.Decimal, TotalVestaRewardChain []*p.Decimal) {
 	TotalVLP, VLPSplit = ComputeVLPSplit(LPChain) //VLP Split
 	RawVestaSplit := CreateRawVestaSplit(RawVestaAmount, VLPSplit)
 
@@ -381,7 +419,7 @@ func MultipleAbsoluteSplitWithVesta(RawVestaAmount, InputUM *p.Decimal, VestaSFT
 
 	for i := 0; i < len(VestaSFTsChain); i++ {
 		//fmt.Println("**************")
-		PA, VestaRewardForPosition = AbsolutSplitWithVesta(RawVestaSplit[i], InputUM, int64(i), VestaSFTsChain)
+		PA, VestaRewardForPosition = AbsolutSplitWithVesta(Variant, RawVestaSplit[i], InputUM, int64(i), VestaSFTsChain)
 		//fmt.Println("Chain on position ", i, " is ", VestaRewardForPosition)
 		//fmt.Println("**************")
 		SummedChain = VestaChainAdder(SummedChain, VestaRewardForPosition)
@@ -409,13 +447,13 @@ func SumChain(InputChain []*p.Decimal) *p.Decimal {
 	return SUM
 }
 
-func ComputeMintPercent(PersonalAmount *p.Decimal, InputChain []*p.Decimal) *p.Decimal {
+func ComputeMintPercent(GuestPosition int, PersonalAmount *p.Decimal, InputChain []*p.Decimal) *p.Decimal {
 	ChainSum := SumChain(InputChain)
 	TotalVST := sm.ADDxc(ChainSum, PersonalAmount)
 	fmt.Println("CMP: Total VST is: ", TotalVST)
-	TotalPersonalAmount := sm.ADDxc(PersonalAmount, InputChain[0])
-	fmt.Println("CMP: Total Ancient Amount is: ", TotalPersonalAmount)
-	OutgoingAmount := sm.SUBxc(ChainSum, InputChain[0])
+	TotalGuestAmount := sm.ADDxc(PersonalAmount, InputChain[GuestPosition])
+	fmt.Println("CMP: Total Guest Amount is: ", TotalGuestAmount)
+	OutgoingAmount := sm.SUBxc(ChainSum, InputChain[GuestPosition])
 	fmt.Println("CMP: Total Outgoing Amount to be sent is: ", OutgoingAmount)
 
 	OutgoingAmountPercent := sm.TruncateCustom(sm.DIVxc(OutgoingAmount, TotalVST), 18)
@@ -427,7 +465,7 @@ func ComputeMintPercent(PersonalAmount *p.Decimal, InputChain []*p.Decimal) *p.D
 	return OutgoingAmountRoundUP
 }
 
-func ExportOutgoingVestas(MainChain []VestaHoldings, Rewards []*p.Decimal) []mvx.BalanceESDT {
+func ExportOutgoingVestas(GuestPosition int, MainChain []VestaHoldings, Rewards []*p.Decimal) []mvx.BalanceESDT {
 	var (
 		OutputChain = make([]mvx.BalanceESDT, len(MainChain))
 	)
@@ -435,8 +473,12 @@ func ExportOutgoingVestas(MainChain []VestaHoldings, Rewards []*p.Decimal) []mvx
 		OutputChain[i].Address = MainChain[i].Address
 		OutputChain[i].Balance = sm.DTS(Rewards[i])
 	}
-	mvx.ConvertToBulkCSV("ExportVesta.csv", OutputChain[1:])
-	return OutputChain[1:]
+	FinalOutput := append(OutputChain[:GuestPosition], OutputChain[GuestPosition+1:]...)
+	//Extracts the Guest Position
+	mvx.ConvertToBulkCSV("ExportVesta.csv", FinalOutput)
+	//mvx.ConvertToBulkCSV("ExportVesta.csv", OutputChain[1:])
+	//return OutputChain[1:]
+	return FinalOutput
 }
 
 func ExportGroupData(OutputName string, NameList []string, VestaSFTsChain []VestaHoldings, LPChain []VestaLPHoldings) {
