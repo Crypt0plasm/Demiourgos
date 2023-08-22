@@ -100,7 +100,7 @@ var (
 	User001 = VestaHoldings{TrDaniel, 16, 0, 32}
 	User002 = VestaHoldings{DRX, 9, 3, 10}
 	User003 = VestaHoldings{Patryx, 5, 6, 5}
-	User004 = VestaHoldings{Lavinia, 1, 6, 2}
+	User004 = VestaHoldings{Lavinia, 1, 6, 3}
 	User005 = VestaHoldings{Sandu, 4, 21, 0}
 	User006 = VestaHoldings{Cuciorva, 1, 3, 45}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
@@ -138,7 +138,7 @@ var (
 	LQDUser001 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser002 = VestaLPHoldings{DRX, LQDUser002}
-	LQDUser002 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser002 = VestaLPs{p.NFS("93.27259156861914193"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser003 = VestaLPHoldings{Patryx, LQDUser003}
 	LQDUser003 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -247,7 +247,7 @@ func ComputeVestaSplit(Position int64, Input []VestaHoldings) (GuestIM *p.Decima
 // Outputs Farm Multiplier Structure
 func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
 	if Variant == "vesta" {
-		Output = FarmMx{AncientDEB, Neutral, VestaTMFive, Neutral, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{AncientDEB, Neutral, VestaTMSix, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "koson" {
 		Output = FarmMx{BloodshedDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
 	}
