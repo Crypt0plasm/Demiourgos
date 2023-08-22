@@ -131,7 +131,7 @@ var (
 	LQDEmpty = VestaLPs{Zero, Zero, Zero, Zero, Zero, Zero}
 
 	VLQUser000 = VestaLPHoldings{AncientHodler, LQDUser000}
-	LQDUser000 = VestaLPs{p.NFS("26645.920986205365640129"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
+	LQDUser000 = VestaLPs{p.NFS("51182.714770247640300143"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
 	//LQDUser000 = VestaLPs{p.NFS("0"), Zero, Zero, p.NFS("0"), Zero, Zero}
 	//
 	VLQUser001 = VestaLPHoldings{TrDaniel, LQDUser001}
@@ -177,7 +177,7 @@ var (
 	LQDUser014 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser015 = VestaLPHoldings{MakeAStep, LQDUser015}
-	LQDUser015 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser015 = VestaLPs{p.NFS("397.181340846612475575"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser016 = VestaLPHoldings{Paul, LQDUser016}
 	LQDUser016 = VestaLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
