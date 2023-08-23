@@ -86,7 +86,7 @@ var (
 	Coding        = mvx.MvxAddress("erd1qe8kudxwzen5hgxcmws9jrrtg6au97j974gtgrml6amnzlmmcetsv02gps")
 	Bloodshed     = mvx.MvxAddress("erd16f3qfmpdhcgdv2ygwj43n2x08vnmfckvq8z976cs85ued5tx003scj60vd")
 	Elanul        = mvx.MvxAddress("erd1phh72v0evuphdk8uwsg9ph9mr3gm8ucklvpr808ky3jqnnf3uqkqn6n8xg")
-	Buguletu      = mvx.MvxAddress("erd1phh72v0evuphdk8uwsg9ph9mr3gm8ucklvpr808ky3jqnnf3uqkqn6n8xg")
+	Buguletu      = mvx.MvxAddress("erd1uq6kl4qtzd2fy42ad7puyf29jf6l25kzfmthv3wqu5jmz8dm2fmqk08n35")
 
 	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
 		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
