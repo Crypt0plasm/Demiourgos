@@ -9,7 +9,10 @@ import (
 	"strings"
 )
 
-func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.VestaHoldings, LPs []vst.VestaLPHoldings) {
+func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.VestaHoldings, LPs []vst.LpHoldings) {
+	var (
+		GP int
+	)
 	V1, V2, V3, V4 := vst.MultipleAbsoluteSplitWithVesta(Variant, RawVesta, VestaUM, SFTs, LPs)
 
 	//Variant that uses hardcoded Values
@@ -19,13 +22,20 @@ func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.Vest
 	fmt.Println("**********")
 	fmt.Println("Total VLP Split is: ", V2)
 	fmt.Println("**********")
-	fmt.Println("Ancient Amount is, ", V3)
+	fmt.Println("Ancient Amount as guest is, ", V3)
 	fmt.Println("**********")
 	fmt.Println("Vesta Rewards Chain for Export is: ", V4)
 	fmt.Println("=====================================")
-	vst.ComputeMintPercent(0, V3, V4)
+	//Ancient Vesta Boost: Guest Position is 0
+	//Bloodshed Vesta Boost: Guest Position is 19
+	if Variant == "vesta" || Variant == "koson" {
+		GP = 0
+	} else if Variant == "blood" {
+		GP = 19
+	}
+	vst.ComputeMintPercent(GP, V3, V4)
 	fmt.Println("Exporting Rewards File:")
-	vst.ExportOutgoingVestas(0, SFTs, V4)
+	vst.ExportOutgoingVestas(GP, SFTs, V4)
 }
 
 func main() {
@@ -85,7 +95,7 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		RawVesta := p.NFS(strings.Split(ReadString, ":")[1])
 		VestaUM := p.NFS(strings.Split(ReadString, ":")[2])
 		//FileName := strings.Split(ReadString, ";")[2]
-		//VestaSFTs, VestaLPs := vst.ImportGroupData(FileName)
+		//VestaSFTs, VestaDexLPs := vst.ImportGroupData(FileName)
 
 		VestaComputer(Type, RawVesta, VestaUM, vst.UserChain, vst.LiquidityUserChain)
 	}
