@@ -46,7 +46,7 @@ Computes Vesta Split. Enter the following DATA:
 File must be in the same folder with the executable
 Types accepted: vesta, koson
 Example without the quotes: 
-"--vst vesta:14.4199:4.3525:Participants.csv"
+"--vst vesta:14.4199:4.3525:HardcodedAssets.txt"
 `
 		ComputeHVST = `--hvst  <> as string;
 Computes Vesta Split using Hardcoded Asset Values. Enter the following DATA:
@@ -105,11 +105,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 
-	var (
-		Add  = p.NFS("24536.793784042274660014")
-		Byta = p.NFS("26645.920986205365640129")
-	)
-
-	Total := sm.ADDxc(Add, Byta)
-	fmt.Println("Dani is", Total)
+	Buy := p.NFS("1307.616995051457833439")
+	Owned := p.NFS("51182.714770247640300143")
+	Sum := sm.ADDxc(Buy, Owned)
+	fmt.Println("Total is", Sum)
 }
