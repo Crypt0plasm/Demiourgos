@@ -105,8 +105,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 
-	Buy := p.NFS("1307.616995051457833439")
-	Owned := p.NFS("51182.714770247640300143")
-	Sum := sm.ADDxc(Buy, Owned)
+	Buy := p.NFS("52490.331765299098133582")
+	Owned := p.NFS("24452")
+	Sum := sm.SUBxc(Buy, Owned)
 	fmt.Println("Total is", Sum)
 }
