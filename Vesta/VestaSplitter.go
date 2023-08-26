@@ -123,13 +123,14 @@ var (
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 6, 10, 20}
 
-	//User016 = VestaHoldings{Paul, 177, 168, 172}
-	//User017 = VestaHoldings{Florian, 0, 49, 695}
+	//User016 = VestaHoldings{Paul, 178, 186, 172}
+	//User017 = VestaHoldings{Florian, 0, 49, 697}
 	//User018 = VestaHoldings{Coding, 0, 400, 0}
+    	//User026 = VestaHoldings{DemiFarm, 0, 200, 500}
 
-	User016 = VestaHoldings{Paul, 178, 186, 172}
-	User017 = VestaHoldings{Florian, 0, 49, 697}
-	User018 = VestaHoldings{Coding, 0, 400, 0}
+	User016 = VestaHoldings{Paul, 0, 0, 0}
+	User017 = VestaHoldings{Florian, 0, 0, 0}
+	User018 = VestaHoldings{Coding, 0, 0, 0}
 	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
 	User020 = VestaHoldings{Elanul, 1, 5, 45}
 	User021 = VestaHoldings{Buguletu, 5, 0, 0}
@@ -137,7 +138,7 @@ var (
 	User023 = VestaHoldings{Ursea, 5, 0, 0}
 	User024 = VestaHoldings{BailWrite, 34, 0, 0}
 	User025 = VestaHoldings{Rogojan, 2, 2, 5}
-	User026 = VestaHoldings{DemiFarm, 0, 200, 500}
+	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
 
 	//Liquidity From Users
 	LiquidityUserChain = []LpHoldings{VLQUser000,
