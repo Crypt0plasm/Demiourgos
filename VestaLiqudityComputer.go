@@ -1,12 +1,11 @@
 package main
 
 import (
-	vst "Demiourgos/Vesta"
-	p "Firefly-APD"
-	sm "SuperMath"
-	"flag"
-	"fmt"
-	"strings"
+    vst "Demiourgos/Vesta"
+    p "Firefly-APD"
+    "flag"
+    "fmt"
+    "strings"
 )
 
 func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.VestaHoldings, LPs []vst.LpHoldings) {
@@ -105,12 +104,12 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 
-	Buy := p.NFS("249559.999999999999999001")
-	Owned := p.NFS("110759.999999999999999001")
-	M1 := p.NFS("397.181340846612475575")
-	M2 := p.NFS("587.487237387816262791")
-	Sum := sm.SUBxc(Buy, Owned)
-	Sum2 := sm.ADDxc(M1, M2)
-	fmt.Println("Total is", Sum)
-	fmt.Println("Total is", Sum2)
+	//Buy := p.NFS("249559.999999999999999001")
+	//Owned := p.NFS("110759.999999999999999001")
+    	//M1 := p.NFS("397.181340846612475575")
+    	//M2 := p.NFS("587.487237387816262791")
+    	//Sum := sm.SUBxc(Buy, Owned)
+    	//Sum2 := sm.ADDxc(M1, M2)
+    	//fmt.Println("Total is", Sum)
+    	//fmt.Println("Total is", Sum2)
 }
