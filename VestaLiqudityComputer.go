@@ -1,11 +1,11 @@
 package main
 
 import (
-    vst "Demiourgos/Vesta"
-    p "Firefly-APD"
-    "flag"
-    "fmt"
-    "strings"
+	vst "Demiourgos/Vesta"
+	p "Firefly-APD"
+	"flag"
+	"fmt"
+	"strings"
 )
 
 func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.VestaHoldings, LPs []vst.LpHoldings) {
@@ -103,13 +103,18 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	if *FlagExportHardcodedAssets == true {
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
+	//MakeAStep01 := p.NFS("587.487237387816262791")
+	//Rogojan01 := p.NFS("20.256852240155188848")
+	//Bloodshed := p.NFS("24452.66380850879469346")
+	//Ancient := p.NFS("-24452.66380850879469346")
 
 	//Buy := p.NFS("249559.999999999999999001")
 	//Owned := p.NFS("110759.999999999999999001")
-    	//M1 := p.NFS("397.181340846612475575")
-    	//M2 := p.NFS("587.487237387816262791")
-    	//Sum := sm.SUBxc(Buy, Owned)
-    	//Sum2 := sm.ADDxc(M1, M2)
-    	//fmt.Println("Total is", Sum)
-    	//fmt.Println("Total is", Sum2)
+	//M1 := p.NFS("397.181340846612475575")
+	//M2 := p.NFS("587.487237387816262791")
+	//Total de adaugat la Make a step dupa purge: 984.668578234428738366
+	//Sum := sm.SUBxc(Buy, Owned)
+	//Sum2 := sm.ADDxc(M1, M2)
+	//fmt.Println("Total is", Sum)
+	//fmt.Println("Total is", Sum2)
 }
