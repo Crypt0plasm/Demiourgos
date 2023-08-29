@@ -131,8 +131,13 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 
     A := p.NFS("171520.072093880156250376")
     B := p.NFS("204800")
+    C := p.NFS("52490.331765299098133582")
+    D := p.NFS("24452.663808508794693464")
+
     AplusB := sm.ADDxc(A, B)
+    CminusD := sm.SUBxc(C, D)
     fmt.Println("A plus B is: ", AplusB)
+    fmt.Println("C minu D is: ", CminusD)
 
     //MakeAStep01 := p.NFS("587.487237387816262791")
     //Rogojan01 := p.NFS("20.256852240155188848")
