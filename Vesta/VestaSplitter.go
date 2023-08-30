@@ -106,6 +106,39 @@ var (
 		"Coding", "Bloodshed", "Elanul", "Buguletu", "Carlig", "Ursea", "BailWrite", "Rogojan",
 		"DemiFarm"}
 
+	SLIP_AH        = true
+	SLIP_TrDaniel  = true
+	SLIP_DRX       = true
+	SLIP_Patryx    = true
+	SLIP_Lavinia   = false
+	SLIP_Sandu     = false
+	SLIP_Cuciorva  = true
+	SLIP_Codarcea  = false
+	SLIP_Pulecs    = false
+	SLIP_Laurentiu = true
+	SLIP_Frostedk9 = true
+	SLIP_IonutDRD  = false
+	SLIP_Buhaici   = false
+	SLIP_TheKid    = true
+	SLIP_RaulTM    = false
+	SLIP_MakeAStep = true
+	SLIP_Paul      = false
+	SLIP_Florian   = false
+	SLIP_Coding    = false
+	SLIP_Bloodshed = false
+	SLIP_Elanul    = false
+	SLIP_Buguletul = true
+	SLIP_Carlig    = false
+	SLIP_Ursea     = false
+	SLIP_BailWrite = true
+	SLIP_Rogojan   = false
+	SLIP_DemiFarm  = false
+
+	SlipChain = []bool{SLIP_AH, SLIP_TrDaniel, SLIP_DRX, SLIP_Patryx, SLIP_Lavinia, SLIP_Sandu, SLIP_Cuciorva, SLIP_Codarcea,
+		SLIP_Pulecs, SLIP_Laurentiu, SLIP_Frostedk9, SLIP_IonutDRD, SLIP_Buhaici, SLIP_TheKid, SLIP_RaulTM,
+		SLIP_MakeAStep, SLIP_Paul, SLIP_Florian, SLIP_Coding, SLIP_Bloodshed, SLIP_Elanul, SLIP_Buguletul,
+		SLIP_Carlig, SLIP_Ursea, SLIP_BailWrite, SLIP_Rogojan, SLIP_DemiFarm}
+
 	//Users
 	UserChain = []VestaHoldings{User000,
 		User001, User002, User003, User004, User005, User006, User007, User008, User009, User010,
@@ -157,25 +190,25 @@ var (
 	LQDUser000      = VestaDexLPs{p.NFS("28037.667956790303440118"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
 	KosonLiqUser000 = VestaDexLPs{p.NFS("45137.278081125541251284"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser000 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("376320.072093880156250376")}
+	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("390649.946516679053972039")}
 	//
 	VLQUser001      = LpHoldings{TrDaniel, LQDUser001, KosonLiqUser001, BloodLiqUser001, SnakeLiqUser001}
 	LQDUser001      = VestaDexLPs{p.NFS("1658.292888856085538026"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser001 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser001 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser001 = OuroLP{p.NFS("0"), p.NFS("9074.105300832349302143")}
+	SnakeLiqUser001 = OuroLP{p.NFS("0"), p.NFS("10339.517613495897384346")}
 	//
 	VLQUser002      = LpHoldings{DRX, LQDUser002, KosonLiqUser002, BloodLiqUser002, SnakeLiqUser002}
 	LQDUser002      = VestaDexLPs{p.NFS("93.27259156861914193"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser002 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser002 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser002 = OuroLP{p.NFS("0"), p.NFS("3170.805465212748092575")}
+	SnakeLiqUser002 = OuroLP{p.NFS("0"), p.NFS("3616.723178477773394707")}
 	//
 	VLQUser003      = LpHoldings{Patryx, LQDUser003, KosonLiqUser003, BloodLiqUser003, SnakeLiqUser003}
 	LQDUser003      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser003 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser003 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser003 = OuroLP{p.NFS("0"), p.NFS(" 2112.335458424999987794")}
+	SnakeLiqUser003 = OuroLP{p.NFS("0"), p.NFS("2409.875936774999981945")}
 	//
 	VLQUser004      = LpHoldings{Lavinia, LQDUser004, KosonLiqUser004, BloodLiqUser004, SnakeLiqUser004}
 	LQDUser004      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -193,7 +226,7 @@ var (
 	LQDUser006      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser006 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser006 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser006 = OuroLP{p.NFS("0"), p.NFS("3139.958113874999975696")}
+	SnakeLiqUser006 = OuroLP{p.NFS("0"), p.NFS("3582.248014124999970590")}
 	//
 	VLQUser007      = LpHoldings{Codarcea, LQDUser007, KosonLiqUser007, BloodLiqUser007, SnakeLiqUser007}
 	LQDUser007      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -211,13 +244,13 @@ var (
 	LQDUser009      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser009 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser009 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser009 = OuroLP{p.NFS("0"), p.NFS("2626.146786149999957292")}
+	SnakeLiqUser009 = OuroLP{p.NFS("0"), p.NFS("2996.061975449999946282")}
 	//
 	VLQUser010      = LpHoldings{Frostedk9, LQDUser010, KosonLiqUser010, BloodLiqUser010, SnakeLiqUser010}
 	LQDUser010      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser010 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser010 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser010 = OuroLP{p.NFS("0"), p.NFS("4338.851211899999952428")}
+	SnakeLiqUser010 = OuroLP{p.NFS("0"), p.NFS("4950.015437699999941865")}
 	//
 	VLQUser011      = LpHoldings{IonutDRD, LQDUser011, KosonLiqUser011, BloodLiqUser011, SnakeLiqUser011}
 	LQDUser011      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -247,7 +280,7 @@ var (
 	LQDUser015      = VestaDexLPs{p.NFS("984.668578234428738366"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser015 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser015 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser015 = OuroLP{p.NFS("0"), p.NFS("5787.504951902936706434")}
+	SnakeLiqUser015 = OuroLP{p.NFS("0"), p.NFS("6595.151966627011704552")}
 	//
 	VLQUser016      = LpHoldings{Paul, LQDUser016, KosonLiqUser016, BloodLiqUser016, SnakeLiqUser016}
 	LQDUser016      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -283,7 +316,7 @@ var (
 	LQDUser021      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser021 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser021 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser021 = OuroLP{p.NFS("0"), p.NFS("1141.802950499999962611")}
+	SnakeLiqUser021 = OuroLP{p.NFS("0"), p.NFS("1302.635641499999956452")}
 	//
 	VLQUser022      = LpHoldings{Carlig, LQDUser022, KosonLiqUser022, BloodLiqUser022, SnakeLiqUser022}
 	LQDUser022      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -301,7 +334,7 @@ var (
 	LQDUser024      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser024 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser024 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser024 = OuroLP{p.NFS("0"), p.NFS("7764.260063399999944171")}
+	SnakeLiqUser024 = OuroLP{p.NFS("0"), p.NFS("8857.922362199999936662")}
 	//
 	VLQUser025      = LpHoldings{Rogojan, LQDUser025, KosonLiqUser025, BloodLiqUser025, SnakeLiqUser025}
 	LQDUser025      = VestaDexLPs{p.NFS("168.983463408742781330"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
