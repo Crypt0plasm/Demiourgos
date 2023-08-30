@@ -10,6 +10,17 @@ import (
 	"strings"
 )
 
+func SlipComputer(IFTA *p.Decimal, Ratio *p.Decimal) *p.Decimal {
+	Output := sm.TruncateCustom(sm.DIVxc(IFTA, Ratio), 18)
+	return Output
+}
+
+func SlipComputerSender(Input *p.Decimal) (*p.Decimal, *p.Decimal) {
+	A := sm.TruncateCustom(sm.MULxc(Input, p.NFS("0.48")), 18)
+	B := sm.SUBxc(Input, A)
+	return A, B
+}
+
 func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.VestaHoldings, LPs []vst.LpHoldings) {
 	var (
 		GP int
@@ -164,10 +175,17 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("New_Ancient: ", New_Ancient)
 
 	fmt.Println("**************************************************")
-	A := p.NFS("28037.667956790303440118")
-	B := p.NFS("178.221793061620208392")
+	A := p.NFS("0")
+	B := p.NFS("3615.525112256999973120")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
+
+	fmt.Println("**************************************************")
+	OURO4SLIP := SlipComputer(p.NFS("6025.875187094999955385"), p.NFS("800"))
+	fmt.Println("Ouro4Slip is: ", OURO4SLIP)
+	SlipLiquidity := p.NFS("7532.343983868749944")
+	C, D := SlipComputerSender(SlipLiquidity)
+	fmt.Println("Slip for ", SlipLiquidity, "is: ", C, D)
 
 	//MakeAStep01 := p.NFS("587.487237387816262791")
 	//Rogojan01 := p.NFS("20.256852240155188848")
