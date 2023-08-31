@@ -176,7 +176,7 @@ var (
 	User022 = VestaHoldings{Carlig, 1, 0, 0}
 	User023 = VestaHoldings{Ursea, 5, 0, 0}
 	User024 = VestaHoldings{BailWrite, 34, 0, 0}
-	User025 = VestaHoldings{Rogojan, 6, 2, 5}
+	User025 = VestaHoldings{Rogojan, 8, 2, 5}
 	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
 
 	//Liquidity From Users
@@ -241,7 +241,7 @@ var (
 	SnakeLiqUser008 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser009      = LpHoldings{Laurentiu, LQDUser009, KosonLiqUser009, BloodLiqUser009, SnakeLiqUser009}
-	LQDUser009      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser009      = VestaDexLPs{p.NFS("1077.940543973583389333"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser009 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser009 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser009 = OuroLP{p.NFS("0"), p.NFS("2996.061975449999946282")}
@@ -337,7 +337,7 @@ var (
 	SnakeLiqUser024 = OuroLP{p.NFS("0"), p.NFS("8857.922362199999936662")}
 	//
 	VLQUser025      = LpHoldings{Rogojan, LQDUser025, KosonLiqUser025, BloodLiqUser025, SnakeLiqUser025}
-	LQDUser025      = VestaDexLPs{p.NFS("168.983463408742781330"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser025      = VestaDexLPs{p.NFS("194.423241591004182274"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser025 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser025 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser025 = OuroLP{p.NFS("0"), p.NFS("0")}
