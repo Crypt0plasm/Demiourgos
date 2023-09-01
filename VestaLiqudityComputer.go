@@ -117,33 +117,35 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 	fmt.Println("**************************************************")
-	Slip_TrDaniel := p.NFS("2133.221515457395515242")
-	Slip_DRX := p.NFS("756.283088470572516729")
-	Slip_Patryx := p.NFS("505.210818187499994664")
-	Slip_Cuciorva := p.NFS("750.989054062499979026")
-	Slip_Laruentiu := p.NFS("1162.687582618098321044")
-	Slip_FrostedK9 := p.NFS("1037.730329249999989278")
-	Slip_TheKid := p.NFS("614.445589687499990693")
-	Slip_Buguletu := p.NFS("273.086928749999994332")
-	Slip_Bail := p.NFS("1856.991115499999986613")
+	Slip_TrDaniel := p.NFS("2214.589271435302491135")
+	Slip_DRX := p.NFS("807.602601018599608505")
+	Slip_Patryx := p.NFS("542.323976906249991268")
+	Slip_Cuciorva := p.NFS("806.157262968749982847")
+	Slip_Pulecs := p.NFS("2836.557816835533914417")
+	Slip_Laruentiu := p.NFS("1199.126015633708695406")
+	Slip_FrostedK9 := p.NFS("1629.378229262552756916")
+	Slip_TheKid := p.NFS("659.583215156249985987")
+	Slip_Buguletu := p.NFS("293.148095624999985941")
+	Slip_Bail := p.NFS("1993.407050249999977333")
 
 	Slip_Ancient := p.NFS("0")
-	//Rest_Vesta := p.NFS("49302.380568408011620689")
+	Rest_Vesta := p.NFS("53755.89351264801444746")
 
-	OutgoingSum := sm.SUMxc(Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail)
+	OutgoingSum := sm.SUMxc(Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Pulecs, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail)
 
-	//Slip_Ancient = sm.SUBxc(Rest_Vesta, OutgoingSum)
+	Slip_Ancient = sm.SUBxc(Rest_Vesta, OutgoingSum)
 
-	//TotalSum := sm.SUMxc(Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Laruentiu, Slip_TheKid, Slip_Buguletu, Slip_Bail, Slip_FrostedK9, Slip_Ancient)
-	TotalSum := OutgoingSum
+	TotalSum := sm.SUMxc(Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Pulecs, Slip_Laruentiu, Slip_TheKid, Slip_Buguletu, Slip_Bail, Slip_FrostedK9, Slip_Ancient)
+	//TotalSum := OutgoingSum
 
 	fmt.Println("Total Vesta Slipped is: ", TotalSum)
 	OUROn := sm.TruncateCustom(sm.DIVxc(TotalSum, p.NFS("800")), 18)
 	fmt.Println("Ouro needed is: ", OUROn)
 
-	SlipChain := []*p.Decimal{Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail, Slip_Ancient}
+	SlipChain := []*p.Decimal{Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Pulecs, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail, Slip_Ancient}
 
-	Liquidity := p.NFS("11363.307527479457859")
+	Liquidity := p.NFS("67194.866890810018059") //Must Update after add Liqudity
+	// erd1qqqqqqqqqqqqqpgqkpcm6xqrsfr8gzlh7pdlc2d6gfvfe2j827rstr8jwd
 	SendKeep := sm.TruncateCustom(sm.MULxc(Liquidity, p.NFS("0.48")), 18)
 	SendToVault := sm.SUBxc(Liquidity, SendKeep)
 	fmt.Println("Amount to keep is: ", SendKeep)
@@ -156,18 +158,20 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	New_DRX := sm.ADDxc(Values[1], vst.LiquidityUserChain[2].SnakeLiq.Frozen)
 	New_Patryx := sm.ADDxc(Values[2], vst.LiquidityUserChain[3].SnakeLiq.Frozen)
 	New_Cuciorva := sm.ADDxc(Values[3], vst.LiquidityUserChain[6].SnakeLiq.Frozen)
-	New_Laurentiu := sm.ADDxc(Values[4], vst.LiquidityUserChain[9].SnakeLiq.Frozen)
-	New_Frostedk9 := sm.ADDxc(Values[5], vst.LiquidityUserChain[10].SnakeLiq.Frozen)
-	New_TheKid := sm.ADDxc(Values[6], vst.LiquidityUserChain[13].SnakeLiq.Frozen)
-	New_Buguletu := sm.ADDxc(Values[7], vst.LiquidityUserChain[21].SnakeLiq.Frozen)
-	New_Bail := sm.ADDxc(Values[8], vst.LiquidityUserChain[24].SnakeLiq.Frozen)
-	New_Ancient := sm.ADDxc(Values[9], vst.LiquidityUserChain[0].SnakeLiq.Frozen)
+	New_Pulecs := sm.ADDxc(Values[3], vst.LiquidityUserChain[8].SnakeLiq.Frozen)
+	New_Laurentiu := sm.ADDxc(Values[5], vst.LiquidityUserChain[9].SnakeLiq.Frozen)
+	New_Frostedk9 := sm.ADDxc(Values[6], vst.LiquidityUserChain[10].SnakeLiq.Frozen)
+	New_TheKid := sm.ADDxc(Values[7], vst.LiquidityUserChain[13].SnakeLiq.Frozen)
+	New_Buguletu := sm.ADDxc(Values[8], vst.LiquidityUserChain[21].SnakeLiq.Frozen)
+	New_Bail := sm.ADDxc(Values[9], vst.LiquidityUserChain[24].SnakeLiq.Frozen)
+	New_Ancient := sm.ADDxc(Values[10], vst.LiquidityUserChain[0].SnakeLiq.Frozen)
 
 	fmt.Println("============")
 	fmt.Println("New_TrDaniel: ", New_TrDaniel)
 	fmt.Println("New_DRX: ", New_DRX)
 	fmt.Println("New_Patryx: ", New_Patryx)
 	fmt.Println("New_Cuciorva: ", New_Cuciorva)
+	fmt.Println("New_Pulecs: ", New_Pulecs)
 	fmt.Println("New_Laurentiu: ", New_Laurentiu)
 	fmt.Println("New_Frostedk9: ", New_Frostedk9)
 	fmt.Println("New_TheKid: ", New_TheKid)
