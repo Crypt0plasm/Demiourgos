@@ -364,7 +364,7 @@ var (
 	LQDUser028      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser028 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser028 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser028 = OuroLP{p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser028 = OuroLP{p.NFS("0"), p.NFS("540000")}
 )
 
 // Individual Multiplier Computation
