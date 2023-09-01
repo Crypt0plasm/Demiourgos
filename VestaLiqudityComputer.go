@@ -176,8 +176,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("New_Ancient: ", New_Ancient)
 
 	fmt.Println("**************************************************")
-	A := p.NFS("0")
-	B := p.NFS("1077.940543973583389333")
+	A := p.NFS("1306.221279723911841195")
+	B := p.NFS("3074.258292681964326478")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
