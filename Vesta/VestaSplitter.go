@@ -99,51 +99,55 @@ var (
 	BailWrite     = mvx.MvxAddress("erd1qf0n50w0k7xy5ydq4sx0zzfzucsn0w8pah7l3ppcpm2h9hv06wls324563")
 	Rogojan       = mvx.MvxAddress("erd1gdp3cne23v6mrx9l3yj9k92tqqk5ycwmy0t0x6tz4hw3tmv3mgksn0pvrh")
 	DemiFarm      = mvx.MvxAddress("erd1qrp72xhyn6vd5jrsvzkx32cecszuvh9yka0escx7j977cw8yk77qyup3zq")
+	Xlauncher     = mvx.MvxAddress("erd1xa39h8q20gy25449vw2qt4dm38pp3nnxp7kzga2pt54z4u2rgjlqadlgdl")
+	Dezvoltatorul = mvx.MvxAddress("erd1xt5ullndellcuxfjycpeds97lv5cwlekwn48l437v7f76lx0zfwq8ycjj0")
 
 	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
 		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
 		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep", "Paul", "Florian",
 		"Coding", "Bloodshed", "Elanul", "Buguletu", "Carlig", "Ursea", "BailWrite", "Rogojan",
-		"DemiFarm"}
+		"DemiFarm", "Xlauncher", "Dezvoltatorul"}
 
-	SLIP_AH        = true
-	SLIP_TrDaniel  = true
-	SLIP_DRX       = true
-	SLIP_Patryx    = true
-	SLIP_Lavinia   = false
-	SLIP_Sandu     = false
-	SLIP_Cuciorva  = true
-	SLIP_Codarcea  = false
-	SLIP_Pulecs    = false
-	SLIP_Laurentiu = true
-	SLIP_Frostedk9 = true
-	SLIP_IonutDRD  = false
-	SLIP_Buhaici   = false
-	SLIP_TheKid    = true
-	SLIP_RaulTM    = false
-	SLIP_MakeAStep = true
-	SLIP_Paul      = false
-	SLIP_Florian   = false
-	SLIP_Coding    = false
-	SLIP_Bloodshed = false
-	SLIP_Elanul    = false
-	SLIP_Buguletul = true
-	SLIP_Carlig    = false
-	SLIP_Ursea     = false
-	SLIP_BailWrite = true
-	SLIP_Rogojan   = false
-	SLIP_DemiFarm  = false
+	SLIP_AH            = true
+	SLIP_TrDaniel      = true
+	SLIP_DRX           = true
+	SLIP_Patryx        = true
+	SLIP_Lavinia       = false
+	SLIP_Sandu         = false
+	SLIP_Cuciorva      = true
+	SLIP_Codarcea      = false
+	SLIP_Pulecs        = false
+	SLIP_Laurentiu     = true
+	SLIP_Frostedk9     = true
+	SLIP_IonutDRD      = false
+	SLIP_Buhaici       = false
+	SLIP_TheKid        = true
+	SLIP_RaulTM        = false
+	SLIP_MakeAStep     = true
+	SLIP_Paul          = false
+	SLIP_Florian       = false
+	SLIP_Coding        = false
+	SLIP_Bloodshed     = false
+	SLIP_Elanul        = false
+	SLIP_Buguletul     = true
+	SLIP_Carlig        = false
+	SLIP_Ursea         = false
+	SLIP_BailWrite     = true
+	SLIP_Rogojan       = false
+	SLIP_DemiFarm      = false
+	SLIP_Xlauncher     = false
+	SLIP_Dezvoltatorul = false
 
 	SlipChain = []bool{SLIP_AH, SLIP_TrDaniel, SLIP_DRX, SLIP_Patryx, SLIP_Lavinia, SLIP_Sandu, SLIP_Cuciorva, SLIP_Codarcea,
 		SLIP_Pulecs, SLIP_Laurentiu, SLIP_Frostedk9, SLIP_IonutDRD, SLIP_Buhaici, SLIP_TheKid, SLIP_RaulTM,
 		SLIP_MakeAStep, SLIP_Paul, SLIP_Florian, SLIP_Coding, SLIP_Bloodshed, SLIP_Elanul, SLIP_Buguletul,
-		SLIP_Carlig, SLIP_Ursea, SLIP_BailWrite, SLIP_Rogojan, SLIP_DemiFarm}
+		SLIP_Carlig, SLIP_Ursea, SLIP_BailWrite, SLIP_Rogojan, SLIP_DemiFarm, SLIP_Xlauncher, SLIP_Dezvoltatorul}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
 		User001, User002, User003, User004, User005, User006, User007, User008, User009, User010,
 		User011, User012, User013, User014, User015, User016, User017, User018, User019, User020,
-		User021, User022, User023, User024, User025, User026}
+		User021, User022, User023, User024, User025, User026, User027, User028}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 590}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 32}
@@ -178,12 +182,14 @@ var (
 	User024 = VestaHoldings{BailWrite, 34, 0, 0}
 	User025 = VestaHoldings{Rogojan, 8, 2, 5}
 	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
+	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
+	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 
 	//Liquidity From Users
 	LiquidityUserChain = []LpHoldings{VLQUser000,
 		VLQUser001, VLQUser002, VLQUser003, VLQUser004, VLQUser005, VLQUser006, VLQUser007, VLQUser008, VLQUser009, VLQUser010,
 		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015, VLQUser016, VLQUser017, VLQUser018, VLQUser019, VLQUser020,
-		VLQUser021, VLQUser022, VLQUser023, VLQUser024, VLQUser025, VLQUser026}
+		VLQUser021, VLQUser022, VLQUser023, VLQUser024, VLQUser025, VLQUser026, VLQUser027, VLQUser028}
 	LQDEmpty = VestaDexLPs{Zero, Zero, Zero, Zero, Zero, Zero}
 
 	VLQUser000      = LpHoldings{AncientHodler, LQDUser000, KosonLiqUser000, BloodLiqUser000, SnakeLiqUser000}
@@ -325,7 +331,7 @@ var (
 	SnakeLiqUser022 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser023      = LpHoldings{Ursea, LQDUser023, KosonLiqUser023, BloodLiqUser023, SnakeLiqUser023}
-	LQDUser023      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser023      = VestaDexLPs{p.NFS("215.236670944110348465"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser023 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser023 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser023 = OuroLP{p.NFS("0"), p.NFS("0")}
@@ -347,6 +353,18 @@ var (
 	KosonLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser026 = OuroLP{p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser027      = LpHoldings{Xlauncher, LQDUser027, KosonLiqUser027, BloodLiqUser027, SnakeLiqUser027}
+	LQDUser027      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	KosonLiqUser027 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	BloodLiqUser027 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser027 = OuroLP{p.NFS("0"), p.NFS("72000")}
+	//
+	VLQUser028      = LpHoldings{Dezvoltatorul, LQDUser028, KosonLiqUser028, BloodLiqUser028, SnakeLiqUser028}
+	LQDUser028      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	KosonLiqUser028 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	BloodLiqUser028 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser028 = OuroLP{p.NFS("0"), p.NFS("0")}
 )
 
 // Individual Multiplier Computation

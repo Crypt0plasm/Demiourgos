@@ -182,7 +182,7 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("A plus B: ", AplusB)
 
 	fmt.Println("**************************************************")
-	OURO4SLIP := SlipComputer(p.NFS("12804.344077139653448642"), p.NFS("800"))
+	OURO4SLIP := SlipComputer(p.NFS("120000"), p.NFS("800"))
 	fmt.Println("Ouro4Slip is: ", OURO4SLIP)
 	SlipLiquidity := p.NFS("16005.43009642456681")
 	C, D := SlipComputerSender(SlipLiquidity)
