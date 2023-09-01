@@ -176,15 +176,15 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("New_Ancient: ", New_Ancient)
 
 	fmt.Println("**************************************************")
-	A := p.NFS("1306.221279723911841195")
-	B := p.NFS("3074.258292681964326478")
+	A := p.NFS("487925.546516679053972044")
+	B := p.NFS("7682.606446283792068800")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
 	fmt.Println("**************************************************")
-	OURO4SLIP := SlipComputer(p.NFS("6025.875187094999955385"), p.NFS("800"))
+	OURO4SLIP := SlipComputer(p.NFS("12804.344077139653448642"), p.NFS("800"))
 	fmt.Println("Ouro4Slip is: ", OURO4SLIP)
-	SlipLiquidity := p.NFS("7532.343983868749944")
+	SlipLiquidity := p.NFS("16005.43009642456681")
 	C, D := SlipComputerSender(SlipLiquidity)
 	fmt.Println("Slip for ", SlipLiquidity, "is: ", C, D)
 
