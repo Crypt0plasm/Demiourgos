@@ -150,21 +150,21 @@ var (
 		User021, User022, User023, User024, User025, User026, User027, User028}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 590}
-	User001 = VestaHoldings{TrDaniel, 16, 0, 32}
+	User001 = VestaHoldings{TrDaniel, 16, 0, 33}
 	User002 = VestaHoldings{DRX, 9, 3, 10}
 	User003 = VestaHoldings{Patryx, 5, 6, 5}
-	User004 = VestaHoldings{Lavinia, 1, 6, 4}
+	User004 = VestaHoldings{Lavinia, 1, 6, 5}
 	User005 = VestaHoldings{Sandu, 4, 21, 0}
 	User006 = VestaHoldings{Cuciorva, 1, 3, 45}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
 	User008 = VestaHoldings{Pulecs, 7, 10, 0}
 	User009 = VestaHoldings{Laurentiu, 11, 1, 0}
 	User010 = VestaHoldings{Frostedk9, 18, 2, 0}
-	User011 = VestaHoldings{IonutDRD, 0, 0, 8}
+	User011 = VestaHoldings{IonutDRD, 0, 0, 9}
 	User012 = VestaHoldings{Buhaici, 0, 0, 2}
 	User013 = VestaHoldings{TheKid, 0, 0, 45}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
-	User015 = VestaHoldings{MakeAStep, 6, 10, 25}
+	User015 = VestaHoldings{MakeAStep, 6, 10, 26}
 
 	//User016 = VestaHoldings{Paul, 178, 186, 172}
 	//User017 = VestaHoldings{Florian, 0, 49, 697}
