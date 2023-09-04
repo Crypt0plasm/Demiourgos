@@ -117,19 +117,19 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 	fmt.Println("**************************************************")
-	Slip_TrDaniel := p.NFS("2214.589271435302491135")
-	Slip_DRX := p.NFS("807.602601018599608505")
-	Slip_Patryx := p.NFS("542.323976906249991268")
-	Slip_Cuciorva := p.NFS("806.157262968749982847")
-	Slip_Pulecs := p.NFS("2836.557816835533914417")
-	Slip_Laruentiu := p.NFS("1199.126015633708695406")
-	Slip_FrostedK9 := p.NFS("1629.378229262552756916")
-	Slip_TheKid := p.NFS("659.583215156249985987")
-	Slip_Buguletu := p.NFS("293.148095624999985941")
-	Slip_Bail := p.NFS("1993.407050249999977333")
+	Slip_TrDaniel := p.NFS("6567.794414772907381575")
+	Slip_DRX := p.NFS("2405.210727046111560132")
+	Slip_Patryx := p.NFS("1705.824485929687472430")
+	Slip_Cuciorva := p.NFS("2405.649916054687433843")
+	Slip_Pulecs := p.NFS("8241.373867748426204446")
+	Slip_Laruentiu := p.NFS("3523.385233989615742560")
+	Slip_FrostedK9 := p.NFS("4808.289620185144129115")
+	Slip_TheKid := p.NFS("1968.259022226562439904")
+	Slip_Buguletu := p.NFS("1477.042344404771491866")
+	Slip_Bail := p.NFS("5948.516156062499934074")
 
 	Slip_Ancient := p.NFS("0")
-	Rest_Vesta := p.NFS("53755.89351264801444746")
+	Rest_Vesta := p.NFS("184332.344036201919718421")
 
 	OutgoingSum := sm.SUMxc(Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Pulecs, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail)
 
@@ -144,7 +144,7 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 
 	SlipChain := []*p.Decimal{Slip_TrDaniel, Slip_DRX, Slip_Patryx, Slip_Cuciorva, Slip_Pulecs, Slip_Laruentiu, Slip_FrostedK9, Slip_TheKid, Slip_Buguletu, Slip_Bail, Slip_Ancient}
 
-	Liquidity := p.NFS("67194.866890810018059") //Must Update after add Liqudity
+	Liquidity := p.NFS("230415.430045252399648") //Must Update after add Liqudity
 	// erd1qqqqqqqqqqqqqpgqkpcm6xqrsfr8gzlh7pdlc2d6gfvfe2j827rstr8jwd
 	SendKeep := sm.TruncateCustom(sm.MULxc(Liquidity, p.NFS("0.48")), 18)
 	SendToVault := sm.SUBxc(Liquidity, SendKeep)
