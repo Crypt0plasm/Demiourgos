@@ -180,6 +180,12 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("New_Ancient: ", New_Ancient)
 
 	fmt.Println("**************************************************")
+	Z := sm.MULxc(p.NFS("73"), p.NFS("22.222222222222222222"))
+	Z2 := p.NFS("1631.419497294048156625")
+	O := sm.SUBxc(Z2, Z)
+	fmt.Println("Send GSC is ", O)
+	fmt.Println("Z is", Z)
+
 	A := p.NFS("256.597873908207835627")
 	B := p.NFS("2186.567647815286965959")
 	AplusB := sm.ADDxc(A, B)
