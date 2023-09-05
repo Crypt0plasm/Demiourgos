@@ -118,7 +118,7 @@ var (
 	User000 = VestaHoldings{AncientHodler, 35, 151, 590}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 33}
 	User002 = VestaHoldings{DRX, 9, 3, 10}
-	User003 = VestaHoldings{Patryx, 5, 6, 7}
+	User003 = VestaHoldings{Patryx, 5, 6, 8}
 	User004 = VestaHoldings{Lavinia, 1, 6, 5}
 	User005 = VestaHoldings{Sandu, 4, 21, 1}
 	User006 = VestaHoldings{Cuciorva, 1, 3, 45}
