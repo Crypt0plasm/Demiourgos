@@ -154,7 +154,7 @@ var (
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
-	User030 = VestaHoldings{Up4Nothing, 15, 0, 7}
+	User030 = VestaHoldings{Up4Nothing, 15, 7, 0}
 	User031 = VestaHoldings{Daniel282, 10, 0, 0}
 
 	//Liquidity From Users
@@ -162,7 +162,7 @@ var (
 		VLQUser001, VLQUser002, VLQUser003, VLQUser004, VLQUser005, VLQUser006, VLQUser007, VLQUser008, VLQUser009, VLQUser010,
 		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015, VLQUser016, VLQUser017, VLQUser018, VLQUser019, VLQUser020,
 		VLQUser021, VLQUser022, VLQUser023, VLQUser024, VLQUser025, VLQUser026, VLQUser027, VLQUser028, VLQUser029, VLQUser030,
-	    	VLQUser031}
+		VLQUser031}
 	LQDEmpty = VestaDexLPs{Zero, Zero, Zero, Zero, Zero, Zero}
 
 	VLQUser000      = LpHoldings{AncientHodler, LQDUser000, KosonLiqUser000, BloodLiqUser000, SnakeLiqUser000}
