@@ -128,7 +128,7 @@ var (
 	User010 = VestaHoldings{Frostedk9, 18, 2, 0}
 	User011 = VestaHoldings{IonutDRD, 0, 0, 9}
 	User012 = VestaHoldings{Buhaici, 0, 0, 2}
-	User013 = VestaHoldings{TheKid, 0, 0, 45}
+	User013 = VestaHoldings{TheKid, 0, 0, 50}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 6, 10, 26}
 
