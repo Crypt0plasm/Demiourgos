@@ -122,7 +122,7 @@ var (
 	User001 = VestaHoldings{TrDaniel, 16, 0, 33}
 	User002 = VestaHoldings{DRX, 9, 3, 10}
 	User003 = VestaHoldings{Patryx, 5, 6, 8}
-	User004 = VestaHoldings{Lavinia, 1, 6, 5}
+	User004 = VestaHoldings{Lavinia, 1, 6, 6}
 	User005 = VestaHoldings{Sandu, 4, 21, 1}
 	User006 = VestaHoldings{Cuciorva, 1, 3, 45}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
@@ -154,7 +154,7 @@ var (
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
-	User030 = VestaHoldings{Up4Nothing, 15, 7, 0}
+	User030 = VestaHoldings{Up4Nothing, 16, 7, 0}
 	User031 = VestaHoldings{Daniel282, 10, 0, 0}
 
 	//Liquidity From Users
