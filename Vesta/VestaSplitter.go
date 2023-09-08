@@ -119,7 +119,7 @@ var (
 		User031}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 592}
-	User001 = VestaHoldings{TrDaniel, 16, 0, 33}
+	User001 = VestaHoldings{TrDaniel, 16, 0, 44}
 	User002 = VestaHoldings{DRX, 9, 3, 10}
 	User003 = VestaHoldings{Patryx, 5, 6, 8}
 	User004 = VestaHoldings{Lavinia, 1, 6, 6}
