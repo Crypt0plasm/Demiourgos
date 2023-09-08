@@ -186,8 +186,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("Send GSC is ", O)
 	fmt.Println("Z is", Z)
 
-	A := p.NFS("2681.573177527198648636")
-	B := p.NFS("84.450048519215808")
+	A := p.NFS("1658.292888856085538026")
+	B := p.NFS("177.277909931258164592")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
