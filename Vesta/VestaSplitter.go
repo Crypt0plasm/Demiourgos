@@ -124,7 +124,7 @@ var (
 	User003 = VestaHoldings{Patryx, 5, 6, 8}
 	User004 = VestaHoldings{Lavinia, 1, 6, 6}
 	User005 = VestaHoldings{Sandu, 4, 21, 1}
-	User006 = VestaHoldings{Cuciorva, 1, 3, 54}
+	User006 = VestaHoldings{Cuciorva, 1, 3, 58}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
 	User008 = VestaHoldings{Pulecs, 7, 10, 0}
 	User009 = VestaHoldings{Laurentiu, 11, 1, 0}
