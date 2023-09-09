@@ -121,19 +121,19 @@ var (
 	User000 = VestaHoldings{AncientHodler, 35, 151, 592}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 44}
 	User002 = VestaHoldings{DRX, 9, 3, 15}
-	User003 = VestaHoldings{Patryx, 5, 6, 8}
+	User003 = VestaHoldings{Patryx, 5, 6, 9}
 	User004 = VestaHoldings{Lavinia, 1, 6, 6}
 	User005 = VestaHoldings{Sandu, 4, 21, 2}
 	User006 = VestaHoldings{Cuciorva, 1, 3, 58}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
-	User008 = VestaHoldings{Pulecs, 7, 10, 0}
+	User008 = VestaHoldings{Pulecs, 7, 10, 5}
 	User009 = VestaHoldings{Laurentiu, 11, 1, 0}
 	User010 = VestaHoldings{Frostedk9, 18, 2, 0}
 	User011 = VestaHoldings{IonutDRD, 0, 0, 9}
 	User012 = VestaHoldings{Buhaici, 0, 0, 2}
 	User013 = VestaHoldings{TheKid, 0, 0, 50}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
-	User015 = VestaHoldings{MakeAStep, 6, 10, 26}
+	User015 = VestaHoldings{MakeAStep, 6, 10, 31}
 
 	//User016 = VestaHoldings{Paul, 178, 186, 172}
 	//User017 = VestaHoldings{Florian, 0, 49, 697}
@@ -149,7 +149,7 @@ var (
 	User022 = VestaHoldings{Carlig, 1, 0, 0}
 	User023 = VestaHoldings{Ursea, 5, 0, 0}
 	User024 = VestaHoldings{BailWrite, 34, 0, 0}
-	User025 = VestaHoldings{Rogojan, 8, 2, 5}
+	User025 = VestaHoldings{Rogojan, 9, 2, 6}
 	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
