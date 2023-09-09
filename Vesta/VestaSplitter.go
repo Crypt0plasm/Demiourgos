@@ -104,19 +104,21 @@ var (
 	EmmaB         = mvx.MvxAddress("erd1hfjt72u0gvs9p288yskvuerdyrszf48ugldared6myzcgvywpz0sp7f2rr")
 	Up4Nothing    = mvx.MvxAddress("erd1mfw3j6fjfu6p36tatlaq5qxydh799xkw2egdq2lls3ve7qq8tvsqsltu7s")
 	Daniel282     = mvx.MvxAddress("erd1nuyx3dv78e2ymzdd43z8aektcmyckq3qz4a4nhu3dh2mq5me7mlqkdcqt5")
+	Uzkat         = mvx.MvxAddress("erd1w6vaq464stwtfses2yq6skaz5v5gz90vn22f2zm0mjt7aayya09sdtvu2r")
+	VioTm         = mvx.MvxAddress("erd1t2732ajvwkzsym3vykmzh4d5fdu6dn4rqkh777x9kfmanpmcmdxqme0heq")
 
 	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
 		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
 		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep", "Paul", "Florian",
 		"Coding", "Bloodshed", "Elanul", "Buguletu", "Carlig", "Ursea", "BailWrite", "Rogojan",
-		"DemiFarm", "Xlauncher", "Dezvoltatorul", "EmmaB", "Up4Nothing", "Daniel282"}
+		"DemiFarm", "Xlauncher", "Dezvoltatorul", "EmmaB", "Up4Nothing", "Daniel282", "Uzkat", "VioTm"}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
 		User001, User002, User003, User004, User005, User006, User007, User008, User009, User010,
 		User011, User012, User013, User014, User015, User016, User017, User018, User019, User020,
 		User021, User022, User023, User024, User025, User026, User027, User028, User029, User030,
-		User031}
+		User031, User032, User033}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 592}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 44}
@@ -124,7 +126,7 @@ var (
 	User003 = VestaHoldings{Patryx, 5, 6, 9}
 	User004 = VestaHoldings{Lavinia, 1, 6, 6}
 	User005 = VestaHoldings{Sandu, 4, 21, 2}
-	User006 = VestaHoldings{Cuciorva, 1, 3, 58}
+	User006 = VestaHoldings{Cuciorva, 1, 3, 60}
 	User007 = VestaHoldings{Codarcea, 3, 3, 0}
 	User008 = VestaHoldings{Pulecs, 7, 10, 5}
 	User009 = VestaHoldings{Laurentiu, 11, 1, 0}
@@ -156,13 +158,15 @@ var (
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
 	User030 = VestaHoldings{Up4Nothing, 16, 7, 0}
 	User031 = VestaHoldings{Daniel282, 16, 6, 2}
+	User032 = VestaHoldings{Uzkat, 11, 13, 0}
+	User033 = VestaHoldings{VioTm, 0, 33, 14}
 
 	//Liquidity From Users
 	LiquidityUserChain = []LpHoldings{VLQUser000,
 		VLQUser001, VLQUser002, VLQUser003, VLQUser004, VLQUser005, VLQUser006, VLQUser007, VLQUser008, VLQUser009, VLQUser010,
 		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015, VLQUser016, VLQUser017, VLQUser018, VLQUser019, VLQUser020,
 		VLQUser021, VLQUser022, VLQUser023, VLQUser024, VLQUser025, VLQUser026, VLQUser027, VLQUser028, VLQUser029, VLQUser030,
-		VLQUser031}
+		VLQUser031, VLQUser032, VLQUser033}
 	LQDEmpty = VestaDexLPs{Zero, Zero, Zero, Zero, Zero, Zero}
 
 	VLQUser000      = LpHoldings{AncientHodler, LQDUser000, KosonLiqUser000, BloodLiqUser000, SnakeLiqUser000}
@@ -356,6 +360,18 @@ var (
 	KosonLiqUser031 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser031 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser031 = OuroLP{p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser032      = LpHoldings{Uzkat, LQDUser032, KosonLiqUser032, BloodLiqUser032, SnakeLiqUser032}
+	LQDUser032      = VestaDexLPs{p.NFS("310.836641022810311016"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	KosonLiqUser032 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	BloodLiqUser032 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser032 = OuroLP{p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser033      = LpHoldings{VioTm, LQDUser033, KosonLiqUser033, BloodLiqUser033, SnakeLiqUser033}
+	LQDUser033      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	KosonLiqUser033 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	BloodLiqUser033 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser033 = OuroLP{p.NFS("0"), p.NFS("0")}
 )
 
 // Individual Multiplier Computation
