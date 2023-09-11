@@ -146,7 +146,7 @@ var (
 	User017 = VestaHoldings{Florian, 0, 0, 0}
 	User018 = VestaHoldings{Coding, 0, 0, 0}
 	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
-	User020 = VestaHoldings{Elanul, 1, 5, 50}
+	User020 = VestaHoldings{Elanul, 1, 5, 56}
 	User021 = VestaHoldings{Buguletu, 5, 0, 0}
 	User022 = VestaHoldings{Carlig, 1, 0, 0}
 	User023 = VestaHoldings{Ursea, 5, 0, 0}
