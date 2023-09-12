@@ -79,7 +79,7 @@ var (
 	Lavinia       = mvx.MvxAddress("erd1xjutp9aj4amd8r5mtedl4aad6jrxv2ajzw5d4x0c3rkwj7cxsgmssdjr49")
 	Sandu         = mvx.MvxAddress("erd1pkxygrm9dswrludcxjk9hqmep62gutz7vfknlfpwzufxyara27sqjyhf4h")
 	Cuciorva      = mvx.MvxAddress("erd1knx4hu2u6zxyt2mqk9zfyf8m9pz980puw98hqsmv26d3eggxvfmsv4xlpq")
-	Codarcea      = mvx.MvxAddress("erd1mpcp5jvkm2y5cxyjj99esfhgk99776r740yrxr6xm0taamqjw4hqxm2q8d")
+	Codarcea      = mvx.MvxAddress("erd1fvddlyu2jtlhkfvc88qswh7x5vf3583knmhcl4vgwxncht4j9qjspqxguq")
 	Pulecs        = mvx.MvxAddress("erd1wa7h9ea30j0enjm8k9x8ymf0s334qde8x4c3fpzkgj28xfkyt7nqdttpst")
 	Laurentiu     = mvx.MvxAddress("erd1mf2wtc4jh2zujhu4nynvrpaua9e98c4lwdyjnpp57qcx2gyqfy6q8l8ccp")
 	Frostedk9     = mvx.MvxAddress("erd1ktu3qy5ehe42sk6z7ygfvwna6wull2suq49qj8urx9nd6dw79s2qn5qqea")

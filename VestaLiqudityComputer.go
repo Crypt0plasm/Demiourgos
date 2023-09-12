@@ -191,6 +191,11 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
+	A2 := p.NFS("10000")
+	B2 := p.NFS("66")
+	A2plusB2 := sm.TruncateCustom(sm.DIVxc(A2, B2), 18)
+	fmt.Println("A2 divided B2: ", A2plusB2)
+
 	fmt.Println("**************************************************")
 	OURO4SLIP := SlipComputer(p.NFS("87.478178765624967204"), p.NFS("800"))
 	fmt.Println("Ouro4Slip is: ", OURO4SLIP)
