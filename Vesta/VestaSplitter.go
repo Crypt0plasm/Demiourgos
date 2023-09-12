@@ -106,19 +106,21 @@ var (
 	Daniel282     = mvx.MvxAddress("erd1nuyx3dv78e2ymzdd43z8aektcmyckq3qz4a4nhu3dh2mq5me7mlqkdcqt5")
 	Uzkat         = mvx.MvxAddress("erd1w6vaq464stwtfses2yq6skaz5v5gz90vn22f2zm0mjt7aayya09sdtvu2r")
 	VioTm         = mvx.MvxAddress("erd1t2732ajvwkzsym3vykmzh4d5fdu6dn4rqkh777x9kfmanpmcmdxqme0heq")
+	Valentin      = mvx.MvxAddress("erd1z4v57r2cu6867pzlhcnazps37kx7rgwf8dn4falx86274ry6y7esnxgmy8")
 
 	UserNameList = []string{"AncientHodler", "TrDaniel", "DRX", "Patryx",
 		"Lavinia", "Sandu", "Cuciorva", "Codarcea", "Pulecs", "Laurentiu",
 		"Frostedk9", "IonutDRD", "Buhaici", "TheKid", "RaultTM", "MakeAStep", "Paul", "Florian",
 		"Coding", "Bloodshed", "Elanul", "Buguletu", "Carlig", "Ursea", "BailWrite", "Rogojan",
-		"DemiFarm", "Xlauncher", "Dezvoltatorul", "EmmaB", "Up4Nothing", "Daniel282", "Uzkat", "VioTm"}
+		"DemiFarm", "Xlauncher", "Dezvoltatorul", "EmmaB", "Up4Nothing", "Daniel282", "Uzkat", "VioTm",
+		"Valentin"}
 
 	//Users
 	UserChain = []VestaHoldings{User000,
 		User001, User002, User003, User004, User005, User006, User007, User008, User009, User010,
 		User011, User012, User013, User014, User015, User016, User017, User018, User019, User020,
 		User021, User022, User023, User024, User025, User026, User027, User028, User029, User030,
-		User031, User032, User033}
+		User031, User032, User033, User034}
 
 	User000 = VestaHoldings{AncientHodler, 35, 151, 592}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 50}
@@ -160,13 +162,14 @@ var (
 	User031 = VestaHoldings{Daniel282, 16, 6, 2}
 	User032 = VestaHoldings{Uzkat, 11, 13, 2}
 	User033 = VestaHoldings{VioTm, 0, 33, 16}
+    	User034 = VestaHoldings{Valentin, 0, 0, 3}
 
 	//Liquidity From Users
 	LiquidityUserChain = []LpHoldings{VLQUser000,
 		VLQUser001, VLQUser002, VLQUser003, VLQUser004, VLQUser005, VLQUser006, VLQUser007, VLQUser008, VLQUser009, VLQUser010,
 		VLQUser011, VLQUser012, VLQUser013, VLQUser014, VLQUser015, VLQUser016, VLQUser017, VLQUser018, VLQUser019, VLQUser020,
 		VLQUser021, VLQUser022, VLQUser023, VLQUser024, VLQUser025, VLQUser026, VLQUser027, VLQUser028, VLQUser029, VLQUser030,
-		VLQUser031, VLQUser032, VLQUser033}
+		VLQUser031, VLQUser032, VLQUser033, VLQUser034}
 	LQDEmpty = VestaDexLPs{Zero, Zero, Zero, Zero, Zero, Zero}
 
 	VLQUser000      = LpHoldings{AncientHodler, LQDUser000, KosonLiqUser000, BloodLiqUser000, SnakeLiqUser000}
@@ -372,6 +375,12 @@ var (
 	KosonLiqUser033 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser033 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser033 = OuroLP{p.NFS("0"), p.NFS("0")}
+	//
+	VLQUser034      = LpHoldings{Valentin, LQDUser034, KosonLiqUser034, BloodLiqUser034, SnakeLiqUser033}
+	LQDUser034      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	KosonLiqUser034 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	BloodLiqUser034 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser034 = OuroLP{p.NFS("0"), p.NFS("0")}
 )
 
 // Individual Multiplier Computation
