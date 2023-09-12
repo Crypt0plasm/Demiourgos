@@ -156,7 +156,7 @@ var (
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
-	User030 = VestaHoldings{Up4Nothing, 16, 7, 0}
+	User030 = VestaHoldings{Up4Nothing, 16, 7, 28}
 	User031 = VestaHoldings{Daniel282, 16, 6, 2}
 	User032 = VestaHoldings{Uzkat, 11, 13, 2}
 	User033 = VestaHoldings{VioTm, 0, 33, 16}
