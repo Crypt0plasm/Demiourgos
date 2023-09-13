@@ -40,11 +40,15 @@ func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.Vest
 	fmt.Println("=====================================")
 	//Ancient Vesta Boost: Guest Position is 0
 	//Bloodshed Vesta Boost: Guest Position is 19
+	//Pulecs Vesta Boos: Guest Position is 8
 	if Variant == "vesta" || Variant == "koson" {
 		GP = 0
 	} else if Variant == "blood" {
 		GP = 19
+	} else if Variant == "pulecsvault" {
+		GP = 8
 	}
+
 	vst.ComputeMintPercent(GP, V3, V4)
 	fmt.Println("Exporting Rewards File:")
 	vst.ExportOutgoingVestas(GP, SFTs, V4)
