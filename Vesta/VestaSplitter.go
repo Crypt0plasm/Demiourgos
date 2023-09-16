@@ -406,7 +406,7 @@ var (
 	SnakeLiqUser031 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser032      = LpHoldings{Uszkat, LQDUser032, KosonLiqUser032, BloodLiqUser032, VaultLiqUser032, SnakeLiqUser032}
-	LQDUser032      = VestaDexLPs{p.NFS("1176.483417663722390798"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser032      = VestaDexLPs{p.NFS("2302.085354615103085513"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser032 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser032 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser032 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -490,7 +490,7 @@ func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
 		Output = FarmMx{BloodshedDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "koson" {
 		Output = FarmMx{AncientDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
-	} else if Variant == "pulecsvault" {
+	} else if Variant == "vault" {
 		Output = FarmMx{Neutral, Neutral, Neutral, Neutral, Neutral, ComputeFinalTotalIMVault(InputIM), Neutral, Neutral}
 	}
 
@@ -584,7 +584,7 @@ func ComputeUserTokenVLP(Variant string, Input LpHoldings) *p.Decimal {
 		Output = ComputeUserVLP(Input.KosonLiq)
 	} else if Variant == "blood" {
 		Output = ComputeUserVLP(Input.BloodLiq)
-	} else if Variant == "pulecsvault" {
+	} else if Variant == "vault" {
 		Output = ComputeUserVaultLiq(Input.Vault)
 	}
 
