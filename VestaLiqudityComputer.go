@@ -47,7 +47,9 @@ func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.Vest
 	} else if Variant == "blood" {
 		GP = 19
 	} else if Variant == "vault" {
-		GP = 29
+		GP = 8
+	} else if Variant == "vaultbtc" {
+		GP = 0
 	}
 
 	vst.ComputeMintPercent(GP, V3, V4)
@@ -191,8 +193,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("Send GSC is ", O)
 	fmt.Println("Z is", Z)
 
-	A := p.NFS("1176.483417663722390798")
-	B := p.NFS("1125.601936951380694715")
+	A := p.NFS("330.735566649713741425")
+	B := p.NFS("294.436347314459467506")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
