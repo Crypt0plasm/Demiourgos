@@ -131,7 +131,8 @@ var (
 		User021, User022, User023, User024, User025, User026, User027, User028, User029, User030,
 		User031, User032, User033, User034}
 
-	User000 = VestaHoldings{AncientHodler, 35, 151, 592}
+	//User000 = VestaHoldings{AncientHodler, 35, 151, 592}
+	User000 = VestaHoldings{AncientHodler, 34, 150, 591}
 	User001 = VestaHoldings{TrDaniel, 16, 0, 50}
 	User002 = VestaHoldings{DRX, 9, 3, 15}
 	User003 = VestaHoldings{Patryx, 5, 6, 9}
@@ -147,12 +148,6 @@ var (
 	User013 = VestaHoldings{TheKid, 0, 0, 50}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 6, 10, 31}
-
-	//User016 = VestaHoldings{Paul, 178, 186, 172}
-	//User017 = VestaHoldings{Florian, 0, 49, 697}
-	//User018 = VestaHoldings{Coding, 0, 400, 0}
-	//User026 = VestaHoldings{DemiFarm, 0, 200, 500}
-
 	User016 = VestaHoldings{Paul, 0, 0, 0}
 	User017 = VestaHoldings{Florian, 0, 0, 0}
 	User018 = VestaHoldings{Coding, 0, 0, 0}
@@ -169,9 +164,50 @@ var (
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
 	User030 = VestaHoldings{Up4Nothing, 16, 7, 28}
 	User031 = VestaHoldings{Daniel282, 16, 6, 2}
-	User032 = VestaHoldings{Uszkat, 11, 13, 2}
+	User032 = VestaHoldings{Uszkat, 11, 14, 2}
 	User033 = VestaHoldings{VioTm, 0, 33, 16}
 	User034 = VestaHoldings{Valentin, 0, 0, 3}
+
+	//User000 = VestaHoldings{AncientHodler, 1, 0, 0}
+	//User001 = VestaHoldings{TrDaniel, 0, 0, 0}
+	//User002 = VestaHoldings{DRX, 0, 0, 0}
+	//User003 = VestaHoldings{Patryx, 0, 0, 0}
+	//User004 = VestaHoldings{Lavinia, 0, 0, 0}
+	//User005 = VestaHoldings{Sandu, 0, 0, 0}
+	//User006 = VestaHoldings{Cuciorva, 0, 0, 0}
+	//User007 = VestaHoldings{Codarcea, 0, 0, 0}
+	//User008 = VestaHoldings{Pulecs, 0, 0, 0}
+	//User009 = VestaHoldings{Laurentiu, 0, 0, 0}
+	//User010 = VestaHoldings{Frostedk9, 0, 0, 0}
+	//User011 = VestaHoldings{IonutDRD, 0, 0, 0}
+	//User012 = VestaHoldings{Buhaici, 0, 0, 0}
+	//User013 = VestaHoldings{TheKid, 0, 0, 0}
+	//User014 = VestaHoldings{RaulTM, 0, 0, 0}
+	//User015 = VestaHoldings{MakeAStep, 0, 0, 0}
+	//User016 = VestaHoldings{Paul, 0, 0, 0}
+	//User017 = VestaHoldings{Florian, 0, 0, 0}
+	//User018 = VestaHoldings{Coding, 0, 0, 0}
+	//User019 = VestaHoldings{Bloodshed, 0, 0, 0}
+	//User020 = VestaHoldings{Elanul, 0, 5, 0}
+	//User021 = VestaHoldings{Buguletu, 0, 0, 0}
+	//User022 = VestaHoldings{Carlig, 0, 0, 0}
+	//User023 = VestaHoldings{Ursea, 0, 0, 0}
+	//User024 = VestaHoldings{BailWrite, 0, 0, 0}
+	//User025 = VestaHoldings{Rogojan, 0, 0, 0}
+	//User026 = VestaHoldings{DemiFarm, 0, 0, 0}
+	//User027 = VestaHoldings{Xlauncher, 0, 0, 0}
+	//User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
+	//User029 = VestaHoldings{EmmaB, 0, 0, 0}
+	//User030 = VestaHoldings{Up4Nothing, 0, 0, 0}
+	//User031 = VestaHoldings{Daniel282, 0, 0, 0}
+	//User032 = VestaHoldings{Uszkat, 0, 0, 0}
+	//User033 = VestaHoldings{VioTm, 0, 0, 0}
+	//User034 = VestaHoldings{Valentin, 0, 0, 0}
+
+	//User016 = VestaHoldings{Paul, 178, 186, 172}
+	//User017 = VestaHoldings{Florian, 0, 49, 697}
+	//User018 = VestaHoldings{Coding, 0, 400, 0}
+	//User026 = VestaHoldings{DemiFarm, 0, 200, 500}
 
 	//Liquidity From Users
 	LiquidityUserChain = []LpHoldings{VLQUser000,
@@ -186,7 +222,7 @@ var (
 	LQDUser000      = VestaDexLPs{p.NFS("28215.889749851923648510"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
 	KosonLiqUser000 = VestaDexLPs{p.NFS("45137.278081125541251284"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser000 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultBtcUser000 = VestaDexVault{p.NFS("182966.739403853839082531"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	VaultBtcUser000 = VestaDexVault{p.NFS("229769.209078853839048534"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("590441.163898165389832435")}
 	//
@@ -418,7 +454,7 @@ var (
 	LQDUser029      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser029 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser029 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultBtcUser029 = VestaDexVault{p.NFS("137399.372763339850016485"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	VaultBtcUser029 = VestaDexVault{p.NFS("137855.093013339849981576"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser029 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser029 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
