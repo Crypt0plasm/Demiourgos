@@ -1,5 +1,7 @@
 package Bloodshed
 
+import p "Firefly-APD"
+
 type BSJ struct {
 	Name        string `json:"name"`        //Bloodshed
 	Description string `json:"description"` //Description of Collection
@@ -10,6 +12,15 @@ type BSJ struct {
 type TTV struct {
 	TraitType string `json:"trait_type"`
 	Value     string `json:"value"`
+}
+
+type TTVScore struct {
+	TTV        []TTV
+	Base       int
+	OM         *p.Decimal
+	SetBoolean bool
+	SM         *p.Decimal
+	WM         *p.Decimal
 }
 
 var (
@@ -82,6 +93,12 @@ var (
 	OH3 = TTV{TraitType: "Off-Hand", Value: Weapons[2]} //Sicae
 	OH4 = TTV{TraitType: "Off-Hand", Value: Weapons[3]} //Pavaza
 	OH5 = TTV{TraitType: "Off-Hand", Value: Weapons[5]} //Howler
+
+	//Base Score for NFTs
+	CommonBS    = 250
+	RareBS      = 697
+	EpicBS      = 1961
+	LegendaryBS = 9217
 )
 
 var (
@@ -510,3 +527,109 @@ var (
 		Common131, Common132, Common133, Common134, Common135, Common136, Common137, Common138, Common139, Common140,
 		Common141, Common142, Common143, Common144}
 )
+
+// SETs
+
+var (
+	//Common T1 Tier Sets
+	CT1Comati = [][]TTV{
+		Common001, Common002, Common003, Common004, Common005, Common006, Common007, Common008, Common009,
+		Common010, Common011, Common012, Common013, Common014, Common015, Common016, Common017, Common018}
+	CT1Ursoi = [][]TTV{
+		Common019, Common020, Common021, Common022, Common023, Common024, Common025, Common026, Common027,
+		Common028, Common029, Common030, Common031, Common032, Common033, Common034, Common035, Common036}
+	CT1Pileati = [][]TTV{
+		Common037, Common038, Common039, Common040, Common041, Common042, Common043, Common044, Common045,
+		Common046, Common047, Common048, Common049, Common050, Common051, Common052, Common053, Common054}
+	CT1Smardoi = [][]TTV{
+		Common055, Common056, Common057, Common058, Common059, Common060, Common061, Common062, Common063,
+		Common064, Common065, Common066, Common067, Common068, Common069, Common070, Common071, Common072}
+	CT1Carpian = [][]TTV{
+		Common073, Common074, Common075, Common076, Common077, Common078, Common079, Common080, Common081,
+		Common082, Common083, Common084, Common085, Common086, Common087, Common088, Common089, Common090}
+	CT1Tarabostes = [][]TTV{
+		Common091, Common092, Common093, Common094, Common095, Common096, Common097, Common098, Common099,
+		Common100, Common101, Common102, Common103, Common104, Common105, Common106, Common107, Common108}
+	CT1Costoboc = [][]TTV{
+		Common109, Common110, Common111, Common112, Common113, Common114, Common115, Common116, Common117,
+		Common118, Common119, Common120, Common121, Common122, Common123, Common124, Common125, Common126}
+	CT1Buridavens = [][]TTV{
+		Common127, Common128, Common129, Common130, Common131, Common132, Common133, Common134, Common135,
+		Common136, Common137, Common138, Common139, Common140, Common141, Common142, Common143, Common144}
+
+	//Rare T1 Tier Sets
+	RT1Comati = [][]TTV{
+		Rare01, Rare02, Rare03, Rare04, Rare05, Rare06, Rare07, Rare08, Rare09}
+	RT1Ursoi = [][]TTV{
+		Rare10, Rare11, Rare12, Rare13, Rare14, Rare15, Rare16, Rare17, Rare18}
+	RT1Pileati = [][]TTV{
+		Rare19, Rare20, Rare21, Rare22, Rare23, Rare24, Rare25, Rare26, Rare27}
+	RT1Smardoi = [][]TTV{
+		Rare28, Rare29, Rare30, Rare31, Rare32, Rare33, Rare34, Rare35, Rare36}
+	RT1Carpian = [][]TTV{
+		Rare37, Rare38, Rare39, Rare40, Rare41, Rare42, Rare43, Rare44, Rare45}
+	RT1Tarabostes = [][]TTV{
+		Rare46, Rare47, Rare48, Rare49, Rare50, Rare51, Rare52, Rare53, Rare54}
+	RT1Costoboc = [][]TTV{
+		Rare55, Rare56, Rare57, Rare58, Rare59, Rare60, Rare61, Rare62, Rare63}
+	RT1Buridavens = [][]TTV{
+		Rare64, Rare65, Rare66, Rare67, Rare68, Rare69, Rare70, Rare71, Rare72}
+
+	//Epic T1 Tier Sets
+	ET1Comati = [][]TTV{
+		Epic01, Epic02, Epic03, Epic04, Epic05, Epic06}
+	ET1Ursoi = [][]TTV{
+		Epic07, Epic08, Epic09, Epic10, Epic11, Epic12}
+	ET1Pileati = [][]TTV{
+		Epic13, Epic14, Epic15, Epic16, Epic17, Epic18}
+	ET1Smardoi = [][]TTV{
+		Epic19, Epic20, Epic21, Epic22, Epic23, Epic24}
+	ET1Carpian = [][]TTV{
+		Epic25, Epic26, Epic27, Epic28, Epic29, Epic30}
+	ET1Tarabostes = [][]TTV{
+		Epic31, Epic32, Epic33, Epic34, Epic35, Epic36}
+	ET1Costoboc = [][]TTV{
+		Epic37, Epic38, Epic39, Epic40, Epic41, Epic42}
+	ET1Buridavens = [][]TTV{
+		Epic43, Epic44, Epic45, Epic46, Epic47, Epic48}
+
+	//Tier 2 Sets
+	T2Comati     = ConcatenateTTV(CT1Comati, RT1Comati, ET1Comati, [][]TTV{Legendary1})
+	T2Ursoi      = ConcatenateTTV(CT1Ursoi, RT1Ursoi, ET1Ursoi, [][]TTV{Legendary2})
+	T2Pileati    = ConcatenateTTV(CT1Pileati, RT1Pileati, ET1Pileati, [][]TTV{Legendary3})
+	T2Smardoi    = ConcatenateTTV(CT1Smardoi, RT1Smardoi, ET1Smardoi, [][]TTV{Legendary4})
+	T2Carpian    = ConcatenateTTV(CT1Carpian, RT1Carpian, ET1Carpian, [][]TTV{Legendary5})
+	T2Tarabostes = ConcatenateTTV(CT1Tarabostes, RT1Tarabostes, ET1Tarabostes, [][]TTV{Legendary6})
+	T2Costoboc   = ConcatenateTTV(CT1Costoboc, RT1Costoboc, ET1Costoboc, [][]TTV{Legendary7})
+	T2Buridavens = ConcatenateTTV(CT1Buridavens, RT1Buridavens, ET1Buridavens, [][]TTV{Legendary8})
+
+	//Tier 3 Sets
+	T3Common    = CT
+	T3Rare      = RT
+	T3Epic      = ET
+	T3Legendary = LT
+
+	//Tier 4 Set
+	T4 = ConcatenateTTV(T3Common, T3Rare, T3Epic, T3Legendary)
+)
+
+func ConcatenateTTV(Input ...[][]TTV) [][]TTV {
+	totalLength := 0
+
+	// Calculate the total length of the resulting slice
+	for _, slice := range Input {
+		totalLength += len(slice)
+	}
+
+	// Create the resulting slice with the calculated length
+	result := make([][]TTV, totalLength)
+
+	// Copy the elements from input slices to the resulting slice
+	currentIndex := 0
+	for _, slice := range Input {
+		copy(result[currentIndex:], slice)
+		currentIndex += len(slice)
+	}
+
+	return result
+}

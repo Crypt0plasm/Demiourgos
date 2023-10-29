@@ -41,8 +41,8 @@ func KycScanner(Path string) []mvx.MvxAddress {
 		}
 
 		StringSlice := strings.Split(Line, ",")
-		if StringSlice[7] == "APPROVED" && CheckFirstThree(StringSlice[5]) == true {
-			Addy = StripLength(StringSlice[5])
+		if StringSlice[6] == "APPROVED" && CheckFirstThree(StringSlice[7]) == true {
+			Addy = StripLength(StringSlice[7])
 		}
 
 		return Addy

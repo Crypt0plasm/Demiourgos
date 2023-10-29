@@ -30,7 +30,7 @@ func MakeBloodshedSendFile(Input []string, Addy mvx.MvxAddress, Collection strin
 		Output []string
 		Unit   string
 	)
-	NFTStrings := mvx.MakeTotalNFTString(8861)
+	NFTStrings := mvx.MakeMVXNftIdSlice(8861)
 
 	for i := 0; i < len(Input); i++ {
 		Number, _ := strconv.Atoi(Input[i])

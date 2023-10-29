@@ -170,7 +170,7 @@ func ComputeCodingDivisionRewards(Amount *p.Decimal) []mvx.BalanceESDT {
 	CodingDivision, CodingDivisionSum := MakeCodingDivisionChain()
 
 	SnakeNumber := p.NFS("760")
-	ASSE := p.NFS("74") //Ancient Snake Share Equivalent
+	ASSE := p.NFS("75") //Ancient Snake Share Equivalent
 
 	TotalAllShares := p.NFS("1000000")
 	TotalExternalShares := p.NFS("0")

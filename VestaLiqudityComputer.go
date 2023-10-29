@@ -47,7 +47,7 @@ func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.Vest
 	} else if Variant == "blood" {
 		GP = 19
 	} else if Variant == "vault" {
-		GP = 8
+		GP = 0
 	} else if Variant == "vaultbtc" {
 		GP = 0
 	}
@@ -124,6 +124,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 		vst.ExportGroupData("HardcodedAssets.txt", vst.UserNameList, vst.UserChain, vst.LiquidityUserChain)
 	}
 	fmt.Println("**************************************************")
+	fmt.Println("**************************************************")
+	fmt.Println("**************************************************")
 	Slip_TrDaniel := p.NFS("6567.794414772907381575")
 	Slip_DRX := p.NFS("2405.210727046111560132")
 	Slip_Patryx := p.NFS("1705.824485929687472430")
@@ -193,8 +195,8 @@ Name;ERD;GoldSFT;SilverSFT;BronzeSFT;GoldLiq;SilverLiq;BronzeLiq;UGoldLiq;USilve
 	fmt.Println("Send GSC is ", O)
 	fmt.Println("Z is", Z)
 
-	A := p.NFS("137399.372763339850016485")
-	B := p.NFS("455.720249999999965091")
+	A := p.NFS("623436.315864792401536987")
+	B := p.NFS("1927.084307414062450010")
 	AplusB := sm.ADDxc(A, B)
 	fmt.Println("A plus B: ", AplusB)
 
