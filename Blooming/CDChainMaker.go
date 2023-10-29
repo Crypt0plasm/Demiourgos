@@ -38,7 +38,7 @@ func CreateSnakeAmountChain(InputChain []mvx.BalanceSFT) []mvx.BalanceSFT {
 		Unit     mvx.BalanceSFT
 	)
 	for i := 0; i < len(InputChain); i++ {
-		if ComputeExceptionAddress(InputChain[i].Address, SnakeExceptions) == false {
+		if mvx.ComputeExceptionAddress(InputChain[i].Address, SnakeExceptions) == false {
 			Unit.Address = InputChain[i].Address
 			Unit.Balance = InputChain[i].Balance
 
@@ -71,7 +71,7 @@ func CreateVestaAmountChains(InputChain []mvx.BalanceSFT) []mvx.BalanceSFT {
 		Unit     mvx.BalanceSFT
 	)
 	for i := 0; i < len(InputChain); i++ {
-		if ComputeExceptionAddress(InputChain[i].Address, VestaExceptions) == false {
+		if mvx.ComputeExceptionAddress(InputChain[i].Address, VestaExceptions) == false {
 			Unit.Address = InputChain[i].Address
 			Unit.Balance = InputChain[i].Balance
 
@@ -237,7 +237,7 @@ func CreateCodingDivisionSetChain(Owners []mvx.MvxAddress, Snapshot DecaChain) [
 		Minimum = mt.MinDecimal(Minimum, Binar)
 
 		//If Minimum is greater than zero AND Address is non Exception
-		if mt.DecimalGreaterThan(Minimum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i], CDExceptions) == false {
+		if mt.DecimalGreaterThan(Minimum, p.NFS("0")) == true && mvx.ComputeExceptionAddress(Owners[i], CDExceptions) == false {
 			Unit.Address = Owners[i]
 			Unit.Balance = mt.DTS(Minimum)
 
@@ -314,7 +314,7 @@ func CreateCodingDivisionAmountChain(Owners []mvx.MvxAddress, Snapshot DecaChain
 		Sum = mt.SUMxc(SnakeEye, Rudis, Gwen, Clutter, Bangai, Binos, Rubia, Ocultus, Oreta, Binar)
 
 		//If Sum is greater than zero AND Address is non Exception
-		if mt.DecimalGreaterThan(Sum, p.NFS("0")) == true && ComputeExceptionAddress(Owners[i], CDExceptions) == false {
+		if mt.DecimalGreaterThan(Sum, p.NFS("0")) == true && mvx.ComputeExceptionAddress(Owners[i], CDExceptions) == false {
 			Unit.Address = Owners[i]
 			Unit.Balance = mt.DTS(Sum)
 

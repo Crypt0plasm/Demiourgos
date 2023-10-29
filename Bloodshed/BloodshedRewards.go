@@ -1,113 +1,153 @@
 package Bloodshed
 
 import (
+	bm "Demiourgos/Blooming"
 	p "Firefly-APD"
 	mvx "MvxApiScanner"
 	sm "SuperMath"
-	"encoding/json"
 	"fmt"
 )
 
-type EstarNFT []struct {
-	Address string `json:"address"`
-	Balance string `json:"balance"`
-}
+//Exception Addresses
 
-type EstarIndividualNFT struct {
-	Address mvx.MvxAddress
-	ID      int64
-}
+var (
+	BloodshedExceptions = []mvx.MvxAddress{
+		bm.ExA3, bm.ExA4, bm.ExA5, bm.ExA6, bm.ExA7, bm.ExA8, bm.ExA9,
+		bm.ExA10, bm.ExA11, bm.ExA12, bm.ExA13, bm.ExA14, bm.ExA17}
+)
 
-type EstarIndividualNFTChain struct {
-	Address mvx.MvxAddress
-	ID      []int64
-}
+// CONVERTERS
 
-func GetNFTOwner(NftNonce int64) EstarIndividualNFT {
+func ConvertNonceToScore(Input int64) TTVScore {
 	var (
-		OutputChain EstarNFT
-		Output      EstarIndividualNFT
+		ScoreUnit               TTVScore
+		ComputedBase            int
+		ComputedOrderMultiplier *p.Decimal
 	)
-	V1 := "https://mvx-api.estar.games/nfts/"
-	V2 := "/accounts"
-	NftID := "BLOODSHED-a62781-" + mvx.MvxNftId(NftNonce)
-	Link := V1 + NftID + V2
+	//Compute the TTV
+	ScoreUnit.TTV = GetNFTType(Input)
 
-	SS := mvx.OnPage(Link)
-	_ = json.Unmarshal([]byte(SS), &OutputChain)
+	//Compute Base Bloodshed Score
+	if ScoreUnit.TTV[0] == R1 {
+		ComputedBase = CommonBS
+	} else if ScoreUnit.TTV[0] == R2 {
+		ComputedBase = RareBS
+	} else if ScoreUnit.TTV[0] == R3 {
+		ComputedBase = EpicBS
+	} else if ScoreUnit.TTV[0] == R4 {
+		ComputedBase = LegendaryBS
+	}
+	ScoreUnit.Base = ComputedBase
 
-	Owner := mvx.MvxAddress(OutputChain[0].Address)
+	//Compute OrderMultiplier
+	ComputedOrderMultiplier = GetOrderMultiplier(Input)
+	ScoreUnit.OM = ComputedOrderMultiplier
 
-	Output.Address = Owner
-	Output.ID = NftNonce
+	//Set Default values for SetMultiplier and WeekMultiplier to 1.0x
+	//Set Default value as false for the SetBoolean (will be set in a later function as true, when sets are checked)
+	ScoreUnit.SetBoolean = false
+	ScoreUnit.SM = p.NFS("1")
+	ScoreUnit.WM = p.NFS("1")
 
-	return Output
+	return ScoreUnit
 }
 
-func ConvertToChain(Input EstarIndividualNFT) (Output EstarIndividualNFTChain) {
-	var Chain []int64
-	Chain = append(Chain, Input.ID)
-	Output.Address = Input.Address
-	Output.ID = Chain
-	return Output
-}
+//Converts an Input []int64 (a chain of nonces), to a []TTVScore (a chain of reward scores)
 
-func AddNFTOwner(Owner1, Owner2 EstarIndividualNFT) []EstarIndividualNFTChain {
+func ConvertNonceListToScoreList(Input []int64) []TTVScore {
 	var (
-		V1, V2       EstarIndividualNFTChain
-		SingleOutput EstarIndividualNFTChain
-		Output       []EstarIndividualNFTChain
-		NonceChain   []int64
+		Unit   TTVScore
+		Output []TTVScore
 	)
-	if Owner1.Address == Owner2.Address {
-		NonceChain = append(NonceChain, Owner1.ID)
-		NonceChain = append(NonceChain, Owner2.ID)
-		SingleOutput.Address = Owner1.Address
-		SingleOutput.ID = NonceChain
-		Output = append(Output, SingleOutput)
-	} else if Owner1.Address != Owner2.Address {
-		V1 = ConvertToChain(Owner1)
-		V2 = ConvertToChain(Owner2)
-		Output = append(Output, V1)
-		Output = append(Output, V2)
+
+	for i := 0; i < len(Input); i++ {
+		Unit = ConvertNonceToScore(Input[i])
+		Output = append(Output, Unit)
 	}
 	return Output
 }
 
-func AddNFTOwnerToChain(Owner EstarIndividualNFT, InputChain []EstarIndividualNFTChain) (OutputChain []EstarIndividualNFTChain) {
+//Converts an []EstarIndividualNFTChain to a []EstarIndividualNFTScoreChain
+
+func ConvertChainToScoreChain(Input []EstarIndividualNFTChain) []EstarIndividualNFTScoreChain {
 	var (
-		NonceChain []int64
+		Unit   EstarIndividualNFTScoreChain
+		Output []EstarIndividualNFTScoreChain
 	)
-	//Function to check if owner is in chain
-	IzInChain := func(Owner EstarIndividualNFT, InputChain []EstarIndividualNFTChain) (Result bool, Position int) {
-		for i := 0; i < len(InputChain); i++ {
-			if Owner.Address == InputChain[i].Address {
-				Result = true
-				Position = i
-				break
-			} else {
-				Result = false
-				Position = len(InputChain)
-			}
-		}
-		return Result, Position
+
+	for i := 0; i < len(Input); i++ {
+		Unit.Address = Input[i].Address
+		Unit.ID = ConvertNonceListToScoreList(Input[i].ID)
+
+		Output = append(Output, Unit)
 	}
+	return Output
+}
 
-	Truth, Position := IzInChain(Owner, InputChain)
+//Converts an []EstarIndividualNFTScoreChain to an []EstarIndividualNFTValueChain
 
-	//Owner is in chain
-	if Truth == true {
-		NonceChain = append(NonceChain, InputChain[Position].ID...)
-		NonceChain = append(NonceChain, Owner.ID)
-		OutputChain = InputChain
-		OutputChain[Position].ID = NonceChain
-	} else if Truth == false {
-		OwnerToAdd := ConvertToChain(Owner)
-		OutputChain = append(InputChain, OwnerToAdd)
+func MakeIndividualScoreChain(Input []EstarIndividualNFTScoreChain) []EstarIndividualNFTValueChain {
+	var (
+		Unit   EstarIndividualNFTValueChain
+		Output []EstarIndividualNFTValueChain
+	)
+
+	for i := 0; i < len(Input); i++ {
+		Unit.Address = Input[i].Address
+		Unit.ID = ConvertTTVScoreChainToDecimalChain(Input[i].ID)
+
+		Output = append(Output, Unit)
 	}
-	return OutputChain
+	return Output
+}
 
-	//Owner is not in chain
+//Converts TTVScore to *p.Decimal
+
+func ConvertTTVScoreToValue(Input TTVScore) *p.Decimal {
+	Score := sm.PRDxc(p.NFI(int64(Input.Base)), Input.OM, Input.SM, Input.WM)
+	ScoreTr := sm.TruncateCustom(Score, 18)
+	return ScoreTr
+}
+
+//Converts TTVScore to *p.Decimal as a chain
+
+func ConvertTTVScoreChainToDecimalChain(Input []TTVScore) []*p.Decimal {
+	var (
+		Unit   *p.Decimal
+		Output []*p.Decimal
+	)
+	for i := 0; i < len(Input); i++ {
+		Unit = ConvertTTVScoreToValue(Input[i])
+		Output = append(Output, Unit)
+	}
+	return Output
+}
+
+//Converts a *p.Decimal Chain into a single *p.Decimal by adding all elements of the chain together
+
+func SummingDecimalChain(Input []*p.Decimal) *p.Decimal {
+	Sum := p.NFS("0")
+	for i := 0; i < len(Input); i++ {
+		Sum = sm.SUMxc(Sum, Input[i])
+	}
+	return Sum
+}
+
+func ConvertFinal(Input []EstarIndividualNFTValueChain) []mvx.BalanceESDT {
+	var (
+		Unit           mvx.BalanceESDT
+		Output         []mvx.BalanceESDT
+		BalanceDecimal *p.Decimal
+	)
+
+	for i := 0; i < len(Input); i++ {
+		Unit.Address = Input[i].Address
+		BalanceDecimal = SummingDecimalChain(Input[i].ID)
+		Unit.Balance = sm.DTS(BalanceDecimal)
+		Output = append(Output, Unit)
+	}
+	Output2 := mvx.SortBalanceDecimalChain(Output)
+	return Output2
 }
 
 // Score Computation Functions
@@ -205,62 +245,8 @@ func GetNFTType(InputNonce int64) []TTV {
 	return NFTType
 }
 
-func ConvertNoncesToScore(Input int64) TTVScore {
-	var (
-		ScoreUnit               TTVScore
-		ComputedBase            int
-		ComputedOrderMultiplier *p.Decimal
-	)
-	//Compute the TTV
-	ScoreUnit.TTV = GetNFTType(Input)
-
-	//Compute Base Bloodshed Score
-	if ScoreUnit.TTV[0] == R1 {
-		ComputedBase = CommonBS
-	} else if ScoreUnit.TTV[0] == R2 {
-		ComputedBase = RareBS
-	} else if ScoreUnit.TTV[0] == R3 {
-		ComputedBase = EpicBS
-	} else if ScoreUnit.TTV[0] == R4 {
-		ComputedBase = LegendaryBS
-	}
-	ScoreUnit.Base = ComputedBase
-
-	//Compute OrderMultiplier
-	ComputedOrderMultiplier = GetOrderMultiplier(Input)
-	ScoreUnit.OM = ComputedOrderMultiplier
-
-	//Set Default values for SetMultiplier and WeekMultiplier to 1.0x
-	//Set Default value as false for the SetBoolean (will be set in a later function as true, when sets are checked)
-	ScoreUnit.SetBoolean = false
-	ScoreUnit.SM = p.NFS("1")
-	ScoreUnit.WM = p.NFS("1")
-
-	return ScoreUnit
-}
-
-func ConvertNoncesListToScoreList(Input []int64) []TTVScore {
-	var (
-		Unit   TTVScore
-		Output []TTVScore
-	)
-
-	for i := 0; i < len(Input); i++ {
-		Unit = ConvertNoncesToScore(Input[i])
-		Output = append(Output, Unit)
-	}
-	return Output
-}
-
-func IzEqualTTV(InputA, InputB []TTV) bool {
-	var Output bool
-	if InputA[0] == InputB[0] && InputA[1] == InputB[1] && InputA[2] == InputB[2] && InputA[3] == InputB[3] && InputA[4] == InputB[4] && InputA[5] == InputB[5] && InputA[6] == InputB[6] && InputA[7] == InputB[7] && InputA[8] == InputB[8] {
-		Output = true
-	} else {
-		Output = false
-	}
-	return Output
-}
+//Function sorts a []TTVScore comparing it with a set.
+//Returns the sorted []TTVScore and an int representing how many times the Set is included.
 
 func SetSorter(SetMultiplier *p.Decimal, Set [][]TTV, Input []TTVScore) ([]TTVScore, int) {
 	var (
@@ -320,6 +306,40 @@ func SetSorter(SetMultiplier *p.Decimal, Set [][]TTV, Input []TTVScore) ([]TTVSc
 
 	return Output, OutputCounter
 }
+
+// Function returns two if 2 []TTV are equal
+
+func IzEqualTTV(InputA, InputB []TTV) bool {
+	var Output bool
+	if InputA[0] == InputB[0] && InputA[1] == InputB[1] && InputA[2] == InputB[2] && InputA[3] == InputB[3] && InputA[4] == InputB[4] && InputA[5] == InputB[5] && InputA[6] == InputB[6] && InputA[7] == InputB[7] && InputA[8] == InputB[8] {
+		Output = true
+	} else {
+		Output = false
+	}
+	return Output
+}
+
+//Adds Set Multiplier by performing Set Sorting on all NFTs for all ERDs
+
+func AddSetMultiplier(Input []EstarIndividualNFTScoreChain) []EstarIndividualNFTScoreChain {
+	var (
+		Unit   EstarIndividualNFTScoreChain
+		Output []EstarIndividualNFTScoreChain
+		Sorted []TTVScore
+	)
+
+	for i := 0; i < len(Input); i++ {
+		Sorted, _ = BloodshedSetSorting(Input[i].ID)
+		Unit.Address = Input[i].Address
+		Unit.ID = Sorted
+		Output = append(Output, Unit)
+	}
+	return Output
+}
+
+//The Bloodshed Set Sorter, sorts a []TTVScore against all possible sets.
+//SortedOutput []TTV represents the sorted Score List taking in account the Sets that have been detected
+//ResultSlice []int, is a slice of integers that show how much of each set was detected.
 
 func BloodshedSetSorting(Input []TTVScore) (SortedOutput []TTVScore, ResultSlice []int) {
 
@@ -447,15 +467,17 @@ func BloodshedSetSorting(Input []TTVScore) (SortedOutput []TTVScore, ResultSlice
 	return SortedOutput, ResultSlice
 }
 
+//Decodes the ResultSlice []int  created with the previous function.
+
 func ReadSetComposition(Input []int) {
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[0], " T4 Sets")
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[1], " T3 Legendary Sets")
 	fmt.Println(Input[2], " T3 Epic Sets")
 	fmt.Println(Input[3], " T3 Rare Sets")
 	fmt.Println(Input[4], " T3 Common Sets")
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[5], " T2 Comati Sets")
 	fmt.Println(Input[6], " T2 Ursoi Sets")
 	fmt.Println(Input[7], " T2 Pileati Sets")
@@ -464,7 +486,7 @@ func ReadSetComposition(Input []int) {
 	fmt.Println(Input[10], " T2 Tarabostes Sets")
 	fmt.Println(Input[11], " T2 Costoboc Sets")
 	fmt.Println(Input[12], " T2 Buridavens Sets")
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[13], " T1 Epic Comati Sets")
 	fmt.Println(Input[14], " T1 Epic Ursoi Sets")
 	fmt.Println(Input[15], " T1 Epic Pileati Sets")
@@ -473,7 +495,7 @@ func ReadSetComposition(Input []int) {
 	fmt.Println(Input[18], " T1 Epic Tarabostes Sets")
 	fmt.Println(Input[19], " T1 Epic Costoboc Sets")
 	fmt.Println(Input[20], " T1 Epic Buridavens Sets")
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[21], " T1 Rare Comati Sets")
 	fmt.Println(Input[22], " T1 Rare Ursoi Sets")
 	fmt.Println(Input[23], " T1 Rare Pileati Sets")
@@ -482,7 +504,7 @@ func ReadSetComposition(Input []int) {
 	fmt.Println(Input[26], " T1 Rare Tarabostes Sets")
 	fmt.Println(Input[27], " T1 Rare Costoboc Sets")
 	fmt.Println(Input[28], " T1 Rare Buridavens Sets")
-	fmt.Println("============================")
+	fmt.Println("==========================================")
 	fmt.Println(Input[29], " T1 Common Comati Sets")
 	fmt.Println(Input[30], " T1 Common Ursoi Sets")
 	fmt.Println(Input[31], " T1 Common Pileati Sets")

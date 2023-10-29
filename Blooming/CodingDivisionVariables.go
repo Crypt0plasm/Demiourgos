@@ -23,9 +23,11 @@ var (
     ExA15 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgqrujrjjnaeqc3srdqn8vtzz8wh5dmnq9xyl5s8797wk") //Last 40 Snakes at 2500 Dollars
     ExA16 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgq4u78a0fk85lhye9rj4w3dxgn90ke9frc03aszeuwcu")
 
+    ExA17 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgquqwc8v09e5pmcz9h4569gynle8qwjdenyl5sayfsl0") //BS Original Lottery SC
+
     //This is the Amount Exception
     //Paul holds 50 Company SFTs that aren't Include in the computation, that are excepted from computation
-    ExAm1 = AddressINTExceptions{mvx.Hefe, 16}
+    ExAm1 = AddressINTExceptions{mvx.Hefe, 7}
 
     //Smart Contract Exceptions
     VestaExceptions = []mvx.MvxAddress{ExA1, ExA2, ExA3, ExA4, ExA6, ExA7, ExA8, ExA9, ExA10, ExA11, ExA12, ExA13}
@@ -38,16 +40,6 @@ var (
     //Set Exceptions
     SetExceptions = []mvx.MvxAddress{mvx.KosonicTreasury}
 )
-
-func ComputeExceptionAddress(Addy mvx.MvxAddress, ExceptionList []mvx.MvxAddress) bool {
-    var Result = false
-    for i := 0; i < len(ExceptionList); i++ {
-	if Addy == ExceptionList[i] {
-	    Result = true
-	}
-    }
-    return Result
-}
 
 type AddressINTExceptions struct {
     Address mvx.MvxAddress

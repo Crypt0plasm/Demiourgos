@@ -100,7 +100,7 @@ Computes rewards for Coding Division Distribution, using a total amount for dist
 		rw.ComputeCodingDivisionRewardsByMultiplication(*FlagCodingDivisionMultiplierRewards)
 	}
 
-	//Second Second Option
+	//Second Option
 	if *FlagCustomSFTMultiplierRewards != "0" {
 		BlockHeights := strings.Split(*FlagCustomSFTMultiplierRewards, "_")
 		//fmt.Println("Primut text este", BlockHeights)
