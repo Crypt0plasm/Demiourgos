@@ -308,9 +308,9 @@ func ExportNFTAssetsSplit(Start, Stop, OutputPosition int) {
 
 func main() {
 	ExportBloodshedJSON(1, 152, "Legendary")
-	//ExportBloodshedJSON(153, 554, "Epic")
-	//ExportBloodshedJSON(555, 1157, "Rare")
-	//ExportBloodshedJSON(1158, 8861, "Common")
+	ExportBloodshedJSON(153, 554, "Epic")
+	ExportBloodshedJSON(555, 1157, "Rare")
+	ExportBloodshedJSON(1158, 8861, "Common")
 
 	//for i := 1; i <= 89; i++ {
 	//End := i * 100

@@ -74,7 +74,8 @@ var (
 	AncientDEB   = p.NFS("2.5")
 	BloodshedDEB = p.NFS("1.6")
 
-	VestaTMSix = p.NFS("5")
+	VestaTMFive = p.NFS("5")
+	VestaTMSix  = p.NFS("6")
 
 	Platinum = p.NFS("1.4")
 
@@ -132,7 +133,7 @@ var (
 		User031, User032, User033, User034}
 
 	//User000 = VestaHoldings{AncientHodler, 35, 151, 592}
-	User000 = VestaHoldings{AncientHodler, 25, 151, 632}
+	User000 = VestaHoldings{AncientHodler, 25, 152, 667}
 	User001 = VestaHoldings{TrDaniel, 0, 0, 0}
 	User002 = VestaHoldings{DRX, 0, 0, 0}
 	User003 = VestaHoldings{Patryx, 0, 0, 0}
@@ -148,7 +149,7 @@ var (
 	User013 = VestaHoldings{TheKid, 0, 0, 0}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 0, 0, 0}
-	User016 = VestaHoldings{Paul, 0, 0, 0}
+	User016 = VestaHoldings{Paul, 195, 210, 174}
 	User017 = VestaHoldings{Florian, 0, 49, 688}
 	User018 = VestaHoldings{Coding, 0, 0, 0}
 	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
@@ -523,7 +524,7 @@ func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
 	if Variant == "vesta" {
 		Output = FarmMx{AncientDEB, Neutral, VestaTMSix, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "blood" {
-		Output = FarmMx{BloodshedDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{BloodshedDEB, Neutral, VestaTMFive, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "koson" {
 		Output = FarmMx{AncientDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "vault" {

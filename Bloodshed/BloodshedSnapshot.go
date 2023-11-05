@@ -184,6 +184,27 @@ func ExportNFTSnapshotChain(Name string, List []EstarIndividualNFTChain) {
 	return
 }
 
+func ExportIndividualScoreValues(Name string, List []EstarIndividualNFTValueChain) {
+	f, err := os.Create(Name)
+
+	if err != nil {
+		fmt.Println(err)
+		_ = f.Close()
+		return
+	}
+
+	for _, v := range List {
+		_, _ = fmt.Fprintln(f, v)
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("file written successfully")
+	return
+}
+
 // Read NFT Snapshot Chain, reads the information from an already exported file at the target location
 
 func ImportNFTSnapshotChain(Path string) []EstarIndividualNFTChain {

@@ -1,7 +1,6 @@
 package Vesta
 
 import (
-	"Demiourgos/Blooming"
 	p "Firefly-APD"
 	mvx "MvxApiScanner"
 	mt "SuperMath"
@@ -28,27 +27,6 @@ func ScanVestaGoldChain() []mvx.BalanceSFT {
 	fmt.Println(len(VestaGoldChain), "addresses snapshotted with Vesta GOLD SFTs", S01)
 	fmt.Println("")
 	return VestaGoldChain
-}
-
-// CreateVestaGoldAmounts ========================================================================================
-//
-// [B]02         CreateVestaGoldAmounts
-//
-//	Create a Chain of all Addresses Containing All VestaGold SFTs and their Amounts and applies SC Exception
-func CreateVestaGoldAmounts(Input []mvx.BalanceSFT) []mvx.BalanceSFT {
-	var (
-		Result []mvx.BalanceSFT
-		Unit   mvx.BalanceSFT
-	)
-
-	for i := 0; i < len(Input); i++ {
-		if Blooming.ComputeExceptionAddress(Input[i].Address, Blooming.VestaExceptions) == false {
-			Unit.Address = Input[i].Address
-			Unit.Balance = Input[i].Balance
-			Result = append(Result, Unit)
-		}
-	}
-	return Result
 }
 
 // VESTA Distribution Functions
