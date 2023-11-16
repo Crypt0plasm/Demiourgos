@@ -13,7 +13,7 @@ import (
 var (
 	BloodshedExceptions = []mvx.MvxAddress{
 		bm.ExA3, bm.ExA4, bm.ExA5, bm.ExA6, bm.ExA7, bm.ExA8, bm.ExA9,
-		bm.ExA10, bm.ExA11, bm.ExA12, bm.ExA13, bm.ExA14, bm.ExA17}
+		bm.ExA10, bm.ExA11, bm.ExA12, bm.ExA13, bm.ExA14, bm.ExA17, bm.ExA18}
 )
 
 //======================================================================================================================

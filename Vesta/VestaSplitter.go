@@ -149,9 +149,9 @@ var (
 	User013 = VestaHoldings{TheKid, 0, 0, 0}
 	User014 = VestaHoldings{RaulTM, 0, 0, 9}
 	User015 = VestaHoldings{MakeAStep, 0, 0, 0}
-	User016 = VestaHoldings{Paul, 195, 210, 174}
+	User016 = VestaHoldings{Paul, 196, 219, 174}
 	User017 = VestaHoldings{Florian, 0, 49, 688}
-	User018 = VestaHoldings{Coding, 0, 0, 0}
+	User018 = VestaHoldings{Coding, 0, 400, 0}
 	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
 	User020 = VestaHoldings{Elanul, 1, 5, 56}
 	User021 = VestaHoldings{Buguletu, 0, 0, 0}
@@ -159,7 +159,7 @@ var (
 	User023 = VestaHoldings{Ursea, 0, 0, 0}
 	User024 = VestaHoldings{BailWrite, 0, 0, 0}
 	User025 = VestaHoldings{Rogojan, 0, 0, 0}
-	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
+	User026 = VestaHoldings{DemiFarm, 4, 189, 318}
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
@@ -184,11 +184,11 @@ var (
 	VltEmpty = VestaDexVault{Zero, Zero, Zero, Zero}
 
 	VLQUser000      = LpHoldings{AncientHodler, LQDUser000, KosonLiqUser000, BloodLiqUser000, VaultLiqUser000, VaultBtcUser000, SnakeLiqUser000}
-	LQDUser000      = VestaDexLPs{p.NFS("28215.889749851923648510"), Zero, Zero, p.NFS("0.3242"), Zero, Zero}
+	LQDUser000      = VestaDexLPs{p.NFS("0"), Zero, Zero, p.NFS("0"), Zero, Zero}
 	KosonLiqUser000 = VestaDexLPs{p.NFS("45137.278081125541251284"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser000 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultBtcUser000 = VestaDexVault{p.NFS("229769.209078853839048534"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultLiqUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("2000000"), p.NFS("0")}
+	VaultBtcUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	VaultLiqUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("625363.400172206463986997")}
 	//
 	VLQUser001      = LpHoldings{TrDaniel, LQDUser001, KosonLiqUser001, BloodLiqUser001, VaultLiqUser001, VaultBtcUser001, SnakeLiqUser001}
@@ -252,7 +252,7 @@ var (
 	KosonLiqUser008 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser008 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser008 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultLiqUser008 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	VaultLiqUser008 = VestaDexVault{p.NFS("1"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser008 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser009      = LpHoldings{Laurentiu, LQDUser009, KosonLiqUser009, BloodLiqUser009, VaultLiqUser009, VaultBtcUser009, SnakeLiqUser009}
@@ -392,7 +392,7 @@ var (
 	SnakeLiqUser025 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser026      = LpHoldings{DemiFarm, LQDUser026, KosonLiqUser026, BloodLiqUser026, VaultLiqUser026, VaultBtcUser026, SnakeLiqUser026}
-	LQDUser026      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser026      = VestaDexLPs{p.NFS("45000"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser026 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -522,13 +522,13 @@ func ComputeVestaSplit(Position int64, Input []VestaHoldings) (GuestIM *p.Decima
 // Outputs Farm Multiplier Structure
 func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
 	if Variant == "vesta" {
-		Output = FarmMx{AncientDEB, Neutral, VestaTMSix, Neutral, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{BloodshedDEB, Neutral, BloodshedDEB, Platinum, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "blood" {
 		Output = FarmMx{BloodshedDEB, Neutral, VestaTMFive, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "koson" {
 		Output = FarmMx{AncientDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "vault" {
-		Output = FarmMx{AncientDEB, Neutral, Neutral, Neutral, Neutral, ComputeFinalTotalIMVault(InputIM), Neutral, Neutral}
+		Output = FarmMx{Neutral, Neutral, Neutral, Neutral, Neutral, ComputeFinalTotalIMVault(InputIM), Neutral, Neutral}
 	} else if Variant == "vaultbtc" {
 		Output = FarmMx{Neutral, Neutral, Neutral, Neutral, Neutral, Neutral, Neutral, Neutral}
 	}
