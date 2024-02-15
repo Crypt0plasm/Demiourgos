@@ -43,11 +43,11 @@ func VestaComputer(Variant string, RawVesta, VestaUM *p.Decimal, SFTs []vst.Vest
 	//Pulecs Vesta Boos: Guest Position is 8
 	//Emma Vault Boost: Guest Position is 29
 	if Variant == "vesta" || Variant == "koson" {
-		GP = 26
+		GP = 0
 	} else if Variant == "blood" {
 		GP = 19
 	} else if Variant == "vault" {
-		GP = 8
+		GP = 0
 	} else if Variant == "vaultbtc" {
 		GP = 0
 	}

@@ -73,9 +73,12 @@ var (
 
 	AncientDEB   = p.NFS("2.5")
 	BloodshedDEB = p.NFS("1.6")
+	YolaDEB      = p.NFS("1.3")
 
-	VestaTMFive = p.NFS("5")
-	VestaTMSix  = p.NFS("6")
+	VestaTMThree = p.NFS("3")
+	VestaTMFour  = p.NFS("4")
+	VestaTMFive  = p.NFS("5")
+	VestaTMSix   = p.NFS("6")
 
 	Platinum = p.NFS("1.4")
 
@@ -133,7 +136,7 @@ var (
 		User031, User032, User033, User034}
 
 	//User000 = VestaHoldings{AncientHodler, 35, 151, 592}
-	User000 = VestaHoldings{AncientHodler, 25, 152, 667}
+	User000 = VestaHoldings{AncientHodler, 29, 157, 662}
 	User001 = VestaHoldings{TrDaniel, 0, 0, 0}
 	User002 = VestaHoldings{DRX, 0, 0, 0}
 	User003 = VestaHoldings{Patryx, 0, 0, 0}
@@ -147,19 +150,19 @@ var (
 	User011 = VestaHoldings{IonutDRD, 0, 0, 0}
 	User012 = VestaHoldings{Buhaici, 0, 0, 0}
 	User013 = VestaHoldings{TheKid, 0, 0, 0}
-	User014 = VestaHoldings{RaulTM, 0, 0, 9}
+	User014 = VestaHoldings{RaulTM, 0, 0, 0}
 	User015 = VestaHoldings{MakeAStep, 0, 0, 0}
-	User016 = VestaHoldings{Paul, 196, 219, 174}
+	User016 = VestaHoldings{Paul, 205, 228, 178}
 	User017 = VestaHoldings{Florian, 0, 49, 688}
-	User018 = VestaHoldings{Coding, 0, 400, 0}
+	User018 = VestaHoldings{Coding, 0, 0, 0}
 	User019 = VestaHoldings{Bloodshed, 0, 0, 0}
-	User020 = VestaHoldings{Elanul, 1, 5, 56}
+	User020 = VestaHoldings{Elanul, 0, 0, 0}
 	User021 = VestaHoldings{Buguletu, 0, 0, 0}
 	User022 = VestaHoldings{Carlig, 0, 0, 0}
 	User023 = VestaHoldings{Ursea, 0, 0, 0}
 	User024 = VestaHoldings{BailWrite, 0, 0, 0}
 	User025 = VestaHoldings{Rogojan, 0, 0, 0}
-	User026 = VestaHoldings{DemiFarm, 4, 189, 318}
+	User026 = VestaHoldings{DemiFarm, 0, 0, 0}
 	User027 = VestaHoldings{Xlauncher, 0, 0, 0}
 	User028 = VestaHoldings{Dezvoltatorul, 0, 0, 0}
 	User029 = VestaHoldings{EmmaB, 0, 0, 10}
@@ -188,8 +191,8 @@ var (
 	KosonLiqUser000 = VestaDexLPs{p.NFS("45137.278081125541251284"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser000 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultLiqUser000 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("625363.400172206463986997")}
+	VaultLiqUser000 = VestaDexVault{p.NFS("1"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	SnakeLiqUser000 = OuroLP{p.NFS("0"), p.NFS("625362.400172206463986997")}
 	//
 	VLQUser001      = LpHoldings{TrDaniel, LQDUser001, KosonLiqUser001, BloodLiqUser001, VaultLiqUser001, VaultBtcUser001, SnakeLiqUser001}
 	LQDUser001      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -197,7 +200,7 @@ var (
 	BloodLiqUser001 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser001 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser001 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser001 = OuroLP{p.NFS("0"), p.NFS("16888.880734495260617049")}
+	SnakeLiqUser001 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser002      = LpHoldings{DRX, LQDUser002, KosonLiqUser002, BloodLiqUser002, VaultLiqUser002, VaultBtcUser002, SnakeLiqUser002}
 	LQDUser002      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -205,7 +208,7 @@ var (
 	BloodLiqUser002 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser002 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser002 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser002 = OuroLP{p.NFS("0"), p.NFS("5998.181028398943605902")}
+	SnakeLiqUser002 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser003      = LpHoldings{Patryx, LQDUser003, KosonLiqUser003, BloodLiqUser003, VaultLiqUser003, VaultBtcUser003, SnakeLiqUser003}
 	LQDUser003      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -213,7 +216,7 @@ var (
 	BloodLiqUser003 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser003 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser003 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser003 = OuroLP{p.NFS("0"), p.NFS("4061.891505389062456945")}
+	SnakeLiqUser003 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser004      = LpHoldings{Lavinia, LQDUser004, KosonLiqUser004, BloodLiqUser004, VaultLiqUser004, VaultBtcUser004, SnakeLiqUser004}
 	LQDUser004      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -237,7 +240,7 @@ var (
 	BloodLiqUser006 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser006 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser006 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser006 = OuroLP{p.NFS("0"), p.NFS("5959.925753976562407994")}
+	SnakeLiqUser006 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser007      = LpHoldings{Codarcea, LQDUser007, KosonLiqUser007, BloodLiqUser007, VaultLiqUser007, VaultBtcUser007, SnakeLiqUser007}
 	LQDUser007      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -252,7 +255,7 @@ var (
 	KosonLiqUser008 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser008 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser008 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	VaultLiqUser008 = VestaDexVault{p.NFS("1"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	VaultLiqUser008 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	SnakeLiqUser008 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser009      = LpHoldings{Laurentiu, LQDUser009, KosonLiqUser009, BloodLiqUser009, VaultLiqUser009, VaultBtcUser009, SnakeLiqUser009}
@@ -261,7 +264,7 @@ var (
 	BloodLiqUser009 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser009 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser009 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser009 = OuroLP{p.NFS("0"), p.NFS("6527.181274794853601651")}
+	SnakeLiqUser009 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser010      = LpHoldings{Frostedk9, LQDUser010, KosonLiqUser010, BloodLiqUser010, VaultLiqUser010, VaultBtcUser010, SnakeLiqUser010}
 	LQDUser010      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -269,7 +272,7 @@ var (
 	BloodLiqUser010 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser010 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser010 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser010 = OuroLP{p.NFS("0"), p.NFS("9435.254344918618067014")}
+	SnakeLiqUser010 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser011      = LpHoldings{IonutDRD, LQDUser011, KosonLiqUser011, BloodLiqUser011, VaultLiqUser011, VaultBtcUser011, SnakeLiqUser011}
 	LQDUser011      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -293,7 +296,7 @@ var (
 	BloodLiqUser013 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser013 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser013 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser013 = OuroLP{p.NFS("0"), p.NFS("5560.897808499187423050")}
+	SnakeLiqUser013 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser014      = LpHoldings{RaulTM, LQDUser014, KosonLiqUser014, BloodLiqUser014, VaultLiqUser014, VaultBtcUser014, SnakeLiqUser014}
 	LQDUser014      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -317,7 +320,7 @@ var (
 	BloodLiqUser016 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser016 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser016 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser016 = OuroLP{p.NFS("0"), p.NFS("252000")}
+	SnakeLiqUser016 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser017      = LpHoldings{Florian, LQDUser017, KosonLiqUser017, BloodLiqUser017, VaultLiqUser017, VaultBtcUser017, SnakeLiqUser017}
 	LQDUser017      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -357,7 +360,7 @@ var (
 	BloodLiqUser021 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser021 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser021 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser021 = OuroLP{p.NFS("0"), p.NFS("2528.602062767862839725")}
+	SnakeLiqUser021 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser022      = LpHoldings{Carlig, LQDUser022, KosonLiqUser022, BloodLiqUser022, VaultLiqUser022, VaultBtcUser022, SnakeLiqUser022}
 	LQDUser022      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -381,7 +384,7 @@ var (
 	BloodLiqUser024 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser024 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultLiqUser024 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
-	SnakeLiqUser024 = OuroLP{p.NFS("0"), p.NFS("14737.270955287499875415")}
+	SnakeLiqUser024 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser025      = LpHoldings{Rogojan, LQDUser025, KosonLiqUser025, BloodLiqUser025, VaultLiqUser025, VaultBtcUser025, SnakeLiqUser025}
 	LQDUser025      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -392,7 +395,7 @@ var (
 	SnakeLiqUser025 = OuroLP{p.NFS("0"), p.NFS("0")}
 	//
 	VLQUser026      = LpHoldings{DemiFarm, LQDUser026, KosonLiqUser026, BloodLiqUser026, VaultLiqUser026, VaultBtcUser026, SnakeLiqUser026}
-	LQDUser026      = VestaDexLPs{p.NFS("45000"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
+	LQDUser026      = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	KosonLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	BloodLiqUser026 = VestaDexLPs{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
 	VaultBtcUser026 = VestaDexVault{p.NFS("0"), p.NFS("0"), p.NFS("0"), p.NFS("0")}
@@ -522,13 +525,13 @@ func ComputeVestaSplit(Position int64, Input []VestaHoldings) (GuestIM *p.Decima
 // Outputs Farm Multiplier Structure
 func OutputVVMx(Variant string, InputIM, InputUM *p.Decimal) (Output FarmMx) {
 	if Variant == "vesta" {
-		Output = FarmMx{BloodshedDEB, Neutral, BloodshedDEB, Platinum, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{Neutral, Neutral, VestaTMFour, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "blood" {
-		Output = FarmMx{BloodshedDEB, Neutral, VestaTMFive, Neutral, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{BloodshedDEB, Neutral, VestaTMFour, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "koson" {
-		Output = FarmMx{AncientDEB, Neutral, Neutral, Platinum, InputUM, InputIM, Neutral, Neutral}
+		Output = FarmMx{AncientDEB, Neutral, VestaTMThree, Neutral, InputUM, InputIM, Neutral, Neutral}
 	} else if Variant == "vault" {
-		Output = FarmMx{Neutral, Neutral, Neutral, Neutral, Neutral, ComputeFinalTotalIMVault(InputIM), Neutral, Neutral}
+		Output = FarmMx{AncientDEB, Neutral, Neutral, Neutral, Neutral, ComputeFinalTotalIMVault(InputIM), Neutral, Neutral}
 	} else if Variant == "vaultbtc" {
 		Output = FarmMx{Neutral, Neutral, Neutral, Neutral, Neutral, Neutral, Neutral, Neutral}
 	}

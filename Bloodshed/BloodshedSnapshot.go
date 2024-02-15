@@ -58,9 +58,10 @@ func MakeNFTSnapshotChain(CollectionID string, MaxNftNonce int64) []EstarIndivid
 
 	//8862
 	for i := int64(3); i < MaxNftNonce+1; i++ {
-		Owner = GetNFTOwner(CollectionID, int64(i))
+		Owner = GetNFTOwner(CollectionID, i)
 		Output = AddNFTOwnerToChain(Owner, Output)
 		fmt.Println("Snapshoting Nonce ", i)
+		//time.Sleep(500 * time.Millisecond)
 	}
 	return Output
 
@@ -74,19 +75,23 @@ func GetNFTOwner(CollectionID string, MaxNftNonce int64) EstarIndividualNFT {
 		OutputChain EstarNFT
 		Output      EstarIndividualNFT
 	)
-	V1 := "https://mvx-api.estar.games/nfts/"
+	V0 := "https://estar_games:jfNdeXACJgDYxCYrJPpVD7WCXNpu9MkB5ERd@mvx-api2.estar.games/nfts/"
+	//V1 := "https://mvx-api2.estar.games/nfts/"
 	V2 := "/accounts"
 	NftID := CollectionID + "-" + mvx.MvxNftId(MaxNftNonce)
-	Link := V1 + NftID + V2
+	Link := V0 + NftID + V2
+	//fmt.Println("LINK: ", Link)
 
 	SS := mvx.OnPage(Link)
 	_ = json.Unmarshal([]byte(SS), &OutputChain)
+	//fmt.Println("OUTPUTCHAINIZ: ", OutputChain)
 
 	Owner := mvx.MvxAddress(OutputChain[0].Address)
+	//fmt.Println("OWNER IZ: ", Owner)
 
 	Output.Address = Owner
 	Output.ID = MaxNftNonce
-
+	//fmt.Println(Output)
 	return Output
 }
 

@@ -25,6 +25,7 @@ var (
 
 	ExA17 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgquqwc8v09e5pmcz9h4569gynle8qwjdenyl5sayfsl0") //BS Original Lottery SC
 	ExA18 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgqcc2dakhdz23hk8gvlnn054uhzzeewn5xwmfsyqdssd") //BS Second Mint sc
+	ExA19 = mvx.MvxAddress("erd1qqqqqqqqqqqqqpgq34wkpepftpvdx2vz6zs0377pccv8d3vstusqsm7ra6") //Midas Lottery SC
 
 	//This is the Amount Exception
 	//Paul holds 50 Company SFTs that aren't Include in the computation, that are excepted from computation
@@ -32,7 +33,7 @@ var (
 
 	//Smart Contract Exceptions
 	VestaExceptions = []mvx.MvxAddress{ExA1, ExA2, ExA3, ExA4, ExA6, ExA7, ExA8, ExA9, ExA10, ExA11, ExA12, ExA13}
-	CDExceptions    = []mvx.MvxAddress{ExA1, ExA2, ExA3, ExA4, ExA5, ExA6, ExA7, ExA8, ExA9, ExA10, ExA11, ExA12, ExA13}
+	CDExceptions    = []mvx.MvxAddress{ExA1, ExA2, ExA3, ExA4, ExA5, ExA6, ExA7, ExA8, ExA9, ExA10, ExA11, ExA12, ExA13, ExA19}
 	SnakeExceptions = []mvx.MvxAddress{ExA3, ExA4, ExA5, ExA6, ExA7, ExA8, ExA9, ExA10, ExA11, ExA12, ExA13, ExA14, ExA15, ExA16}
 
 	//Amount Exceptions
